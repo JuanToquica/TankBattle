@@ -17,15 +17,19 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector2 input;
 
-    public List<infoTrackWheels> trackWheel;
-
+    [SerializeField] private List<infoTrackWheels> trackWheel;
     [SerializeField] private float maxBreakForce;
-    [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxSpeed; 
+    [SerializeField] private float waitTimeToChangeDirection;
+
+    
+
     private float breakForce;
     private float tankMass;
-    public float torque;
+    private float torque;
     private float inertia;
-    public Vector3 velocity;
+    private bool needToBrake;
+    private WheelCollider referenceWheel;
 
     private void Awake()
     {
@@ -35,8 +39,9 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        tankMass = rb.mass + (trackWheel[0].backWheel.mass * 4);
-        inertia = 0.5f * (tankMass / 4) * Mathf.Pow(trackWheel[0].backWheel.radius, 2f);
+        referenceWheel = trackWheel[0].backWheel;
+        tankMass = rb.mass + (referenceWheel.mass * 4);
+        inertia = 0.5f * (tankMass / 4) * Mathf.Pow(referenceWheel.radius, 2f);
     }
 
     private void Update()
@@ -49,20 +54,21 @@ public class PlayerController : MonoBehaviour
         float currentSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
         float targetSpeed = maxSpeed * input.y;
         float speedDifference = targetSpeed - currentSpeed;
-
-        float angularVelocity = speedDifference / trackWheel[0].backWheel.radius;
+        float angularVelocity = speedDifference / referenceWheel.radius;
         torque = (inertia * angularVelocity / 0.1f);
 
-        if (Mathf.Abs(input.y) < 0.1f)
-        {
-            breakForce = maxBreakForce;
-            torque = 0;
-        }
-        else
-        {
-            breakForce = 0;
-        }
+        if (Mathf.Abs(rb.linearVelocity.z) > 0.1f && (Mathf.Sign(input.y) != Mathf.Sign(rb.linearVelocity.z))) //Verifica cambios bruscos de direccion
+            if (!needToBrake) StartCoroutine(BrakeBeforeChangeDirection());
 
+
+        AdjustBraking();
+
+        ApplyTorqueAndBrake();
+    }
+
+
+    private void ApplyTorqueAndBrake()
+    {
         foreach (infoTrackWheels eje in trackWheel)
         {
             eje.backWheel.motorTorque = torque;
@@ -70,12 +76,23 @@ public class PlayerController : MonoBehaviour
 
             eje.frontWheel.motorTorque = torque;
             eje.frontWheel.brakeTorque = breakForce;
-            velocity = rb.linearVelocity;
         }
+    }
 
+    private void AdjustBraking()
+    {
+        breakForce = (Mathf.Abs(input.y) < 0.1f || needToBrake) ? maxBreakForce : 0;
+        if (breakForce > 0) torque = 0;
 
     }
 
+    private IEnumerator BrakeBeforeChangeDirection()
+    {
+        needToBrake = true;
+        yield return new WaitForSeconds(waitTimeToChangeDirection);
+        needToBrake = false;
+    }
+    
 
     private void OnEnable()
     {
