@@ -163,7 +163,7 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 100000
-    damper: 10000
+    damper: 100000
     targetPosition: 0
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
@@ -234,7 +234,7 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 100000
-    damper: 10000
+    damper: 100000
     targetPosition: 0
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
@@ -1587,6 +1587,61 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191854771}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1223194252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1223194253}
+  - component: {fileID: 1223194254}
+  m_Layer: 0
+  m_Name: collider (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1223194253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223194252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.675, z: 1.155}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6205569819322564121}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!136 &1223194254
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223194252}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1226371730
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,7 +1686,7 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 100000
-    damper: 10000
+    damper: 100000
     targetPosition: 0
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
@@ -2134,7 +2189,7 @@ WheelCollider:
   m_Radius: 0.5
   m_SuspensionSpring:
     spring: 100000
-    damper: 10000
+    damper: 100000
     targetPosition: 0
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
@@ -2161,6 +2216,61 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!1 &1981885177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981885178}
+  - component: {fileID: 1981885179}
+  m_Layer: 0
+  m_Name: collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981885178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981885177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.675, z: -1.074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6205569819322564121}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!136 &1981885179
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981885177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2024248552
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,7 +2502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2131395852
 Transform:
   m_ObjectHideFlags: 0
@@ -3017,6 +3127,8 @@ Transform:
   - {fileID: 1220142166542414806}
   - {fileID: 5707475183124406588}
   - {fileID: 2131395852}
+  - {fileID: 1981885178}
+  - {fileID: 1223194253}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6725365679096816803
@@ -3054,7 +3166,7 @@ MonoBehaviour:
   frontAxle:
   - {fileID: 268480800}
   - {fileID: 1783690553}
-  backAxel:
+  backAxle:
   - {fileID: 1226371732}
   - {fileID: 46815557}
   turret: {fileID: 5707475183124406588}
@@ -3064,9 +3176,12 @@ MonoBehaviour:
   accelerationTime: 0.3
   stabilizationTime: 1
   movement: 0
-  accelerating: 0
-  constantSpeed: 0
   stabilizedSuspension: 0
+  currentState: 0
+  ListPosition: 
+  movingForward: 0
+  brakingForward: 0
+  stabilizeFirstFrontalAxisAtRest: 0
 --- !u!65 &6725365679096816805
 BoxCollider:
   m_ObjectHideFlags: 0
