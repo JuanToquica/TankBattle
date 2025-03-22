@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
@@ -17,42 +18,52 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public Vector2 input;
     private float turretRotationInput;
+    public event Action<float> StateUpdated;
 
-    [SerializeField] private WheelCollider[] frontAxle;
-    [SerializeField] private WheelCollider[] backAxle;
-    [SerializeField] private List<WheelCollider[]> suspensionOrder;
+
     [SerializeField] private Transform turret;
+    [SerializeField] private Transform superStructure;
     [SerializeField] private float speed;
     [SerializeField] private float turretRotationSpeed;
     [SerializeField] private float tankRotationSpeed;
     [SerializeField] private float accelerationTime;
-    [SerializeField] private float stabilizationTime;
+    [SerializeField] private float suspensionRotation;
+
+    [SerializeField] private float suspensionDuration;
+    [SerializeField] private float balanceDuration;
+    [SerializeField] private Ease AccelerationAndBrakingEaseType;
+    [SerializeField] private Ease balanceEaseType;
 
 
-    private WheelCollider referenceWheel;
     public float movement;
     private float movementSpeed;
-    public bool stabilizedSuspension;
-    public State currentState;
-    public string ListPosition;
+    private Tween suspensionTween;
+    [SerializeField] private State _currentState;
 
-    public bool movingForward;
-    public bool brakingForward;
-    public bool stabilizeFirstFrontalAxisAtRest;
-
-
-
-    private void Awake()
+    public State currentState
     {
-        playerInput = new PlayerInput();
+        get => _currentState;
+        set
+        {
+            if (_currentState != value) 
+            {
+                _currentState = value;
+                if (currentState == State.accelerating)
+                    StateUpdated?.Invoke(input.y * 1);
+                else if (currentState == State.braking)
+                    StateUpdated?.Invoke(Mathf.Sign(movement) * -1);
+            }           
+        }
     }
+
+
+
+    private void Awake() => playerInput = new PlayerInput();
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        suspensionOrder = new List<WheelCollider[]>();
-        suspensionOrder.Add(frontAxle); 
-        suspensionOrder.Add(backAxle);
+        StateUpdated += ApplySuspension;
     }
 
     private void Update()
@@ -64,51 +75,18 @@ public class PlayerController : MonoBehaviour
         if (Mathf.Abs(movement) < 0.01)
             movement = 0;
 
-
         if (turretRotationInput != 0)
             RotateTurret();
         if (input.x != 0)
-            RotateTank();
-
-        Vector3 rotation = transform.eulerAngles;
-        rotation.z = 0;
-        transform.eulerAngles = rotation;
-
-        foreach (WheelCollider collider in frontAxle)
-        {
-            collider.brakeTorque = 100000000;
-        }
-        foreach (WheelCollider collider in backAxle)
-        {
-            collider.brakeTorque = 100000000;
-        }
-        if (suspensionOrder[0] == frontAxle)
-            ListPosition = "front, back";
-        else
-            ListPosition = "back, front";
-
+            RotateTank(); 
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
 
-        stabilizedSuspension = backAxle[0].suspensionSpring.targetPosition != 0 && frontAxle[0].suspensionSpring.targetPosition != 0;
-
         SetState();
-        AdministerSuspensionOrder();
-        switch (currentState)
-        {
-            case State.accelerating:
-            case State.braking:
-                ApplySuspension();
-                break;
-            case State.constantSpeed:
-            case State.quiet:
-                if(!stabilizedSuspension)
-                    StartCoroutine(BalanceSuspension());
-                break;
-        }
+
     }
 
     private void SetState()
@@ -122,6 +100,7 @@ public class PlayerController : MonoBehaviour
         else
             currentState = State.quiet;
     }
+
     private void ApplyMovement()
     {
         Vector3 velocity = rb.linearVelocity;
@@ -129,69 +108,19 @@ public class PlayerController : MonoBehaviour
         velocity.z = movement * speed * transform.forward.z;
         rb.linearVelocity = velocity;
     }   
-
-    private void AdministerSuspensionOrder()
+   
+    private void ApplySuspension(float direction)
     {
-        movingForward = movement > 0 && (currentState == State.accelerating || currentState == State.constantSpeed);
-        brakingForward = currentState == State.braking && movement > 0;
-        stabilizeFirstFrontalAxisAtRest = currentState == State.quiet && frontAxle[0].suspensionSpring.targetPosition > backAxle[0].suspensionSpring.targetPosition;
-        if ((!movingForward && currentState != State.braking && currentState != State.quiet) || brakingForward || stabilizeFirstFrontalAxisAtRest )
-        {
-            if (suspensionOrder[0] != frontAxle)
-                suspensionOrder.Reverse();  
-        }
-        else
-        {
-            if (suspensionOrder[0] != backAxle)
-                suspensionOrder.Reverse();
-        }
-    }
-    private void ApplySuspension()
-    {
-        int i = 1;
-        foreach (WheelCollider[] array in suspensionOrder)
-        {
-            foreach (WheelCollider collider in array)
-            {
-                JointSpring suspension = collider.suspensionSpring;
-                suspension.targetPosition = i;
-                collider.suspensionSpring = suspension;
-            }
-            i--;
-        }
+        suspensionTween.Kill();
+        suspensionTween = superStructure.DOLocalRotate(new Vector3(suspensionRotation * direction, 0, 0), suspensionDuration).SetEase(AccelerationAndBrakingEaseType).OnComplete(BalanceSuspension);
     }
 
-    private IEnumerator BalanceSuspension()
+    private void BalanceSuspension()
     {
-        State initialState = currentState;
-        foreach (WheelCollider[] array in suspensionOrder)
-        {
-            float startTime = Time.time;
-            float initialTargetPosition = array[0].suspensionSpring.targetPosition;
-            if (initialTargetPosition == 0)
-                continue;
-
-            while (array[0].suspensionSpring.targetPosition > 0 && (currentState == State.constantSpeed || currentState == State.quiet))
-            {
-                if (currentState != initialState)
-                    break;
-                float t = Mathf.Clamp01((Time.time - startTime) / stabilizationTime);
-                if (t > 0.98f)
-                    t = 1.0f;
-                Debug.Log(t);
-                foreach (WheelCollider collider in array)
-                {
-                    JointSpring suspension = collider.suspensionSpring;
-                    suspension.targetPosition = Mathf.Lerp(initialTargetPosition, 0, t);
-                    collider.suspensionSpring = suspension;
-                    
-                }
-                yield return null;
-            }
-            if (currentState != initialState)
-                break;
-        }      
+        suspensionTween = superStructure.DOLocalRotate(new Vector3(0, 0, 0), balanceDuration).SetEase(balanceEaseType);
     }
+
+
 
     private void RotateTank()
     {
