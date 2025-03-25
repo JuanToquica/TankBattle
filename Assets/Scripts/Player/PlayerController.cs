@@ -16,29 +16,37 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
     private Rigidbody rb;
-    public Vector2 input;
+    private Vector2 input;
     private float turretRotationInput;
-    public event Action<float> StateUpdated;
 
-
+    [Header("References")]
     [SerializeField] private Transform turret;
     [SerializeField] private Transform superStructure;
+
+    [Header("Movement")]
     [SerializeField] private float speed;
     [SerializeField] private float turretRotationSpeed;
     [SerializeField] private float tankRotationSpeed;
     [SerializeField] private float accelerationTime;
-    [SerializeField] private float suspensionRotation;
 
+    [Header("Suspension")]
+    [SerializeField] private float accelerationSuspensionRotation;
+    [SerializeField] private float brakingSuspensionRotation;
     [SerializeField] private float suspensionDuration;
     [SerializeField] private float balanceDuration;
-    [SerializeField] private Ease AccelerationAndBrakingEaseType;
-    [SerializeField] private Ease balanceEaseType;
+    [SerializeField] private float regainDuration;
+
+    [Header("Ease for suspension")]
+    [SerializeField] private Ease AccelerationEase;
+    [SerializeField] private Ease BrakingEase;
+    [SerializeField] private Ease counteractEase;
+    [SerializeField] private Ease regainEase;
 
 
     public float movement;
     private float movementSpeed;
-    private Tween suspensionTween;
-    [SerializeField] private State _currentState;
+    private Sequence suspensionSequence;
+    public State _currentState;
 
     public State currentState
     {
@@ -49,9 +57,12 @@ public class PlayerController : MonoBehaviour
             {
                 _currentState = value;
                 if (currentState == State.accelerating)
-                    StateUpdated?.Invoke(input.y * 1);
+                    ApplySuspension(accelerationSuspensionRotation, 1, input.y * -1, Mathf.Abs(movement) > 0.2f? Ease.OutCubic: AccelerationEase);
                 else if (currentState == State.braking)
-                    StateUpdated?.Invoke(Mathf.Sign(movement) * -1);
+                {
+                    float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
+                    ApplySuspension(brakingSuspensionRotation, percentage -0.2f, Mathf.Sign(movement), BrakingEase);
+                }             
             }           
         }
     }
@@ -63,7 +74,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        StateUpdated += ApplySuspension;
     }
 
     private void Update()
@@ -78,49 +88,60 @@ public class PlayerController : MonoBehaviour
         if (turretRotationInput != 0)
             RotateTurret();
         if (input.x != 0)
-            RotateTank(); 
+            RotateTank();
+        SetState();
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
-
-        SetState();
-
+        
     }
 
     private void SetState()
     {
-        if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.99f && input.y != 0)
+        if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.9f && input.y != 0)
             currentState = State.accelerating;
         else if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.99f && input.y == 0)
             currentState = State.braking;
-        else if (Mathf.Abs(movement) > 0.99)
+        else if (Mathf.Abs(movement) > 0.9)
             currentState = State.constantSpeed;
         else
             currentState = State.quiet;
     }
 
     private void ApplyMovement()
-    {
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = movement * speed * transform.forward.x;
-        velocity.z = movement * speed * transform.forward.z;
-        rb.linearVelocity = velocity;
+    { 
+        Vector3 targetVelocity = transform.forward * movement * speed;
+        Vector3 velocityChange = targetVelocity - new Vector3(rb.linearVelocity.x, 0 , rb.linearVelocity.z);
+        velocityChange.y = 0;
+
+        rb.AddForce(velocityChange, ForceMode.VelocityChange);
+        Debug.Log(rb.linearVelocity);
+        Debug.Log(targetVelocity);
+        Debug.DrawRay(transform.position + new Vector3 (1.1f,0,0), transform.forward * 2.4f);
+        Debug.DrawRay(transform.position + new Vector3(-1.1f, 0, 0), transform.forward * 2.4f);
+        Debug.DrawRay(transform.position + new Vector3(1.1f, 0, 0), -transform.forward * 2.4f);
+        Debug.DrawRay(transform.position + new Vector3(-1.1f, 0, 0), -transform.forward * 2.4f);
     }   
    
-    private void ApplySuspension(float direction)
+    private void ApplySuspension(float rotation, float percentage, float direction, Ease ease)
     {
-        suspensionTween.Kill();
-        suspensionTween = superStructure.DOLocalRotate(new Vector3(suspensionRotation * direction, 0, 0), suspensionDuration).SetEase(AccelerationAndBrakingEaseType).OnComplete(BalanceSuspension);
+        if (suspensionSequence != null && suspensionSequence.IsActive())
+            suspensionSequence.Kill();
+
+        rotation *= percentage;
+
+        suspensionSequence = DOTween.Sequence();
+        suspensionSequence.Append(superStructure.DOLocalRotate(new Vector3(rotation * direction, 0, 0), currentState == State.constantSpeed? suspensionDuration - 0.5f: suspensionDuration).SetEase(ease));
+        if (currentState == State.accelerating || currentState == State.constantSpeed)
+            suspensionSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(regainEase));
+        else if (currentState == State.braking)
+        {
+            suspensionSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * direction, 0, 0), balanceDuration).SetEase(counteractEase));
+            suspensionSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(regainEase));
+        }
     }
-
-    private void BalanceSuspension()
-    {
-        suspensionTween = superStructure.DOLocalRotate(new Vector3(0, 0, 0), balanceDuration).SetEase(balanceEaseType);
-    }
-
-
 
     private void RotateTank()
     {

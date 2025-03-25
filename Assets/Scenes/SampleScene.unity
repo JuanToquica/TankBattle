@@ -2512,6 +2512,7 @@ GameObject:
   - component: {fileID: 5707475183124406588}
   - component: {fileID: 942472515653899431}
   - component: {fileID: 3118304428667061054}
+  - component: {fileID: 5707475183124406589}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -2642,6 +2643,27 @@ Transform:
   - {fileID: 9183488661890382430}
   m_Father: {fileID: 1761096135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5707475183124406589
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4945974281551819312}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.073421, y: 1.0440614, z: 3.564545}
+  m_Center: {x: 0, y: 0.6670574, z: 0.35845459}
 --- !u!1 &5752903946494597741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2764,21 +2786,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ff822acb94c114e823c9d095d70de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {x: 0, y: 0}
   turret: {fileID: 5707475183124406588}
   superStructure: {fileID: 1761096135}
   speed: 9
   turretRotationSpeed: 60
   tankRotationSpeed: 90
   accelerationTime: 0.3
-  stabilizationTime: 1
-  suspensionRotation: -7
+  accelerationSuspensionRotation: 7
+  brakingSuspensionRotation: 6
   suspensionDuration: 0.38
-  balanceDuration: 2
-  AccelerationAndBrakingEaseType: 6
-  balanceEaseType: 6
+  balanceDuration: 1.5
+  regainDuration: 0.7
+  AccelerationEase: 7
+  BrakingEase: 6
+  counteractEase: 6
+  regainEase: 2
   movement: 0
-  _currentState: 0
+  _currentState: 2
 --- !u!65 &6725365679096816805
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2798,8 +2822,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5087519, y: 2.1375616, z: 3.9093819}
-  m_Center: {x: 0.0041372776, y: 0.50343, z: 0.23148346}
+  m_Size: {x: 2.5087519, y: 1.128027, z: 3.3136187}
+  m_Center: {x: 0.0041372776, y: -0.0013372898, z: -0.066398144}
 --- !u!54 &6725365679096816806
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2825,7 +2849,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 32
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!23 &6965443490774641582
 MeshRenderer:
