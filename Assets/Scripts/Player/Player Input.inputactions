@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CenterTurret",
+                    "type": "Button",
+                    "id": "081f782b-ae4e-4995-8e95-1f6b3aa3ca3b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -112,6 +121,17 @@
                     "action": "MoveTurret",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6b81acf5-dbc2-4a57-bd01-d7180a100f25",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CenterTurret",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
