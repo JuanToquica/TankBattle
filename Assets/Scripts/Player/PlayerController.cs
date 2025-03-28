@@ -15,8 +15,9 @@ public enum State{accelerating, braking, quiet, constantSpeed }
 public class PlayerController : MonoBehaviour
 {
     private PlayerInput playerInput;
+    private PlayerAttack playerAttack;
     private Rigidbody rb;
-    private Vector2 input;
+    public Vector2 input;
     private float turretRotationInput;
 
     [Header("References")]
@@ -46,6 +47,8 @@ public class PlayerController : MonoBehaviour
     private bool isCollidingBack;
     public bool centeringTurret;
     private float tankRotationSpeed;
+    public float ancho;
+    public float largo;
 
     public State currentState
     {
@@ -64,10 +67,12 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = new PlayerInput();
         playerInput.Player.CenterTurret.started += ctx => centeringTurret = true;
+        playerInput.Player.Fire.started += ctx => playerAttack.Fire();
     }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerAttack = GetComponent<PlayerAttack>();
         tankRotationSpeed = maxTankRotationSpeed;
     }
 
@@ -82,8 +87,7 @@ public class PlayerController : MonoBehaviour
 
         if (turretRotationInput != 0)
             RotateTurret();
-        if (input.x != 0)
-            RotateTank();
+        
         SetState();
 
         if (centeringTurret)
@@ -95,11 +99,14 @@ public class PlayerController : MonoBehaviour
                 centeringTurret = false;
             }
         }
+        DetectFrontalCollision();
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
+        if (input.x != 0)
+            RotateTank();
     }
 
     private void SetState()
@@ -156,7 +163,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void RotateTank() =>transform.Rotate(0, tankRotationSpeed * input.x * Time.deltaTime, 0);
+    public void DetectFrontalCollision()
+    {
+        if (Physics.Raycast(transform.position + transform.right * ancho, transform.forward, largo) || 
+            Physics.Raycast(transform.position + transform.right * -ancho, transform.forward, largo) ||
+            Physics.Raycast(transform.position + transform.right * ancho, -transform.forward, largo) ||
+            Physics.Raycast(transform.position + transform.right * -ancho, -transform.forward, largo))
+        {
+            tankRotationSpeed = 0;
+            
+        }
+        else
+        {
+            tankRotationSpeed = maxTankRotationSpeed;
+            //rb.freezeRotation = false;
+        }
+            
+        Debug.DrawRay(transform.position + transform.right * ancho, transform.forward * largo, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -ancho, transform.forward * largo, Color.red);
+        Debug.DrawRay(transform.position + transform.right * ancho, -transform.forward * largo, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -ancho, -transform.forward * largo, Color.red);
+    }
+
+    private void RotateTank() =>transform.Rotate(0, tankRotationSpeed * input.x * Time.fixedDeltaTime, 0);
     private void RotateTurret()
     {
         centeringTurret = false;
@@ -171,18 +200,13 @@ public class PlayerController : MonoBehaviour
         foreach (ContactPoint contact in collision.contacts)
         {
             Vector3 contactDirection = contact.point - transform.position;
-            float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
-            if (MathF.Abs(dot) > 0.9f)
-            {
-                tankRotationSpeed = 0;
-                return;
-            }                
-            if (dot > 0.7f)
+            float dot = Vector3.Dot(contactDirection.normalized, transform.forward);                
+            if (dot > 0.75f && tankRotationSpeed != 0)
             {
                 isCollidingInFront = true;
                 tankRotationSpeed = 30;
             }               
-            if (dot < -0.7f)
+            if (dot < -0.75f && tankRotationSpeed != 0)
             {
                 isCollidingBack = true;
                 tankRotationSpeed = 30;
