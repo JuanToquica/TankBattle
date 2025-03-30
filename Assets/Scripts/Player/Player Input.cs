@@ -101,7 +101,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MoveTurret"",
+                    ""name"": ""MoveTurretWithKeys"",
                     ""type"": ""Value"",
                     ""id"": ""4e47f620-db79-4a75-9bf0-55fe8a9e4b53"",
                     ""expectedControlType"": ""Axis"",
@@ -122,6 +122,33 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""c7936966-c199-4bd1-8e13-be19fc56b757"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireKeyOnly"",
+                    ""type"": ""Button"",
+                    ""id"": ""b203f756-93a3-4f1d-8140-2a28cc11fb95"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveTurretWithMouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""2b60dc69-ab33-4e8e-8220-0e99465850bb"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchTurretControlToMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ac3105c-abb6-43e4-b06b-53742e358f05"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -191,7 +218,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveTurret"",
+                    ""action"": ""MoveTurretWithKeys"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -202,7 +229,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveTurret"",
+                    ""action"": ""MoveTurretWithKeys"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -213,7 +240,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveTurret"",
+                    ""action"": ""MoveTurretWithKeys"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -249,6 +276,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""248b571d-9a83-4ad2-a418-37fde241f971"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireKeyOnly"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77b64323-968a-48b9-b4b6-7a0165ea2035"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveTurretWithMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6902c451-1fca-4509-8ac2-a2696e469ce5"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchTurretControlToMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -275,9 +335,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_MoveTurret = m_Player.FindAction("MoveTurret", throwIfNotFound: true);
+        m_Player_MoveTurretWithKeys = m_Player.FindAction("MoveTurretWithKeys", throwIfNotFound: true);
         m_Player_CenterTurret = m_Player.FindAction("CenterTurret", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_FireKeyOnly = m_Player.FindAction("FireKeyOnly", throwIfNotFound: true);
+        m_Player_MoveTurretWithMouse = m_Player.FindAction("MoveTurretWithMouse", throwIfNotFound: true);
+        m_Player_SwitchTurretControlToMouse = m_Player.FindAction("SwitchTurretControlToMouse", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -359,9 +422,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_MoveTurret;
+    private readonly InputAction m_Player_MoveTurretWithKeys;
     private readonly InputAction m_Player_CenterTurret;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_FireKeyOnly;
+    private readonly InputAction m_Player_MoveTurretWithMouse;
+    private readonly InputAction m_Player_SwitchTurretControlToMouse;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -378,9 +444,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/MoveTurret".
+        /// Provides access to the underlying input action "Player/MoveTurretWithKeys".
         /// </summary>
-        public InputAction @MoveTurret => m_Wrapper.m_Player_MoveTurret;
+        public InputAction @MoveTurretWithKeys => m_Wrapper.m_Player_MoveTurretWithKeys;
         /// <summary>
         /// Provides access to the underlying input action "Player/CenterTurret".
         /// </summary>
@@ -389,6 +455,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Fire".
         /// </summary>
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/FireKeyOnly".
+        /// </summary>
+        public InputAction @FireKeyOnly => m_Wrapper.m_Player_FireKeyOnly;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MoveTurretWithMouse".
+        /// </summary>
+        public InputAction @MoveTurretWithMouse => m_Wrapper.m_Player_MoveTurretWithMouse;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchTurretControlToMouse".
+        /// </summary>
+        public InputAction @SwitchTurretControlToMouse => m_Wrapper.m_Player_SwitchTurretControlToMouse;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -418,15 +496,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @MoveTurret.started += instance.OnMoveTurret;
-            @MoveTurret.performed += instance.OnMoveTurret;
-            @MoveTurret.canceled += instance.OnMoveTurret;
+            @MoveTurretWithKeys.started += instance.OnMoveTurretWithKeys;
+            @MoveTurretWithKeys.performed += instance.OnMoveTurretWithKeys;
+            @MoveTurretWithKeys.canceled += instance.OnMoveTurretWithKeys;
             @CenterTurret.started += instance.OnCenterTurret;
             @CenterTurret.performed += instance.OnCenterTurret;
             @CenterTurret.canceled += instance.OnCenterTurret;
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @FireKeyOnly.started += instance.OnFireKeyOnly;
+            @FireKeyOnly.performed += instance.OnFireKeyOnly;
+            @FireKeyOnly.canceled += instance.OnFireKeyOnly;
+            @MoveTurretWithMouse.started += instance.OnMoveTurretWithMouse;
+            @MoveTurretWithMouse.performed += instance.OnMoveTurretWithMouse;
+            @MoveTurretWithMouse.canceled += instance.OnMoveTurretWithMouse;
+            @SwitchTurretControlToMouse.started += instance.OnSwitchTurretControlToMouse;
+            @SwitchTurretControlToMouse.performed += instance.OnSwitchTurretControlToMouse;
+            @SwitchTurretControlToMouse.canceled += instance.OnSwitchTurretControlToMouse;
         }
 
         /// <summary>
@@ -441,15 +528,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @MoveTurret.started -= instance.OnMoveTurret;
-            @MoveTurret.performed -= instance.OnMoveTurret;
-            @MoveTurret.canceled -= instance.OnMoveTurret;
+            @MoveTurretWithKeys.started -= instance.OnMoveTurretWithKeys;
+            @MoveTurretWithKeys.performed -= instance.OnMoveTurretWithKeys;
+            @MoveTurretWithKeys.canceled -= instance.OnMoveTurretWithKeys;
             @CenterTurret.started -= instance.OnCenterTurret;
             @CenterTurret.performed -= instance.OnCenterTurret;
             @CenterTurret.canceled -= instance.OnCenterTurret;
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @FireKeyOnly.started -= instance.OnFireKeyOnly;
+            @FireKeyOnly.performed -= instance.OnFireKeyOnly;
+            @FireKeyOnly.canceled -= instance.OnFireKeyOnly;
+            @MoveTurretWithMouse.started -= instance.OnMoveTurretWithMouse;
+            @MoveTurretWithMouse.performed -= instance.OnMoveTurretWithMouse;
+            @MoveTurretWithMouse.canceled -= instance.OnMoveTurretWithMouse;
+            @SwitchTurretControlToMouse.started -= instance.OnSwitchTurretControlToMouse;
+            @SwitchTurretControlToMouse.performed -= instance.OnSwitchTurretControlToMouse;
+            @SwitchTurretControlToMouse.canceled -= instance.OnSwitchTurretControlToMouse;
         }
 
         /// <summary>
@@ -511,12 +607,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "MoveTurret" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "MoveTurretWithKeys" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMoveTurret(InputAction.CallbackContext context);
+        void OnMoveTurretWithKeys(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "CenterTurret" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -531,5 +627,26 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFire(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FireKeyOnly" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFireKeyOnly(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MoveTurretWithMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMoveTurretWithMouse(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchTurretControlToMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchTurretControlToMouse(InputAction.CallbackContext context);
     }
 }

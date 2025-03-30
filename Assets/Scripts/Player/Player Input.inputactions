@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MoveTurret",
+                    "name": "MoveTurretWithKeys",
                     "type": "Value",
                     "id": "4e47f620-db79-4a75-9bf0-55fe8a9e4b53",
                     "expectedControlType": "Axis",
@@ -36,6 +36,33 @@
                     "name": "Fire",
                     "type": "Button",
                     "id": "c7936966-c199-4bd1-8e13-be19fc56b757",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FireKeyOnly",
+                    "type": "Button",
+                    "id": "b203f756-93a3-4f1d-8140-2a28cc11fb95",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveTurretWithMouse",
+                    "type": "Value",
+                    "id": "2b60dc69-ab33-4e8e-8220-0e99465850bb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwitchTurretControlToMouse",
+                    "type": "Button",
+                    "id": "2ac3105c-abb6-43e4-b06b-53742e358f05",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -105,7 +132,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveTurret",
+                    "action": "MoveTurretWithKeys",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -116,7 +143,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveTurret",
+                    "action": "MoveTurretWithKeys",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -127,7 +154,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveTurret",
+                    "action": "MoveTurretWithKeys",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -161,6 +188,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "248b571d-9a83-4ad2-a418-37fde241f971",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FireKeyOnly",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77b64323-968a-48b9-b4b6-7a0165ea2035",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveTurretWithMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6902c451-1fca-4509-8ac2-a2696e469ce5",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchTurretControlToMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

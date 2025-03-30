@@ -3,60 +3,29 @@ using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using Unity.VisualScripting;
-=======
 using System.Runtime.CompilerServices;
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using UnityEngine.Windows.Speech;
 using static UnityEngine.GraphicsBuffer;
 
-<<<<<<< HEAD
-[System.Serializable]
-public class infoTrackWheels
-{
-    public WheelCollider backWheel;
-    public WheelCollider frontWheel;
-    public bool Rotation;
-}
-=======
 public enum State{accelerating, braking, quiet, constantSpeed }
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInput playerInput;
+    [HideInInspector] public PlayerInput playerInput;   
     private PlayerAttack playerAttack;
     private Rigidbody rb;
-<<<<<<< HEAD
-    private Vector2 input;
-=======
-    public Vector2 input;
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
+    [HideInInspector] public Vector2 input;
     private float turretRotationInput;
 
     [Header("References")]
     [SerializeField] private Transform turret;
     [SerializeField] private Transform superStructure;
+    [SerializeField] private Transform cameraPivot;
+    [SerializeField] private CameraController cameraController;
 
-<<<<<<< HEAD
-    [SerializeField] private Transform Turret;
-    [SerializeField] private float TurretRotationSpeed;
-    [SerializeField] private float TankRotationSpeed;
-    [SerializeField] private float maxWheelAngle;
-
-    private float breakForce;
-    private float tankMass;
-    private float torque;
-    private float inertia;
-    public bool needToBrake;
-    private WheelCollider referenceWheel;
-    public Vector3 velocity;
-    private float wheelAngle;
-=======
     [Header("Movement")]
     [SerializeField] private float speed;
     [SerializeField] private float turretRotationSpeed;
@@ -70,8 +39,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float balanceDuration;
     [SerializeField] private float regainDuration;
 
-
     private float movement;
+    private float turretRotationFactor;
     private float movementSpeed;
     private Sequence suspensionSequence;
     private Tween turretRotationTween;
@@ -88,46 +57,54 @@ public class PlayerController : MonoBehaviour
         get => _currentState;
         set
         {
-            if (_currentState != value) 
+            if (_currentState != value)
             {
                 _currentState = value;
                 ManageSuspension();
-            }           
+            }
         }
     }
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
-
     private void Awake()
     {
         playerInput = new PlayerInput();
-        playerInput.Player.CenterTurret.started += ctx => centeringTurret = true;
+
+        playerInput.Player.CenterTurret.started += ctx => CenterTurretAndChangeTurretControl();
         playerInput.Player.Fire.started += ctx => playerAttack.Fire();
+        playerInput.Player.FireKeyOnly.started += ctx => playerAttack.Fire();
+        playerInput.Player.SwitchTurretControlToMouse.started += ctx => SwitchTurretControlToMouse();
     }
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerAttack = GetComponent<PlayerAttack>();
         tankRotationSpeed = maxTankRotationSpeed;
+        playerInput.Player.MoveTurretWithMouse.Disable();
+        playerInput.Player.Fire.Disable();
     }
 
     private void Update()
     {
         input = playerInput.Player.Move.ReadValue<Vector2>();
-        turretRotationInput = playerInput.Player.MoveTurret.ReadValue<float>();
+        turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
-<<<<<<< HEAD
-        if (turretRotationInput != 0)
-            RotateTurret();
-=======
         movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementSpeed, accelerationTime), -1, 1);
+
         if (Mathf.Abs(movement) < 0.01)
             movement = 0;
 
-        if (turretRotationInput != 0)
-            RotateTurret();
-        
-        SetState();
+        SetState();       
+        DetectFrontalCollision();
+    }
 
+    private void FixedUpdate()
+    {
+        ApplyMovement();
+        RotateTurret();
+     
+        if (input.x != 0)
+            RotateTank();
         if (centeringTurret)
         {
             turret.transform.localRotation = Quaternion.RotateTowards(turret.transform.localRotation, Quaternion.identity, turretRotationSpeed * Time.deltaTime);
@@ -137,32 +114,6 @@ public class PlayerController : MonoBehaviour
                 centeringTurret = false;
             }
         }
-        DetectFrontalCollision();
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
-    }
-
-    private void FixedUpdate()
-    {
-<<<<<<< HEAD
-        float currentSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float targetSpeed = maxSpeed * input.y;
-        float speedDifference = targetSpeed - currentSpeed;
-        float angularVelocity = speedDifference / referenceWheel.radius;
-        torque = (inertia * angularVelocity / 0.1f);
-
-        if (Mathf.Abs(rb.linearVelocity.z) > 0.1f && (Mathf.Sign(input.y) != Mathf.Sign(rb.linearVelocity.z))) //Verifica cambios bruscos de direccion
-            if (!needToBrake) StartCoroutine(BrakeBeforeChangeDirection());
-
-        AdjustBraking();
-
-        ApplyTorqueAndBrake();
-        velocity = rb.linearVelocity;
-              
-=======
-        ApplyMovement();
-        if (input.x != 0)
-            RotateTank();
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
     }
 
     private void SetState()
@@ -177,11 +128,6 @@ public class PlayerController : MonoBehaviour
             currentState = State.quiet;
     }
 
-<<<<<<< HEAD
-            eje.frontWheel.motorTorque = torque;
-            eje.frontWheel.brakeTorque = breakForce;
-
-=======
     private void ApplyMovement()
     { 
         Vector3 targetVelocity = transform.forward * movement * speed;
@@ -203,16 +149,11 @@ public class PlayerController : MonoBehaviour
         {
             float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
             ApplySuspension(brakingSuspensionRotation, percentage - 0.2f, Mathf.Sign(movement), Ease.OutQuad);
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
         }
     }
 
     private void ApplySuspension(float rotation, float percentage, float direction, Ease ease)
     {
-<<<<<<< HEAD
-        breakForce = (Mathf.Abs(input.y) < 0.1f || needToBrake) ? maxBreakForce : 0;
-        if (breakForce > 0) torque = 0;
-=======
         if (suspensionSequence != null && suspensionSequence.IsActive())
             suspensionSequence.Kill();
 
@@ -227,26 +168,10 @@ public class PlayerController : MonoBehaviour
             suspensionSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * direction, 0, 0), balanceDuration).SetEase(Ease.OutQuad));
             suspensionSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
         }
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
     }
 
     public void DetectFrontalCollision()
     {
-<<<<<<< HEAD
-        needToBrake = true;
-        yield return new WaitForSeconds(waitTimeToChangeDirection);
-        needToBrake = false;
-    }
-  
-    private void RotateTurret()
-    {
-        Turret.Rotate(0,TurretRotationSpeed * turretRotationInput * Time.deltaTime,0);
-    }
-
-    private void OnEnable()
-    {
-        playerInput.Enable();
-=======
         if (Physics.Raycast(transform.position + transform.right * ancho, transform.forward, largo) || 
             Physics.Raycast(transform.position + transform.right * -ancho, transform.forward, largo) ||
             Physics.Raycast(transform.position + transform.right * ancho, -transform.forward, largo) ||
@@ -258,23 +183,66 @@ public class PlayerController : MonoBehaviour
         else
         {
             tankRotationSpeed = maxTankRotationSpeed;
-            //rb.freezeRotation = false;
         }
             
         Debug.DrawRay(transform.position + transform.right * ancho, transform.forward * largo, Color.red);
         Debug.DrawRay(transform.position + transform.right * -ancho, transform.forward * largo, Color.red);
         Debug.DrawRay(transform.position + transform.right * ancho, -transform.forward * largo, Color.red);
         Debug.DrawRay(transform.position + transform.right * -ancho, -transform.forward * largo, Color.red);
->>>>>>> bfbe352f652273f9ef3c250d51e53a12d96f9269
     }
 
     private void RotateTank() =>transform.Rotate(0, tankRotationSpeed * input.x * Time.fixedDeltaTime, 0);
     private void RotateTurret()
     {
-        centeringTurret = false;
-        turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.deltaTime, 0);
+        if (playerInput.Player.MoveTurretWithKeys.enabled)
+        {
+            if (turretRotationInput != 0)
+            {
+                centeringTurret = false;
+                turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.fixedDeltaTime, 0);
+            }
+        }
+        else if (playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivot.rotation.eulerAngles.y)
+        {
+            float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivot.rotation.eulerAngles.y);
+            float direction = Mathf.Sign(angleDifference);
+            if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.deltaTime)
+                turret.Rotate(0, turretRotationSpeed * direction * Time.fixedDeltaTime, 0);
+            else
+                turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.rotation.eulerAngles.y, turret.rotation.eulerAngles.z);
+        }   
     }
-        
+
+    private void CenterTurretAndChangeTurretControl()
+    {
+        centeringTurret = true;
+        if (playerInput.Player.MoveTurretWithMouse.enabled)
+        {
+            playerInput.Player.Fire.Disable();
+            playerInput.Player.MoveTurretWithMouse.Disable();
+            playerInput.Player.FireKeyOnly.Enable();            
+            playerInput.Player.SwitchTurretControlToMouse.Enable();
+            playerInput.Player.MoveTurretWithKeys.Enable();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+    private void SwitchTurretControlToMouse()
+    {
+        if (playerInput.Player.MoveTurretWithKeys.enabled)
+        {
+            playerInput.Player.FireKeyOnly.Disable();
+            playerInput.Player.MoveTurretWithKeys.Disable();
+            playerInput.Player.Fire.Enable();
+            playerInput.Player.SwitchTurretControlToMouse.Disable();           
+            playerInput.Player.MoveTurretWithMouse.Enable();
+            centeringTurret = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
+        }
+    }
+
     private void OnEnable() => playerInput.Enable();
     private void OnDisable() => playerInput.Disable();
 
