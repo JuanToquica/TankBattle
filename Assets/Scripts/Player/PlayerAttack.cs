@@ -4,7 +4,7 @@ public class PlayerAttack : MonoBehaviour
 {
     private Animator animator;
     [SerializeField] private float cooldown;
-    public float cooldownTimer;
+    private float cooldownTimer;
 
     private void Start()
     {

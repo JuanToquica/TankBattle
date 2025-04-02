@@ -14,10 +14,11 @@ public enum State{accelerating, braking, quiet, constantSpeed }
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public PlayerInput playerInput;   
+    [HideInInspector] public PlayerInput playerInput;
+    public Vector2 input;
+    public State _currentState;
     private PlayerAttack playerAttack;
     private Rigidbody rb;
-    [HideInInspector] public Vector2 input;
     private float turretRotationInput;
 
     [Header("References")]
@@ -31,26 +32,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turretRotationSpeed;
     [SerializeField] private float maxTankRotationSpeed;
     [SerializeField] private float accelerationTime;
+    public float movement;
+    private float movementRef;
 
     [Header("Suspension")]
     [SerializeField] private float accelerationSuspensionRotation;
     [SerializeField] private float brakingSuspensionRotation;
-    [SerializeField] private float suspensionDuration;
     [SerializeField] private float balanceDuration;
     [SerializeField] private float regainDuration;
-
-    private float movement;
-    private float turretRotationFactor;
-    private float movementSpeed;
-    private Sequence suspensionSequence;
+    private Sequence suspensionRotationSequence;
     private Tween turretRotationTween;
-    private State _currentState;
-    private bool isCollidingInFront;
-    private bool isCollidingBack;
-    public bool centeringTurret;
-    private float tankRotationSpeed;
-    public float ancho;
-    public float largo;
+
+
+
+    public bool frontalCollision;
+    public bool backCollision;
+    public bool frontalCollisionWithCorner;
+    public bool backCollisionWithCorner;
+    private bool centeringTurret;
+    public float tankRotationSpeed;
+
 
     public State currentState
     {
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = new PlayerInput();
 
-        playerInput.Player.CenterTurret.started += ctx => CenterTurretAndChangeTurretControl();
+        playerInput.Player.CenterTurret.started += ctx => ActivateTurretCenteringAndChangeTurretControlToKeys();
         playerInput.Player.Fire.started += ctx => playerAttack.Fire();
         playerInput.Player.FireKeyOnly.started += ctx => playerAttack.Fire();
         playerInput.Player.SwitchTurretControlToMouse.started += ctx => SwitchTurretControlToMouse();
@@ -86,41 +87,46 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        ReadInputs();
+        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, accelerationTime), -1, 1);
+        if (Mathf.Abs(movement) < 0.01) movement = 0;
+
+        ManipulateMovementInCollision();
+        SetState();
+        DrawRays();
+    }
+
+    private void ReadInputs()
+    {
         input = playerInput.Player.Move.ReadValue<Vector2>();
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
+    }
 
-        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementSpeed, accelerationTime), -1, 1);
-
-        if (Mathf.Abs(movement) < 0.01)
+    private void ManipulateMovementInCollision()
+    {
+        if (movement > 0 && input.y < 0 && (frontalCollision || frontalCollisionWithCorner))
             movement = 0;
 
-        SetState();       
-        DetectFrontalCollision();
+        if (movement < 0 && input.y > 0 && (backCollision || backCollisionWithCorner))
+            movement = 0;     
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
         RotateTurret();
-     
+
         if (input.x != 0)
             RotateTank();
         if (centeringTurret)
-        {
-            turret.transform.localRotation = Quaternion.RotateTowards(turret.transform.localRotation, Quaternion.identity, turretRotationSpeed * Time.deltaTime);
-            if (Quaternion.Angle(turret.transform.localRotation, Quaternion.identity) < 0.1f)
-            {
-                turret.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                centeringTurret = false;
-            }
-        }
+            CenterTurret();
     }
 
     private void SetState()
     {
         if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.9f && input.y != 0)
             currentState = State.accelerating;
-        else if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.99f && input.y == 0)
+        else if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.99f && input.y == 0 && rb.linearVelocity.magnitude > 0.05f)
             currentState = State.braking;
         else if (Mathf.Abs(movement) > 0.9)
             currentState = State.constantSpeed;
@@ -141,11 +147,11 @@ public class PlayerController : MonoBehaviour
     {
         if (currentState == State.accelerating)
         {
-            if (input.y > 0.1f && isCollidingInFront || input.y < 0.1f && isCollidingBack)
+            if (movement > 0 && frontalCollision || movement < 0 && backCollision)
                 return;
-            ApplySuspension(accelerationSuspensionRotation, 1, input.y * -1, Mathf.Abs(movement) > 0.2f ? Ease.OutCubic : Ease.InOutQuad);
+            ApplySuspension(accelerationSuspensionRotation, 1, input.y * -1, Mathf.Abs(movement) > 0.2f? Ease.OutCubic : Ease.InOutQuad);
         }           
-        else if (currentState == State.braking && !isCollidingBack && !isCollidingInFront)
+        else if (currentState == State.braking)
         {
             float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
             ApplySuspension(brakingSuspensionRotation, percentage - 0.2f, Mathf.Sign(movement), Ease.OutQuad);
@@ -154,47 +160,32 @@ public class PlayerController : MonoBehaviour
 
     private void ApplySuspension(float rotation, float percentage, float direction, Ease ease)
     {
-        if (suspensionSequence != null && suspensionSequence.IsActive())
-            suspensionSequence.Kill();
+        if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
+            suspensionRotationSequence.Kill();
 
+        suspensionRotationSequence = DOTween.Sequence();
+ 
         rotation *= percentage;
 
-        suspensionSequence = DOTween.Sequence();
-        suspensionSequence.Append(superStructure.DOLocalRotate(new Vector3(rotation * direction, 0, 0), currentState == State.constantSpeed? suspensionDuration - 0.5f: suspensionDuration).SetEase(ease));
+        suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(rotation * direction, 0, 0), 
+            currentState == State.braking? accelerationTime + 0.1f: accelerationTime).SetEase(ease));
+
         if (currentState == State.accelerating || currentState == State.constantSpeed)
-            suspensionSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
+        {
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
+        }            
         else if (currentState == State.braking)
         {
-            suspensionSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * direction, 0, 0), balanceDuration).SetEase(Ease.OutQuad));
-            suspensionSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
-        }
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * direction, 0, 0), balanceDuration).SetEase(Ease.OutQuad));
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
+        }   
     }
 
-    public void DetectFrontalCollision()
-    {
-        if (Physics.Raycast(transform.position + transform.right * ancho, transform.forward, largo) || 
-            Physics.Raycast(transform.position + transform.right * -ancho, transform.forward, largo) ||
-            Physics.Raycast(transform.position + transform.right * ancho, -transform.forward, largo) ||
-            Physics.Raycast(transform.position + transform.right * -ancho, -transform.forward, largo))
-        {
-            tankRotationSpeed = 0;
-            
-        }
-        else
-        {
-            tankRotationSpeed = maxTankRotationSpeed;
-        }
-            
-        Debug.DrawRay(transform.position + transform.right * ancho, transform.forward * largo, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -ancho, transform.forward * largo, Color.red);
-        Debug.DrawRay(transform.position + transform.right * ancho, -transform.forward * largo, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -ancho, -transform.forward * largo, Color.red);
-    }
+    private void RotateTank() => transform.Rotate(0, tankRotationSpeed * input.x * Time.fixedDeltaTime, 0);
 
-    private void RotateTank() =>transform.Rotate(0, tankRotationSpeed * input.x * Time.fixedDeltaTime, 0);
     private void RotateTurret()
-    {
-        if (playerInput.Player.MoveTurretWithKeys.enabled)
+    {        
+        if (playerInput.Player.MoveTurretWithKeys.enabled)  
         {
             if (turretRotationInput != 0)
             {
@@ -213,7 +204,16 @@ public class PlayerController : MonoBehaviour
         }   
     }
 
-    private void CenterTurretAndChangeTurretControl()
+    private void CenterTurret()
+    {
+        turret.transform.localRotation = Quaternion.RotateTowards(turret.transform.localRotation, Quaternion.identity, turretRotationSpeed * Time.deltaTime);
+        if (Quaternion.Angle(turret.transform.localRotation, Quaternion.identity) < 0.1f)
+        {
+            turret.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            centeringTurret = false;
+        }
+    }
+    private void ActivateTurretCenteringAndChangeTurretControlToKeys()
     {
         centeringTurret = true;
         if (playerInput.Player.MoveTurretWithMouse.enabled)
@@ -238,38 +238,68 @@ public class PlayerController : MonoBehaviour
             playerInput.Player.MoveTurretWithMouse.Enable();
             centeringTurret = false;
             Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            
+            Cursor.visible = false;           
         }
     }
 
-    private void OnEnable() => playerInput.Enable();
-    private void OnDisable() => playerInput.Disable();
 
     private void OnCollisionStay(Collision collision)
     {
+        bool rightFrontalCollision = Physics.Raycast(transform.position + transform.right * 0.3f, transform.forward, 2.3f);
+        bool leftFrontalCollision = Physics.Raycast(transform.position + transform.right * -0.3f, transform.forward, 2.3f);
+        bool rightBackCollision = Physics.Raycast(transform.position + transform.right * 0.3f, -transform.forward, 1.8f);
+        bool leftBackCollision = Physics.Raycast(transform.position + transform.right * -0.3f, -transform.forward, 1.8f);
+
         foreach (ContactPoint contact in collision.contacts)
         {
-            Vector3 contactDirection = contact.point - transform.position;
-            float dot = Vector3.Dot(contactDirection.normalized, transform.forward);                
-            if (dot > 0.75f && tankRotationSpeed != 0)
+            if (contact.thisCollider.GetComponent<BoxCollider>() != null)
             {
-                isCollidingInFront = true;
-                tankRotationSpeed = 30;
-            }               
-            if (dot < -0.75f && tankRotationSpeed != 0)
-            {
-                isCollidingBack = true;
-                tankRotationSpeed = 30;
-            }           
+                frontalCollision = rightFrontalCollision || leftFrontalCollision;
+                backCollision = rightBackCollision || leftBackCollision;               
+
+                if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
+                {
+                    tankRotationSpeed = 0;
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    return;
+                }
+
+                Vector3 contactDirection = contact.point - transform.position;
+                float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
+                if (dot > 0.75f)
+                {
+                    tankRotationSpeed = 30;
+                    frontalCollisionWithCorner = true;                    
+                }                                        
+                if (dot < -0.75f)
+                {
+                    tankRotationSpeed = 30;
+                    backCollisionWithCorner = true;                    
+                }
+
+                transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+            } 
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-        isCollidingInFront = false;
-        isCollidingBack = false;
+        frontalCollision = false;
+        frontalCollisionWithCorner = false;
+        backCollision = false;
+        backCollisionWithCorner = false;
         tankRotationSpeed = maxTankRotationSpeed;
     }
+
+    private void DrawRays()
+    {
+        Debug.DrawRay(transform.position + transform.right * 0.3f, transform.forward * 2.3f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -0.3f, transform.forward * 2.3f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * 0.3f, -transform.forward * 1.8f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -0.3f, -transform.forward * 1.8f, Color.red);
+    }
+
+    private void OnEnable() => playerInput.Enable();
+    private void OnDisable() => playerInput.Disable();
 
     void OnDrawGizmos()
     {
