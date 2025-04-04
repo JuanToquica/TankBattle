@@ -61,7 +61,8 @@ public class PlayerController : MonoBehaviour
             if (_currentState != value)
             {
                 _currentState = value;
-                ManageSuspension();
+                if (_currentState == State.braking || _currentState == State.accelerating)
+                    ApplySuspension();
             }
         }
     }
@@ -142,43 +143,33 @@ public class PlayerController : MonoBehaviour
             
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
     }   
-   
-    private void ManageSuspension()
-    {
-        if (currentState == State.accelerating)
-        {
-            if (movement > 0 && frontalCollision || movement < 0 && backCollision)
-                return;
-            ApplySuspension(accelerationSuspensionRotation, 1, input.y * -1, Mathf.Abs(movement) > 0.2f? Ease.OutCubic : Ease.InOutQuad);
-        }           
-        else if (currentState == State.braking)
-        {
-            float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
-            ApplySuspension(brakingSuspensionRotation, percentage - 0.2f, Mathf.Sign(movement), Ease.OutQuad);
-        }
-    }
 
-    private void ApplySuspension(float rotation, float percentage, float direction, Ease ease)
+    private void ApplySuspension()
     {
         if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
             suspensionRotationSequence.Kill();
 
-        suspensionRotationSequence = DOTween.Sequence();
- 
-        rotation *= percentage;
+        suspensionRotationSequence = DOTween.Sequence();     
 
-        suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(rotation * direction, 0, 0), 
-            currentState == State.braking? accelerationTime + 0.1f: accelerationTime).SetEase(ease));
-
-        if (currentState == State.accelerating || currentState == State.constantSpeed)
+        if (currentState == State.accelerating)
         {
+            if (movement > 0 && frontalCollision || movement < 0 && backCollision)
+                return;
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(accelerationSuspensionRotation * input.y * -1, 0, 0),
+            accelerationTime).SetEase(Mathf.Abs(movement) > 0.2f ? Ease.OutCubic : Ease.InOutQuad));
+
             suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
-        }            
-        else if (currentState == State.braking)
+        }
+
+        if (currentState == State.braking)
         {
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * direction, 0, 0), balanceDuration).SetEase(Ease.OutQuad));
+            float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(brakingSuspensionRotation * Mathf.Sign(movement) * (percentage - 0.2f), 0, 0), 
+                accelerationTime + 0.1f).SetEase(Ease.OutQuad));
+
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).SetEase(Ease.OutQuad));
             suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
-        }   
+        }
     }
 
     private void RotateTank() => transform.Rotate(0, tankRotationSpeed * input.x * Time.fixedDeltaTime, 0);
@@ -292,8 +283,8 @@ public class PlayerController : MonoBehaviour
 
     private void DrawRays()
     {
-        Debug.DrawRay(transform.position + transform.right * 0.3f, transform.forward * 2.3f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -0.3f, transform.forward * 2.3f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * 0.3f, transform.forward * 2.1f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -0.3f, transform.forward * 2.1f, Color.red);
         Debug.DrawRay(transform.position + transform.right * 0.3f, -transform.forward * 1.8f, Color.red);
         Debug.DrawRay(transform.position + transform.right * -0.3f, -transform.forward * 1.8f, Color.red);
     }

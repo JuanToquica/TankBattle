@@ -4,6 +4,9 @@ public class PlayerAttack : MonoBehaviour
 {
     private Animator animator;
     [SerializeField] private float cooldown;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform projectilesContainer;
     private float cooldownTimer;
 
     private void Start()
@@ -24,6 +27,8 @@ public class PlayerAttack : MonoBehaviour
         if (cooldownTimer == cooldown)
         {
             animator.SetBool("Fire", true);
+            GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.Euler(0, spawnPoint.rotation.eulerAngles.y, 0));
+            projectile.transform.SetParent(projectilesContainer);
             cooldownTimer = 0;
         }        
     }

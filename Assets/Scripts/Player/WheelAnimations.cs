@@ -12,8 +12,6 @@ public class WheelAnimations : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();    
     }
-
-
     private void Update()
     {
         Vector2 input = playerController.input;
@@ -47,10 +45,6 @@ public class WheelAnimations : MonoBehaviour
             trackRightAnimator.SetFloat("AnimationSpeed", 0);
             LeftWheelsAnimator.SetFloat("AnimationSpeed", 0);
             RightWheelsAnimator.SetFloat("AnimationSpeed", 0);
-        }
-
-        
-        
+        }  
     }
-
 }
