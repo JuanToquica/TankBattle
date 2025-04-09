@@ -606,7 +606,7 @@ Animator:
   m_GameObject: {fileID: 983249391379277366}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e91503b7d0a27d348b02369d91f8f4c0, type: 2}
+  m_Controller: {fileID: 9100000, guid: a45fa1fd3626bd54d8527ce49ad97907, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -630,7 +630,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3829e26be1cc626419753234c04ee8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
+  projectileSpawnPoint: {fileID: 1407597519195156811}
+  projectilesContainer: {fileID: 0}
+  coolDown: 1
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0

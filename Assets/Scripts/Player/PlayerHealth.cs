@@ -20,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = health / maxHealth;
     }
 
-    private void SubstractHealth(float damage)
+    public void TakeDamage(float damage)
     {
         if (health > 0)
         {

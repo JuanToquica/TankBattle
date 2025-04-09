@@ -3062,7 +3062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1497697826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4549,14 +4549,6 @@ PrefabInstance:
       propertyPath: projectilesContainer
       value: 
       objectReference: {fileID: 1740253312}
-    - target: {fileID: 4278285957983434884, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-      propertyPath: m_Size.z
-      value: 3.666418
-      objectReference: {fileID: 0}
-    - target: {fileID: 4278285957983434884, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-      propertyPath: m_Center.z
-      value: 0.110001564
-      objectReference: {fileID: 0}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: cameraPivot
       value: 
@@ -4573,10 +4565,6 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 833982551}
-    - target: {fileID: 6708663462684491620, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-      propertyPath: maxHealth
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 8142721639310044282, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -4679,9 +4667,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2759948816972896705}
     - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: player
+      propertyPath: projectilesContainer
       value: 
-      objectReference: {fileID: 2759948816972896705}
+      objectReference: {fileID: 1740253312}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

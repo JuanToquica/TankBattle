@@ -29,6 +29,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetBool("Fire", true);
             GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.Euler(0, spawnPoint.rotation.eulerAngles.y, 0));
             projectile.transform.SetParent(projectilesContainer);
+            projectile.tag = "PlayerProjectile";
             cooldownTimer = 0;
         }        
     }

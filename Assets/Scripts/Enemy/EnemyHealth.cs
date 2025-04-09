@@ -31,7 +31,7 @@ public class EnemyHealth : MonoBehaviour
         healthBarCanvas.transform.forward = -Camera.main.transform.forward;
     }
 
-    public void SubstractHealth(float damage)
+    public void TakeDamage(float damage)
     {
         if (health > 0)
         {

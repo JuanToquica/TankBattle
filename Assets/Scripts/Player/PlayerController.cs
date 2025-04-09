@@ -191,7 +191,12 @@ public class PlayerController : MonoBehaviour
             if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.deltaTime)
                 turret.Rotate(0, turretRotationSpeed * direction * Time.fixedDeltaTime, 0);
             else
-                turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.rotation.eulerAngles.y, turret.rotation.eulerAngles.z);
+            {
+                turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.eulerAngles.y, turret.rotation.eulerAngles.x);
+                turret.localRotation = Quaternion.Euler(0, turret.localRotation.eulerAngles.y, 0);
+
+            }
+                
         }   
     }
 

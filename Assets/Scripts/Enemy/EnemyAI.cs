@@ -1,25 +1,55 @@
 using UnityEngine;
 using UnityEngine.AI;
+using BehaviorTree;
+using System.Collections.Generic;
 
-namespace BehaviorTree
+
+public class EnemyAI : MonoBehaviour
 {
-    public class EnemyAI : MonoBehaviour
+    private Node _root = null;
+    private Animator animator;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private Transform projectilesContainer;
+    [SerializeField] private float coolDown;
+    private float nextShootTime = 0;
+
+    private void Start()
     {
-        private Node _root = null;
+        SetUpTree();
+        animator = GetComponent<Animator>();
+    }
+    private void Update()
+    {
+        if (_root != null)
+            _root.Evaluate();
+    }
 
-        private void Start()
-        {
-            _root = SetUpTree();
-        }
-        private void Update()
-        {
-            if (_root != null)
-                _root.Evaluate();
-        }
+    private void SetUpTree()
+    {
+        _root = new Sequence(new List<Node> { new TaskAttack(this) });
+    }
 
-        private Node SetUpTree()
-        {
-            return _root;
-        }
+
+    public bool CanShoot()
+    {
+        return Time.time >= nextShootTime;
+    }
+
+    public void Shoot()
+    {
+        if (!CanShoot()) return;
+
+        animator.SetBool("Fire", true);
+        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.Euler(0, projectileSpawnPoint.rotation.eulerAngles.y, 0));
+        projectile.transform.SetParent(projectilesContainer);
+        projectile.tag = "EnemyProjectile";
+
+        nextShootTime = Time.time + coolDown;
+    }
+
+    public void EndShootAnimation()
+    {
+        animator.SetBool("Fire", false);
     }
 }

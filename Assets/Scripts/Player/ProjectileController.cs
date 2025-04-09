@@ -18,14 +18,30 @@ public class ProjectileController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {      
-        if (other.CompareTag("Enemy"))
+        if (this.CompareTag("PlayerProjectile"))
         {
-            EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-            if (enemy != null)
-                enemy.SubstractHealth(3);
-            Destroy(gameObject);
+            if (other.CompareTag("Enemy"))
+            {
+                EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+                if (enemy != null)
+                    enemy.TakeDamage(3);
+                Destroy(gameObject);
+            }
+            if (!other.CompareTag("Player"))
+                Destroy(gameObject);
         }
-        if (!other.CompareTag("Player"))
-            Destroy(gameObject);
+        else if (this.CompareTag("EnemyProjectile"))
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerHealth player = other.GetComponent<PlayerHealth>();
+                if (player != null)
+                    player.TakeDamage(3);
+                Destroy(gameObject);
+            }
+            if (!other.CompareTag("Enemy"))
+                Destroy(gameObject);
+        }
+
     }
 }
