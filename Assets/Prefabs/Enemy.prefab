@@ -634,6 +634,8 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 1407597519195156811}
   projectilesContainer: {fileID: 0}
   coolDown: 1
+  turret: {fileID: 8340991149045225990}
+  player: {fileID: 0}
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0

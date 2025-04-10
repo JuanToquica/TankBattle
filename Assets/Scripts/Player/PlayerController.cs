@@ -194,7 +194,6 @@ public class PlayerController : MonoBehaviour
             {
                 turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.eulerAngles.y, turret.rotation.eulerAngles.x);
                 turret.localRotation = Quaternion.Euler(0, turret.localRotation.eulerAngles.y, 0);
-
             }
                 
         }   

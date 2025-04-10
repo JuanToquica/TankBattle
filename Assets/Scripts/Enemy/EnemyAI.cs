@@ -14,6 +14,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float coolDown;
     private float nextShootTime = 0;
 
+    [SerializeField] private Transform turret;
+    [SerializeField] private Transform player;
+    [SerializeField] private float turretRotationSpeed; 
+
     private void Start()
     {
         SetUpTree();
@@ -27,7 +31,7 @@ public class EnemyAI : MonoBehaviour
 
     private void SetUpTree()
     {
-        _root = new Sequence(new List<Node> { new TaskAttack(this) });
+        _root = new Sequence(new List<Node> { new TaskAim(player, turret, turretRotationSpeed) ,new TaskAttack(this) });
     }
 
 

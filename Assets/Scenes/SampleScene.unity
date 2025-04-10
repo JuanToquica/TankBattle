@@ -4666,6 +4666,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2759948816972896705}
+    - target: {fileID: 3206446420122998578, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
+      propertyPath: m_BaseOffset
+      value: 1.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2759948816972896705}
+    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
+      propertyPath: turretRotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
       propertyPath: projectilesContainer
       value: 
