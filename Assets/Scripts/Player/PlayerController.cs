@@ -247,10 +247,10 @@ public class PlayerController : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (contact.thisCollider.GetComponent<BoxCollider>() != null)
+            if (contact.thisCollider.GetComponent<BoxCollider>() != null && (contact.otherCollider.transform.CompareTag("Wall") || (contact.otherCollider.transform.CompareTag("Enemy"))))
             {
                 frontalCollision = rightFrontalCollision || leftFrontalCollision;
-                backCollision = rightBackCollision || leftBackCollision;               
+                backCollision = rightBackCollision || leftBackCollision;
 
                 if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
                 {
@@ -264,15 +264,15 @@ public class PlayerController : MonoBehaviour
                 if (dot > 0.75f)
                 {
                     tankRotationSpeed = 30;
-                    frontalCollisionWithCorner = true;                    
+                    frontalCollisionWithCorner = true;
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                 }                                        
                 if (dot < -0.75f)
                 {
                     tankRotationSpeed = 30;
-                    backCollisionWithCorner = true;                    
-                }
-
-                transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    backCollisionWithCorner = true;
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                }               
             } 
         }
     }

@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour
 {
     private Node _root = null;
     private Animator animator;
+    private NavMeshAgent agent;
 
     [Header ("References")]
     public Transform turret;
@@ -36,9 +37,12 @@ public class EnemyAI : MonoBehaviour
     {
         SetUpTree();
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
     private void Update()               
     {
+        if (_root != null)
+            _root.Evaluate();
         nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);       
 
         if (detectingPlayer)
@@ -58,8 +62,8 @@ public class EnemyAI : MonoBehaviour
         TaskDetectPlayer detectPlayer = new TaskDetectPlayer(this);
         TaskAim aim = new TaskAim(this);
         TaskAttack attack = new TaskAttack(this);
-        TaskChasePlayer chasePlayer = new TaskChasePlayer();
-        TaskPatrol patrol = new TaskPatrol();
+        TaskChasePlayer chasePlayer = new TaskChasePlayer(this);
+        TaskPatrol patrol = new TaskPatrol(this);
         ConditionIsPlayerFar playerFar = new ConditionIsPlayerFar(this);
         ConditionalHasLineOfSight hasLineOfSight = new ConditionalHasLineOfSight(this);
 
@@ -72,8 +76,7 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_root != null)
-            _root.Evaluate();
+        
     }
 
     public bool CanShoot()
