@@ -637,12 +637,12 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
   turretRotationSpeed: 40
   distanceToDetectPlayer: 15
+  stoppingDistance: 20
   maxAimingTolerance: 10
   coolDown: 2
   timeToForgetPlayer: 5
   detectingPlayer: 0
   knowsPlayerPosition: 0
-  timerPlayerNotDetected: 0
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0

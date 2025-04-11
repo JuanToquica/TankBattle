@@ -14,7 +14,6 @@ namespace BehaviorTree
 
         public override NodeState Evaluate()
         {
-            bool anyChildRunning = false;
 
             foreach (var node in children)
             {
@@ -22,9 +21,9 @@ namespace BehaviorTree
                 if (state == NodeState.FAILURE)
                     return NodeState.FAILURE;
                 if (state == NodeState.RUNNING)
-                    anyChildRunning = true;
+                    return NodeState.RUNNING;
             }
-            return anyChildRunning ? NodeState.RUNNING : NodeState.SUCCESS;
+            return NodeState.SUCCESS;
         }
     }
 }

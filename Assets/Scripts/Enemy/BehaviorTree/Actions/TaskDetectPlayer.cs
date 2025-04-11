@@ -21,13 +21,23 @@ public class TaskDetectPlayer : Node
         float angle = Vector3.Angle(turret.forward, directionToPlayer);
         float distanceToPlayer = (player.position - turret.position).magnitude;
 
-        if ((angle <= 120) || distanceToPlayer < enemy.distanceToDetectPlayer)
+        if (distanceToPlayer < enemy.distanceToDetectPlayer)
+        {
             enemy.detectingPlayer = true;
+        }           
+        else if (angle <= 120)
+        {
+            RaycastHit hit;
+            bool ray = Physics.Raycast(turret.position + turret.up * 0.4f, directionToPlayer, out hit, distanceToPlayer); //Detecta obstaculos entre el enemigo y el player
+            if (ray && hit.transform.CompareTag("Player")) enemy.detectingPlayer = true;
+        }
         else
+        {
             enemy.detectingPlayer = false;
+        }
+            
+        if (enemy.detectingPlayer || enemy.knowsPlayerPosition) return NodeState.SUCCESS;      
 
-
-        if (enemy.detectingPlayer || enemy.knowsPlayerPosition) return NodeState.SUCCESS;
-        else return NodeState.FAILURE;
+        return NodeState.FAILURE;
     }
 }

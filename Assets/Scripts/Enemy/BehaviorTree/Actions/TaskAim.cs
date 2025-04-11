@@ -46,7 +46,7 @@ public class TaskAim : Node
         else
         {
             RotateTurret(angle);
-            return NodeState.FAILURE;
+            return NodeState.RUNNING;
         }           
     }
 }

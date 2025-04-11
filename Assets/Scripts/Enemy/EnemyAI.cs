@@ -21,12 +21,12 @@ public class EnemyAI : MonoBehaviour
 
     [Header("AI Parameters")]
     public float distanceToDetectPlayer;
+    public float stoppingDistance;
     public float maxAimingTolerance;
     public float coolDown;
     public float timeToForgetPlayer;
     public bool detectingPlayer;
-    public bool knowsPlayerPosition;
-
+    public bool knowsPlayerPosition;  
 
 
     private float nextShootTimer = 0;
@@ -55,7 +55,19 @@ public class EnemyAI : MonoBehaviour
 
     private void SetUpTree()
     {
-        _root = new Sequence(new List<Node> {new TaskDetectPlayer(this),new ConditionalHasLineOfSight(this) , new TaskAim(this) ,new TaskAttack(this) });
+        TaskDetectPlayer detectPlayer = new TaskDetectPlayer(this);
+        TaskAim aim = new TaskAim(this);
+        TaskAttack attack = new TaskAttack(this);
+        TaskChasePlayer chasePlayer = new TaskChasePlayer();
+        TaskPatrol patrol = new TaskPatrol();
+        ConditionIsPlayerFar playerFar = new ConditionIsPlayerFar(this);
+        ConditionalHasLineOfSight hasLineOfSight = new ConditionalHasLineOfSight(this);
+
+        Sequence attackSequence = new Sequence(new List<Node> {hasLineOfSight, aim, attack });
+        Selector chaseOrNotSelector = new Selector(new List<Node> { playerFar, new Inverter(hasLineOfSight)});
+        Sequence chaseAndAttackSequence = new Sequence(new List<Node> { chaseOrNotSelector, new Parallel(new List<Node> { chasePlayer, attackSequence}) });
+
+        _root = new Selector(new List<Node> {new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { chaseAndAttackSequence, attackSequence}) }), patrol });
     }
 
     private void FixedUpdate()
