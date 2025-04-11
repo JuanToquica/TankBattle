@@ -8,36 +8,65 @@ public class EnemyAI : MonoBehaviour
 {
     private Node _root = null;
     private Animator animator;
-    [SerializeField] private GameObject projectilePrefab;
+
+    [Header ("References")]
+    public Transform turret;
+    public Transform player;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilesContainer;
-    [SerializeField] private float coolDown;
-    private float nextShootTime = 0;
+    [SerializeField] private GameObject projectilePrefab;
 
-    [SerializeField] private Transform turret;
-    [SerializeField] private Transform player;
-    [SerializeField] private float turretRotationSpeed; 
+    [Header ("Movement Parameters")]
+    public float turretRotationSpeed;
+
+    [Header("AI Parameters")]
+    public float distanceToDetectPlayer;
+    public float maxAimingTolerance;
+    public float coolDown;
+    public float timeToForgetPlayer;
+    public bool detectingPlayer;
+    public bool knowsPlayerPosition;
+
+
+
+    private float nextShootTimer = 0;
+    private float timerPlayerNotDetected;
 
     private void Start()
     {
         SetUpTree();
         animator = GetComponent<Animator>();
     }
-    private void Update()
+    private void Update()               
+    {
+        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);       
+
+        if (detectingPlayer)
+        {
+            knowsPlayerPosition = true;
+            if (timerPlayerNotDetected > 0) timerPlayerNotDetected = 0;
+        }           
+        else
+        {
+            timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
+            if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
+        }
+    }
+
+    private void SetUpTree()
+    {
+        _root = new Sequence(new List<Node> {new TaskDetectPlayer(this),new ConditionalHasLineOfSight(this) , new TaskAim(this) ,new TaskAttack(this) });
+    }
+
+    private void FixedUpdate()
     {
         if (_root != null)
             _root.Evaluate();
     }
 
-    private void SetUpTree()
-    {
-        _root = new Sequence(new List<Node> { new TaskAim(player, turret, turretRotationSpeed) ,new TaskAttack(this) });
-    }
-
-
     public bool CanShoot()
     {
-        return Time.time >= nextShootTime;
+        return nextShootTimer == coolDown;
     }
 
     public void Shoot()
@@ -49,7 +78,7 @@ public class EnemyAI : MonoBehaviour
         projectile.transform.SetParent(projectilesContainer);
         projectile.tag = "EnemyProjectile";
 
-        nextShootTime = Time.time + coolDown;
+        nextShootTimer = 0;
     }
 
     public void EndShootAnimation()

@@ -630,12 +630,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3829e26be1cc626419753234c04ee8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
-  projectileSpawnPoint: {fileID: 1407597519195156811}
-  projectilesContainer: {fileID: 0}
-  coolDown: 1
   turret: {fileID: 8340991149045225990}
   player: {fileID: 0}
+  projectileSpawnPoint: {fileID: 1407597519195156811}
+  projectilesContainer: {fileID: 0}
+  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
+  turretRotationSpeed: 40
+  distanceToDetectPlayer: 15
+  maxAimingTolerance: 10
+  coolDown: 2
+  timeToForgetPlayer: 5
+  detectingPlayer: 0
+  knowsPlayerPosition: 0
+  timerPlayerNotDetected: 0
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,7 +678,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.94
+  m_BaseOffset: 1.11
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!1 &1214281630368509701
