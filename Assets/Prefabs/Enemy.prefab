@@ -519,7 +519,6 @@ GameObject:
   - component: {fileID: 2737446934553717269}
   - component: {fileID: 6800237893827168342}
   - component: {fileID: 2225202212155526804}
-  - component: {fileID: 3206446420122998578}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -571,7 +570,7 @@ Rigidbody:
   m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -630,6 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3829e26be1cc626419753234c04ee8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
   turret: {fileID: 8340991149045225990}
   player: {fileID: 0}
   projectileSpawnPoint: {fileID: 1407597519195156811}
@@ -659,28 +659,6 @@ MonoBehaviour:
   healthBar: {fileID: 9055663720333651912}
   healthBarCanvas: {fileID: 8831676335023892345}
   player: {fileID: 0}
---- !u!195 &3206446420122998578
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983249391379277366}
-  m_Enabled: 1
-  m_AgentTypeID: -1372625422
-  m_Radius: 0.9
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 10
-  m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 1.11
-  m_WalkableMask: 1
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &1214281630368509701
 GameObject:
   m_ObjectHideFlags: 0

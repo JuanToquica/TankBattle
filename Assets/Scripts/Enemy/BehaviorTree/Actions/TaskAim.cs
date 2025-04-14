@@ -14,13 +14,10 @@ public class TaskAim : Node
         turret = enemyScript.turret;
         this.enemy = enemyScript;      
     }
-
-
     private void RotateTurret(float angle)
     {
         turret.Rotate(0, enemy.turretRotationSpeed * Mathf.Sign(angle) * Time.fixedDeltaTime, 0);
     }
-
     private float CalculateTolerance()
     {
         float distanceToPlayer = (player.position - turret.position).magnitude;
@@ -30,8 +27,7 @@ public class TaskAim : Node
         float tolerance = -0.28f * distanceToPlayer + enemy.maxAimingTolerance; // -0.28 es la pendiente de la interpolacion
         return tolerance;
     }
-    
-        
+       
     public override NodeState Evaluate()
     {
         Vector3 directionToPlayer = (player.position - turret.position).normalized;

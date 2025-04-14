@@ -9,7 +9,6 @@ public class Inverter : Node
     {
         child = node;
     }
-
     public override NodeState Evaluate()
     {
         NodeState state = child.Evaluate();

@@ -14,7 +14,6 @@ public class TaskDetectPlayer : Node
         turret = enemyScript.turret;
         this.enemy = enemyScript;        
     }
-
     public override NodeState Evaluate()
     {             
         Vector3 directionToPlayer = (player.position - turret.position).normalized;

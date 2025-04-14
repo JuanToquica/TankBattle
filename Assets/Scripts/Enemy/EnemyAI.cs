@@ -8,7 +8,8 @@ public class EnemyAI : MonoBehaviour
 {
     private Node _root = null;
     private Animator animator;
-    private NavMeshAgent agent;
+    public NavMeshPath path;
+    public Transform target;
 
     [Header ("References")]
     public Transform turret;
@@ -37,13 +38,13 @@ public class EnemyAI : MonoBehaviour
     {
         SetUpTree();
         animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();
+        path = new NavMeshPath();
     }
     private void Update()               
     {
         if (_root != null)
             _root.Evaluate();
-        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);       
+        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
 
         if (detectingPlayer)
         {
@@ -55,6 +56,8 @@ public class EnemyAI : MonoBehaviour
             timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
             if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
         }
+
+        NavMesh.CalculatePath(transform.position, target.position, 3, path);
     }
 
     private void SetUpTree()
