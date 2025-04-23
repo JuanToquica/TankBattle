@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
 using UnityEngine.Windows.Speech;
-using static UnityEngine.GraphicsBuffer;
 
 public enum State{accelerating, braking, quiet, constantSpeed }
 
@@ -193,7 +192,7 @@ public class PlayerController : MonoBehaviour
         {
             float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivot.rotation.eulerAngles.y);
             float direction = Mathf.Sign(angleDifference);
-            if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.deltaTime)
+            if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.fixedDeltaTime)
                 turret.Rotate(0, turretRotationSpeed * direction * Time.fixedDeltaTime, 0);
             else
             {
