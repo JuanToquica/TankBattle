@@ -12,13 +12,12 @@ using UnityEngine.Windows.Speech;
 
 public enum State{accelerating, braking, quiet, constantSpeed }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : TankBase
 {
     [HideInInspector] public PlayerInput playerInput;
     public Vector2 input;
     public State _currentState;
     private PlayerAttack playerAttack;
-    private Rigidbody rb;
     private float turretRotationInput;
 
     [Header("References")]
@@ -29,14 +28,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed;
-    [SerializeField] private float turretRotationSpeed;
-    [SerializeField] private float maxTankRotationSpeed;
+    [SerializeField] private float tankRotationSpeed;
+    [SerializeField] private float turretRotationSpeed;  
     [SerializeField] private float accelerationTime;
     [SerializeField] private float angularAccelerationTime;
-    public float movement;
-    public float tankRotation;
     private float movementRef;
     private float tankRotationRef;
+    private bool centeringTurret;
 
     [Header("Suspension")]
     [SerializeField] private float accelerationSuspensionRotation;
@@ -44,17 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float balanceDuration;
     [SerializeField] private float regainDuration;
     private Sequence suspensionRotationSequence;
-    private Tween turretRotationTween;
-
-
-
-    public bool frontalCollision;
-    public bool backCollision;
-    public bool frontalCollisionWithCorner;
-    public bool backCollisionWithCorner;
-    private bool centeringTurret;
-    public float tankRotationSpeed;
-
+    
 
     public State currentState
     {
@@ -83,9 +71,12 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerAttack = GetComponent<PlayerAttack>();
-        tankRotationSpeed = maxTankRotationSpeed;
         playerInput.Player.MoveTurretWithMouse.Disable();
         playerInput.Player.Fire.Disable();
+
+        base.maxTankRotationSpeed = tankRotationSpeed;
+        base.currentRotationSpeed = tankRotationSpeed;
+        base.TankSpeed = speed;
     }
 
     private void Update()
@@ -104,8 +95,8 @@ public class PlayerController : MonoBehaviour
         movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, accelerationTime), -1, 1);
         if (Mathf.Abs(movement) < 0.01) movement = 0;
 
-        tankRotation = Mathf.Clamp(Mathf.SmoothDamp(tankRotation, input.x, ref tankRotationRef, angularAccelerationTime), -1, 1);
-        if (Mathf.Abs(tankRotation) < 0.01) tankRotation = 0;
+        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref tankRotationRef, angularAccelerationTime), -1, 1);
+        if (Mathf.Abs(rotation) < 0.01) rotation = 0;
     }
 
     private void ManipulateMovementInCollision()
@@ -139,14 +130,6 @@ public class PlayerController : MonoBehaviour
             currentState = State.quiet;
     }
 
-    private void ApplyMovement()
-    { 
-        Vector3 targetVelocity = transform.forward * movement * speed;
-        Vector3 velocityChange = targetVelocity - new Vector3(rb.linearVelocity.x, 0 , rb.linearVelocity.z);
-        velocityChange.y = 0;
-            
-        rb.AddForce(velocityChange, ForceMode.VelocityChange);
-    }   
 
     private void ApplySuspension()
     {
@@ -176,7 +159,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void RotateTank() => transform.Rotate(0, tankRotationSpeed * tankRotation * Time.fixedDeltaTime, 0);
+    private void RotateTank() => transform.Rotate(0, currentRotationSpeed * rotation * Time.fixedDeltaTime, 0);
 
     private void RotateTurret()
     {        
@@ -198,8 +181,7 @@ public class PlayerController : MonoBehaviour
             {
                 turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.eulerAngles.y, turret.rotation.eulerAngles.x);
                 turret.localRotation = Quaternion.Euler(0, turret.localRotation.eulerAngles.y, 0);
-            }
-                
+            }             
         }   
     }
 
@@ -239,54 +221,6 @@ public class PlayerController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;           
         }
-    }
-
-
-    private void OnCollisionStay(Collision collision)
-    {
-        bool rightFrontalCollision = Physics.Raycast(transform.position + transform.right * 0.3f, transform.forward, 2.3f);
-        bool leftFrontalCollision = Physics.Raycast(transform.position + transform.right * -0.3f, transform.forward, 2.3f);
-        bool rightBackCollision = Physics.Raycast(transform.position + transform.right * 0.3f, -transform.forward, 1.8f);
-        bool leftBackCollision = Physics.Raycast(transform.position + transform.right * -0.3f, -transform.forward, 1.8f);
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            if (contact.thisCollider.GetComponent<BoxCollider>() != null && (!contact.otherCollider.transform.CompareTag("Floor")))
-            {
-                frontalCollision = rightFrontalCollision || leftFrontalCollision;
-                backCollision = rightBackCollision || leftBackCollision;
-
-                if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
-                {
-                    tankRotationSpeed = 0;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-                    return;
-                }
-
-                Vector3 contactDirection = contact.point - transform.position;
-                float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
-                if (dot > 0.75f)
-                {
-                    tankRotationSpeed = 30;
-                    frontalCollisionWithCorner = true;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-                }                                        
-                if (dot < -0.75f)
-                {
-                    tankRotationSpeed = 30;
-                    backCollisionWithCorner = true;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-                }               
-            } 
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        frontalCollision = false;
-        frontalCollisionWithCorner = false;
-        backCollision = false;
-        backCollisionWithCorner = false;
-        tankRotationSpeed = maxTankRotationSpeed;
     }
 
     private void DrawRays()

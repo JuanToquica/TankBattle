@@ -6,13 +6,13 @@ using UnityEngine.Windows;
 using static UnityEngine.GridBrushBase;
 
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : TankBase
 {
     private Node _root = null;
     private Animator animator;
-    private Rigidbody rb;
     public NavMeshPath path;
     public Transform[] waypoints;
+    [SerializeField] private LineRenderer lineRenderer;
 
     [Header ("References")]
     public Transform turret;
@@ -21,20 +21,18 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Transform projectilesContainer;
     [SerializeField] private GameObject projectilePrefab;
 
-    [Header ("Movement Parameters")]
-    public float turretRotationSpeed;
-    public float tankRotationSpeed;
-    public float speed;
-    public float accelerationTime;
-    public int movementDirection;
-    private float movement;
+    [Header ("Movement")]
+    [SerializeField] public float speed;
+    [SerializeField] public float tankRotationSpeed;
+    [SerializeField] public float turretRotationSpeed;
+    [SerializeField] private float accelerationTime;
+    [SerializeField] private float angularAccelerationTime;
     private float movementRef;
-    private float rotationDirection;
-    private float rotation;
     private float rotationRef;
-    public float angularAccelerationTime;
+    public int movementDirection;   
+    public float rotationDirection;   
     private Vector3 directionToTarget;
-    private float adjustedAngleToTarget;
+    public float adjustedAngleToTarget;
 
     [Header("AI Parameters")]
     public float distanceToDetectPlayer;
@@ -58,6 +56,8 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         path = new NavMeshPath();
+
+        base.TankSpeed = speed;
     }
 
     private void SetUpTree()
@@ -77,25 +77,20 @@ public class EnemyAI : MonoBehaviour
         _root = new Selector(new List<Node> { new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { chaseAndAttackSequence, attackSequence }) }), patrol });
     }
 
-
     private void Update()               
     {
         if (_root != null)
             _root.Evaluate();
-        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
-
-        if (detectingPlayer)
-        {
-            knowsPlayerPosition = true;
-            if (timerPlayerNotDetected > 0) timerPlayerNotDetected = 0;
-        }           
-        else
-        {
-            timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
-            if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
-        }
+        
+        SetKnowsPlayerPosition();
         DrawPath(path);
+        InterpolateMovementAndRotation();
 
+        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
+    }
+
+    private void InterpolateMovementAndRotation()
+    {
         movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, accelerationTime), -1, 1);
         if (Mathf.Abs(movement) < 0.01) movement = 0;
 
@@ -103,11 +98,25 @@ public class EnemyAI : MonoBehaviour
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
     }
 
+    private void SetKnowsPlayerPosition()
+    {
+        if (detectingPlayer)
+        {
+            knowsPlayerPosition = true;
+            if (timerPlayerNotDetected > 0) timerPlayerNotDetected = 0;
+        }
+        else
+        {
+            timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
+            if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (followingPath)
             CalculateDirectionOfMovementAndRotation();
-        Move();
+        ApplyMovement();
         RotateTank();
     }
 
@@ -117,42 +126,30 @@ public class EnemyAI : MonoBehaviour
         NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, path);
     }
 
-    
-    public bool CanShoot()
-    {
-        return nextShootTimer == coolDown;
-    }
-
     public void CalculateDirectionOfMovementAndRotation()
     {
         directionToTarget = (path.corners[currentCornerInThePath] - transform.position).normalized;
         directionToTarget.y = 0f;
-        float angle = Vector3.SignedAngle(transform.forward, directionToTarget, Vector3.up);
+
+        Vector3 flatForward = transform.forward;
+        flatForward.y = 0; //Para no tener en cuenta las pendientes en el calculo del angulo
+        float angle = Vector3.SignedAngle(flatForward, directionToTarget, Vector3.up);
 
         movementDirection = Mathf.Abs(angle) > 90f ? -1 : 1;
 
-        adjustedAngleToTarget = (movementDirection == -1) ? Vector3.SignedAngle(-transform.forward, directionToTarget, Vector3.up) : angle;
+        adjustedAngleToTarget = (movementDirection == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angle;
         rotationDirection = Mathf.Sign(adjustedAngleToTarget);
-    }
-
-    private void Move()
-    {
-        Vector3 targetVelocity = transform.forward *  movement * speed;
-        Vector3 velocityChange = targetVelocity - new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        velocityChange.y = 0;
-
-        rb.AddForce(velocityChange, ForceMode.VelocityChange);
     }
 
     private void RotateTank()
     {       
         if (Mathf.Abs(adjustedAngleToTarget) > tankRotationSpeed * Time.fixedDeltaTime)
             transform.Rotate(0, rotation * tankRotationSpeed * Time.fixedDeltaTime, 0);
-        else
-        {
-            Vector3 lookDir = (movementDirection == 1) ? directionToTarget : -directionToTarget;
-            transform.rotation = Quaternion.LookRotation(lookDir);
-        }
+    }
+
+    public bool CanShoot()
+    {
+        return nextShootTimer == coolDown;
     }
 
     public void Shoot()
@@ -169,8 +166,6 @@ public class EnemyAI : MonoBehaviour
 
     public void EndShootAnimation() => animator.SetBool("Fire", false);
     
-
-    [SerializeField] private LineRenderer lineRenderer;
     public void DrawPath(NavMeshPath path)
     {
         if (path == null || path.corners.Length < 2) return;
