@@ -32,8 +32,7 @@ public class TaskPatrol : Node
                         enemy.currentCornerInThePath = 1;
                     else
                         enemy.currentCornerInThePath++;
-                }
-                
+                }    
             }
         }
         else

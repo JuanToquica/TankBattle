@@ -1,62 +1,21 @@
 using DG.Tweening;
-using NUnit.Framework.Constraints;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.Windows;
-using UnityEngine.Windows.Speech;
-
-public enum State{accelerating, braking, quiet, constantSpeed }
 
 public class PlayerController : TankBase
 {
-    [HideInInspector] public PlayerInput playerInput;
-    public Vector2 input;
-    public State _currentState;
+    public PlayerInput playerInput;
+    private WheelAnimations wheelAnimations;
     private PlayerAttack playerAttack;
+    private Vector2 input;
     private float turretRotationInput;
 
-    [Header("References")]
-    [SerializeField] private Transform turret;
-    [SerializeField] private Transform superStructure;
+    [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private CameraController cameraController;
 
-    [Header("Movement")]
-    [SerializeField] private float speed;
-    [SerializeField] private float tankRotationSpeed;
-    [SerializeField] private float turretRotationSpeed;  
-    [SerializeField] private float accelerationTime;
-    [SerializeField] private float angularAccelerationTime;
-    private float movementRef;
-    private float tankRotationRef;
-    private bool centeringTurret;
-
-    [Header("Suspension")]
-    [SerializeField] private float accelerationSuspensionRotation;
-    [SerializeField] private float brakingSuspensionRotation;
-    [SerializeField] private float balanceDuration;
-    [SerializeField] private float regainDuration;
-    private Sequence suspensionRotationSequence;
     
-
-    public State currentState
-    {
-        get => _currentState;
-        set
-        {
-            if (_currentState != value)
-            {
-                _currentState = value;
-                if (_currentState == State.braking || _currentState == State.accelerating)
-                    ApplySuspension();
-            }
-        }
-    }
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -71,20 +30,28 @@ public class PlayerController : TankBase
     {
         rb = GetComponent<Rigidbody>();
         playerAttack = GetComponent<PlayerAttack>();
+        wheelAnimations = GetComponent<WheelAnimations>();
         playerInput.Player.MoveTurretWithMouse.Disable();
         playerInput.Player.Fire.Disable();
 
-        base.maxTankRotationSpeed = tankRotationSpeed;
-        base.currentRotationSpeed = tankRotationSpeed;
-        base.TankSpeed = speed;
+        currentRotationSpeed = tankRotationSpeed;      
     }
 
     private void Update()
     {
         ReadAndInterpolateInputs();       
-        ManipulateMovementInCollision();
+        ManipulateMovementInCollision(input.y);
         SetState();
         DrawRays();
+        wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
+    }
+    private void FixedUpdate()
+    {
+        ApplyMovement();
+        RotateTurret();
+        RotateTank();
+        if (centeringTurret)
+            CenterTurret();
     }
 
     private void ReadAndInterpolateInputs()
@@ -92,76 +59,41 @@ public class PlayerController : TankBase
         input = playerInput.Player.Move.ReadValue<Vector2>();
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
-        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, accelerationTime), -1, 1);
-        if (Mathf.Abs(movement) < 0.01) movement = 0;
-
         rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref tankRotationRef, angularAccelerationTime), -1, 1);
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
-    }
 
-    private void ManipulateMovementInCollision()
-    {
-        if (movement > 0 && input.y < 0 && (frontalCollision || frontalCollisionWithCorner))
+        SetMomentum(input.y);
+
+        float smoothTime = input.y != 0 ? accelerationTime : brakingTime;
+        if (input.y != 0 && Mathf.Sign(input.y) != Mathf.Sign(movement) && hasMomentum)
+            smoothTime = 1;
+        
+        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, smoothTime), -1f, 1f);
+        brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
+        if (Mathf.Abs(movement) < 0.01f) 
             movement = 0;
-
-        if (movement < 0 && input.y > 0 && (backCollision || backCollisionWithCorner))
-            movement = 0;     
+        if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement)) 
+            movement = 1 * input.y;
     }
 
-    private void FixedUpdate()
+    protected override void SetState()
     {
-        ApplyMovement();
-        RotateTurret();
-        RotateTank();
-    
-        if (centeringTurret)
-            CenterTurret();
-    }
+        bool hasSameDirection = Mathf.Sign(input.y) == Mathf.Sign(movement);
+        bool hasVelocity = rb.linearVelocity.magnitude > 0.05f;
+        float absMovement = Mathf.Abs(movement);
 
-    private void SetState()
-    {
-        if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.9f && input.y != 0)
+        if (absMovement > 0.01f && absMovement < 0.9f && input.y != 0 && hasSameDirection)
             currentState = State.accelerating;
-        else if (Mathf.Abs(movement) > 0.01f && Mathf.Abs(movement) < 0.99f && input.y == 0 && rb.linearVelocity.magnitude > 0.05f)
+        else if (absMovement > 0.01f && absMovement < 0.99f && hasVelocity && (input.y == 0 || !hasSameDirection))
             currentState = State.braking;
-        else if (Mathf.Abs(movement) > 0.9)
+        else if (absMovement > 0.9)
             currentState = State.constantSpeed;
         else
             currentState = State.quiet;
     }
 
-
-    private void ApplySuspension()
-    {
-        if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
-            suspensionRotationSequence.Kill();
-
-        suspensionRotationSequence = DOTween.Sequence();     
-
-        if (currentState == State.accelerating)
-        {
-            if (movement > 0 && frontalCollision || movement < 0 && backCollision)
-                return;
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(accelerationSuspensionRotation * input.y * -1, 0, 0),
-            accelerationTime).SetEase(Mathf.Abs(movement) > 0.2f ? Ease.OutCubic : Ease.InOutQuad));
-
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
-        }
-
-        if (currentState == State.braking)
-        {
-            float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement);
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(brakingSuspensionRotation * Mathf.Sign(movement) * (percentage - 0.2f), 0, 0), 
-                accelerationTime + 0.1f).SetEase(Ease.OutQuad));
-
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).SetEase(Ease.OutQuad));
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
-        }
-    }
-
-    private void RotateTank() => transform.Rotate(0, currentRotationSpeed * rotation * Time.fixedDeltaTime, 0);
-
-    private void RotateTurret()
+    protected override void RotateTank() => transform.Rotate(0, currentRotationSpeed * rotation * Time.fixedDeltaTime, 0);
+    protected override void RotateTurret()
     {        
         if (playerInput.Player.MoveTurretWithKeys.enabled)  
         {
@@ -185,15 +117,6 @@ public class PlayerController : TankBase
         }   
     }
 
-    private void CenterTurret()
-    {
-        turret.transform.localRotation = Quaternion.RotateTowards(turret.transform.localRotation, Quaternion.identity, turretRotationSpeed * Time.deltaTime);
-        if (Quaternion.Angle(turret.transform.localRotation, Quaternion.identity) < 0.1f)
-        {
-            turret.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            centeringTurret = false;
-        }
-    }
     private void ActivateTurretCenteringAndChangeTurretControlToKeys()
     {
         centeringTurret = true;
@@ -233,7 +156,6 @@ public class PlayerController : TankBase
 
     private void OnEnable() => playerInput.Enable();
     private void OnDisable() => playerInput.Disable();
-
     void OnDrawGizmos()
     {
         if (rb != null)

@@ -19,6 +19,7 @@ public class ConditionIsPlayerFar : Node
         float distanceToPlayer = (player.position - turret.position).magnitude;
         if (distanceToPlayer > enemy.stoppingDistance)
             return NodeState.SUCCESS;
+        enemy.followingPath = false;
         return NodeState.FAILURE;
     }
 }

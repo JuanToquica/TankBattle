@@ -10,6 +10,7 @@ public class EnemyAI : TankBase
 {
     private Node _root = null;
     private Animator animator;
+    private WheelAnimations wheelAnimations;
     public NavMeshPath path;
     public Transform[] waypoints;
     [SerializeField] private LineRenderer lineRenderer;
@@ -22,10 +23,9 @@ public class EnemyAI : TankBase
     [SerializeField] private GameObject projectilePrefab;
 
     [Header ("Movement")]
-    [SerializeField] public float speed;
-    [SerializeField] public float tankRotationSpeed;
     [SerializeField] public float turretRotationSpeed;
     [SerializeField] private float accelerationTime;
+    [SerializeField] private float brakingTime;
     [SerializeField] private float angularAccelerationTime;
     private float movementRef;
     private float rotationRef;
@@ -55,9 +55,9 @@ public class EnemyAI : TankBase
         SetUpTree();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        wheelAnimations = GetComponent<WheelAnimations>();
         path = new NavMeshPath();
 
-        base.TankSpeed = speed;
     }
 
     private void SetUpTree()
@@ -84,14 +84,26 @@ public class EnemyAI : TankBase
         
         SetKnowsPlayerPosition();
         DrawPath(path);
+        
+        if (followingPath)
+            CalculateDirectionOfMovementAndRotation();
+        else
+        {
+            movementDirection = 0;
+            rotationDirection = 0;
+        }
         InterpolateMovementAndRotation();
 
         nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
+        wheelAnimations.SetParameters(movement, rotation, movementDirection, rotationDirection);
     }
 
     private void InterpolateMovementAndRotation()
     {
-        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, accelerationTime), -1, 1);
+        if (movementDirection != 0)
+            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, accelerationTime), -1, 1);
+        else
+            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, brakingTime), -1, 1);
         if (Mathf.Abs(movement) < 0.01) movement = 0;
 
         rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, rotationDirection, ref rotationRef, angularAccelerationTime), -1, 1);
@@ -113,13 +125,15 @@ public class EnemyAI : TankBase
     }
 
     private void FixedUpdate()
-    {
-        if (followingPath)
-            CalculateDirectionOfMovementAndRotation();
+    {       
         ApplyMovement();
         RotateTank();
     }
 
+    protected override void SetState()
+    {
+        throw new System.NotImplementedException();
+    }
     public void CalculatePath()
     {
         currentCornerInThePath = 1;
@@ -141,10 +155,17 @@ public class EnemyAI : TankBase
         rotationDirection = Mathf.Sign(adjustedAngleToTarget);
     }
 
-    private void RotateTank()
+    protected override void RotateTank()
     {       
         if (Mathf.Abs(adjustedAngleToTarget) > tankRotationSpeed * Time.fixedDeltaTime)
             transform.Rotate(0, rotation * tankRotationSpeed * Time.fixedDeltaTime, 0);
+    }
+
+    protected override void RotateTurret()
+    {
+        Vector3 directionToPlayer = (player.position - turret.position).normalized;
+        float angle = Vector3.SignedAngle(turret.forward, directionToPlayer, Vector3.up);
+        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angle) * Time.fixedDeltaTime, 0);
     }
 
     public bool CanShoot()

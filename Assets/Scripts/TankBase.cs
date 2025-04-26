@@ -1,44 +1,124 @@
 using DG.Tweening;
-using NUnit.Framework.Constraints;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnityEngine.Windows;
-using UnityEngine.Windows.Speech;
 
-public class TankBase : MonoBehaviour
+public enum State { accelerating, braking, quiet, constantSpeed }
+
+public abstract class TankBase : MonoBehaviour
 {
-    protected float TankSpeed;
+    protected Rigidbody rb;
+    protected State _currentState;    
+
+    [Header("References")]
+    [SerializeField] protected Transform turret;
+    [SerializeField] protected Transform superStructure;
+
+    [Header("Movement")]
+    [SerializeField] protected float speed;
+    [SerializeField] protected float tankRotationSpeed;
+    [SerializeField] protected float turretRotationSpeed;
+    [SerializeField] protected float accelerationTime;
+    [SerializeField] protected float angularAccelerationTime;
+    protected float brakingTime;
     protected float movement;
     protected float rotation;
-
-
-
-    protected Rigidbody rb;
+    protected float movementRef;
+    protected float tankRotationRef;
+    protected float currentRotationSpeed;
+    protected bool centeringTurret;
+    public bool hasMomentum;
     protected bool frontalCollision;
     protected bool backCollision;
     protected bool frontalCollisionWithCorner;
     protected bool backCollisionWithCorner;
 
-    protected float currentRotationSpeed;
-    protected float maxTankRotationSpeed;
+    [Header("Suspension")]
+    [SerializeField] protected float suspensionRotation;
+    [SerializeField] protected float balanceDuration;
+    [SerializeField] protected float regainDuration;
+    protected Sequence suspensionRotationSequence;
 
+    public State currentState
+    {
+        get => _currentState;
+        set
+        {
+            if (_currentState != value)
+            {
+                _currentState = value;
+                if (_currentState == State.braking || _currentState == State.accelerating)
+                    ApplySuspension();
+            }
+        }
+    }
 
+    protected abstract void SetState();
+    protected abstract void RotateTank();
+    protected abstract void RotateTurret();
 
+    protected void SetMomentum(float directionOrInput)
+    {
+        if (Mathf.Abs(movement) > 0.7f && directionOrInput != 0)
+            hasMomentum = true;
+        else if (Mathf.Abs(movement) < 0.1f || directionOrInput == 0)
+            hasMomentum = false;
+    }
+
+    protected void ManipulateMovementInCollision(float directionOrInput)
+    {
+        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner))
+            movement = 0;
+
+        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner))
+            movement = 0;
+    }
 
     protected void ApplyMovement()
     {
-        Vector3 targetVelocity = transform.forward * movement * TankSpeed;
+        Vector3 targetVelocity = transform.forward * movement * speed;
         Vector3 velocityChange = targetVelocity - new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         velocityChange.y = 0;
 
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
     }
+    protected void CenterTurret()
+    {
+        turret.transform.localRotation = Quaternion.RotateTowards(turret.transform.localRotation, Quaternion.identity, turretRotationSpeed * Time.deltaTime);
+        if (Quaternion.Angle(turret.transform.localRotation, Quaternion.identity) < 0.1f)
+        {
+            turret.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            centeringTurret = false;
+        }
+    }
 
+    protected void ApplySuspension()
+    {
+        if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
+            suspensionRotationSequence.Kill();
+
+        suspensionRotationSequence = DOTween.Sequence();
+
+        if (currentState == State.accelerating)
+        {
+            if (movement > 0 && frontalCollision || movement < 0 && backCollision)
+                return;
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * -1, 0, 0),
+            accelerationTime).SetEase(Ease.InOutQuad));
+
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
+        }
+
+        if (currentState == State.braking)
+        {
+            float percentage = MathF.Abs(movement) > 0.9 ? 1 : MathF.Abs(movement) - 0.3f;
+
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * percentage, 0, 0),
+                accelerationTime).SetEase(Ease.OutQuad));
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).SetEase(Ease.InOutSine));
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
+        }
+    }
 
     protected void OnCollisionStay(Collision collision)
     {
@@ -85,7 +165,7 @@ public class TankBase : MonoBehaviour
         frontalCollisionWithCorner = false;
         backCollision = false;
         backCollisionWithCorner = false;
-        currentRotationSpeed = maxTankRotationSpeed;
+        currentRotationSpeed = tankRotationSpeed;
     }
 
     void OnDrawGizmos()
