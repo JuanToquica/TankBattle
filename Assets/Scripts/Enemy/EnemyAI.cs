@@ -13,51 +13,45 @@ public class EnemyAI : TankBase
     private WheelAnimations wheelAnimations;
     public NavMeshPath path;
     public Transform[] waypoints;
-    [SerializeField] private LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
 
-    [Header ("References")]
-    public Transform turret;
-    public Transform player;
+    [Header("Enemy")]
+    [SerializeField] private Transform player;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilesContainer;
     [SerializeField] private GameObject projectilePrefab;
-
-    [Header ("Movement")]
-    [SerializeField] public float turretRotationSpeed;
-    [SerializeField] private float accelerationTime;
-    [SerializeField] private float brakingTime;
-    [SerializeField] private float angularAccelerationTime;
-    private float movementRef;
-    private float rotationRef;
-    public int movementDirection;   
-    public float rotationDirection;   
+    private float desiredMovement;
+    private float desiredRotation;
+    private float adjustedAngleToTarget;
     private Vector3 directionToTarget;
-    public float adjustedAngleToTarget;
+    
 
     [Header("AI Parameters")]
+    [SerializeField] private float coolDown;
+    [SerializeField] private float timeToForgetPlayer;
     public float distanceToDetectPlayer;
     public float stoppingDistance;
     public float maxAimingTolerance;
-    public float coolDown;
-    public float timeToForgetPlayer;
     public bool detectingPlayer;
     public bool knowsPlayerPosition;
     public int enemyArea;
-    public int currentWaypoint = 0;
-    public int currentCornerInThePath = 1;
+    public int currentWaypoint;
+    public int currentCornerInThePath;
     public bool followingPath;
-
     private float nextShootTimer = 0;
     private float timerPlayerNotDetected;
+    public Vector3 directionToPlayer;
+    public float distanceToPlayer;
+    public float angleToPlayer;
 
     private void Start()
     {
-        SetUpTree();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         wheelAnimations = GetComponent<WheelAnimations>();
         path = new NavMeshPath();
-
+        SetUpTree();
+        currentRotationSpeed = tankRotationSpeed;
     }
 
     private void SetUpTree()
@@ -79,35 +73,53 @@ public class EnemyAI : TankBase
 
     private void Update()               
     {
+        UpdatePlayerInfo();
         if (_root != null)
             _root.Evaluate();
-        
+
         SetKnowsPlayerPosition();
         DrawPath(path);
         
         if (followingPath)
-            CalculateDirectionOfMovementAndRotation();
+            CalculateDesiredMovementAndRotation();
         else
         {
-            movementDirection = 0;
-            rotationDirection = 0;
+            desiredMovement = 0;
+            desiredRotation = 0;
         }
         InterpolateMovementAndRotation();
 
         nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
-        wheelAnimations.SetParameters(movement, rotation, movementDirection, rotationDirection);
+        wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
+    }
+    private void FixedUpdate()
+    {
+        ApplyMovement();
+        RotateTank();
     }
 
+    private void UpdatePlayerInfo()
+    {
+        directionToPlayer = (player.position - turret.position).normalized;
+        distanceToPlayer = (player.position - turret.position).magnitude;
+        angleToPlayer = Vector3.SignedAngle(turret.forward, directionToPlayer, Vector3.up);
+    }
     private void InterpolateMovementAndRotation()
     {
-        if (movementDirection != 0)
-            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, accelerationTime), -1, 1);
-        else
-            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, movementDirection, ref movementRef, brakingTime), -1, 1);
-        if (Mathf.Abs(movement) < 0.01) movement = 0;
-
-        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, rotationDirection, ref rotationRef, angularAccelerationTime), -1, 1);
+        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, desiredRotation, ref rotationRef, angularAccelerationTime), -1, 1);
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
+
+        SetMomentum(desiredMovement);
+        float smoothTime = desiredMovement != 0 ? accelerationTime : brakingTime;
+        if (desiredMovement != 0 && Mathf.Sign(desiredMovement) != Mathf.Sign(movement) && hasMomentum)
+            smoothTime = 1;
+
+        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, desiredMovement, ref movementRef, smoothTime), -1, 1);
+        brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
+        if (Mathf.Abs(movement) < 0.01f)
+            movement = 0;
+        if (Mathf.Abs(movement) > 0.99f && desiredMovement != 0 && Mathf.Sign(desiredMovement) == Mathf.Sign(movement))
+            movement = 1 * desiredMovement;
     }
 
     private void SetKnowsPlayerPosition()
@@ -124,12 +136,6 @@ public class EnemyAI : TankBase
         }
     }
 
-    private void FixedUpdate()
-    {       
-        ApplyMovement();
-        RotateTank();
-    }
-
     protected override void SetState()
     {
         throw new System.NotImplementedException();
@@ -140,7 +146,7 @@ public class EnemyAI : TankBase
         NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, path);
     }
 
-    public void CalculateDirectionOfMovementAndRotation()
+    public void CalculateDesiredMovementAndRotation()
     {
         directionToTarget = (path.corners[currentCornerInThePath] - transform.position).normalized;
         directionToTarget.y = 0f;
@@ -149,23 +155,21 @@ public class EnemyAI : TankBase
         flatForward.y = 0; //Para no tener en cuenta las pendientes en el calculo del angulo
         float angle = Vector3.SignedAngle(flatForward, directionToTarget, Vector3.up);
 
-        movementDirection = Mathf.Abs(angle) > 90f ? -1 : 1;
+        desiredMovement = Mathf.Abs(angle) > 90f ? -1 : 1;
 
-        adjustedAngleToTarget = (movementDirection == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angle;
-        rotationDirection = Mathf.Sign(adjustedAngleToTarget);
+        adjustedAngleToTarget = (desiredMovement == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angle;
+        desiredRotation = Mathf.Sign(adjustedAngleToTarget);
     }
 
     protected override void RotateTank()
     {       
-        if (Mathf.Abs(adjustedAngleToTarget) > tankRotationSpeed * Time.fixedDeltaTime)
-            transform.Rotate(0, rotation * tankRotationSpeed * Time.fixedDeltaTime, 0);
+        if (Mathf.Abs(adjustedAngleToTarget) > currentRotationSpeed * Time.fixedDeltaTime)
+            base.RotateTank();
     }
 
-    protected override void RotateTurret()
+    public override void RotateTurret()
     {
-        Vector3 directionToPlayer = (player.position - turret.position).normalized;
-        float angle = Vector3.SignedAngle(turret.forward, directionToPlayer, Vector3.up);
-        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angle) * Time.fixedDeltaTime, 0);
+        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angleToPlayer) * Time.fixedDeltaTime, 0);
     }
 
     public bool CanShoot()

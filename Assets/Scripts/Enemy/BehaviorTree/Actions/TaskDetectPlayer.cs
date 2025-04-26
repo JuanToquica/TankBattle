@@ -1,33 +1,24 @@
 using UnityEngine;
 using BehaviorTree;
 
-
 public class TaskDetectPlayer : Node
 {
     private EnemyAI enemy;
-    private Transform player;
-    private Transform turret;
     
     public TaskDetectPlayer(EnemyAI enemyScript)
     {
-        player = enemyScript.player;
-        turret = enemyScript.turret;
         this.enemy = enemyScript;        
     }
     public override NodeState Evaluate()
     {             
-        Vector3 directionToPlayer = (player.position - turret.position).normalized;
-        float angle = Vector3.Angle(turret.forward, directionToPlayer);
-        float distanceToPlayer = (player.position - turret.position).magnitude;
-
-        if (distanceToPlayer < enemy.distanceToDetectPlayer)
+        if (enemy.distanceToPlayer < enemy.distanceToDetectPlayer)
         {
             enemy.detectingPlayer = true;
         }           
-        else if (angle <= 120)
+        else if (Mathf.Abs(enemy.angleToPlayer) <= 120)
         {
             RaycastHit hit;
-            bool ray = Physics.Raycast(turret.position + turret.up * 0.4f, directionToPlayer, out hit, distanceToPlayer); //Detecta obstaculos entre el enemigo y el player
+            bool ray = Physics.Raycast(enemy.turret.position + enemy.turret.up * 0.4f, enemy.directionToPlayer, out hit, enemy.distanceToPlayer); //Detecta obstaculos entre el enemigo y el player
             if (ray && hit.transform.CompareTag("Player")) enemy.detectingPlayer = true;
         }
         else

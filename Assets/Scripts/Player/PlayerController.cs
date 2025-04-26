@@ -59,7 +59,7 @@ public class PlayerController : TankBase
         input = playerInput.Player.Move.ReadValue<Vector2>();
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
-        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref tankRotationRef, angularAccelerationTime), -1, 1);
+        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, angularAccelerationTime), -1, 1);
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
 
         SetMomentum(input.y);
@@ -92,8 +92,7 @@ public class PlayerController : TankBase
             currentState = State.quiet;
     }
 
-    protected override void RotateTank() => transform.Rotate(0, currentRotationSpeed * rotation * Time.fixedDeltaTime, 0);
-    protected override void RotateTurret()
+    public override void RotateTurret()
     {        
         if (playerInput.Player.MoveTurretWithKeys.enabled)  
         {

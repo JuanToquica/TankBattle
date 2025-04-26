@@ -11,8 +11,9 @@ public abstract class TankBase : MonoBehaviour
     protected State _currentState;    
 
     [Header("References")]
-    [SerializeField] protected Transform turret;
     [SerializeField] protected Transform superStructure;
+    public Transform turret;
+    
 
     [Header("Movement")]
     [SerializeField] protected float speed;
@@ -24,7 +25,7 @@ public abstract class TankBase : MonoBehaviour
     protected float movement;
     protected float rotation;
     protected float movementRef;
-    protected float tankRotationRef;
+    protected float rotationRef;
     protected float currentRotationSpeed;
     protected bool centeringTurret;
     public bool hasMomentum;
@@ -54,8 +55,11 @@ public abstract class TankBase : MonoBehaviour
     }
 
     protected abstract void SetState();
-    protected abstract void RotateTank();
-    protected abstract void RotateTurret();
+    public abstract void RotateTurret();
+    protected virtual void RotateTank()
+    {
+        transform.Rotate(0, rotation * currentRotationSpeed * Time.fixedDeltaTime, 0);
+    }
 
     protected void SetMomentum(float directionOrInput)
     {
