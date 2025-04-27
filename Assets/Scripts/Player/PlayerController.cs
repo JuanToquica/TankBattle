@@ -39,7 +39,7 @@ public class PlayerController : TankBase
 
     private void Update()
     {
-        ReadAndInterpolateInputs();       
+        ReadAndInterpolateInputs();
         ManipulateMovementInCollision(input.y);
         SetState(input.y);
         DrawRays();

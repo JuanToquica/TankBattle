@@ -86,10 +86,11 @@ public abstract class TankBase : MonoBehaviour
 
     protected void ManipulateMovementInCollision(float directionOrInput)
     {
-        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner))
+        bool hasVelocity = rb.linearVelocity.magnitude > 0.1f;
+        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner) && !hasVelocity)
             movement = 0;
 
-        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner))
+        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner) && !hasVelocity)
             movement = 0;
     }
 
