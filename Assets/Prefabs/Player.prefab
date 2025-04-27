@@ -2167,8 +2167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ff822acb94c114e823c9d095d70de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turret: {fileID: 4043235599059741379}
   superStructure: {fileID: 341341103871839860}
+  turret: {fileID: 4043235599059741379}
   speed: 9
   tankRotationSpeed: 90
   turretRotationSpeed: 50

@@ -6912,11 +6912,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657507044}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1685221262 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8645936080746785867, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-  m_PrefabInstance: {fileID: 6785896730022183046}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1693977587
 GameObject:
   m_ObjectHideFlags: 0
@@ -8641,10 +8636,6 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 1631739016}
-    - target: {fileID: 5531699683450801308, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6541809429596402474, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: m_Name
       value: Player
@@ -8755,29 +8746,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2759948816972896705}
     - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: speed
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 2759948816972896705}
     - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: superStructure
-      value: 
-      objectReference: {fileID: 1685221262}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: tankRotationSpeed
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
       propertyPath: projectilesContainer
       value: 
       objectReference: {fileID: 1740253312}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: currentCornerInThePath
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
       propertyPath: 'waypoints.Array.data[0]'
       value: 
@@ -8794,10 +8769,6 @@ PrefabInstance:
       propertyPath: 'waypoints.Array.data[3]'
       value: 
       objectReference: {fileID: 1385328073}
-    - target: {fileID: 8145954925125271705, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

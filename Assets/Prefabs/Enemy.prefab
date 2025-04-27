@@ -739,7 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3829e26be1cc626419753234c04ee8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  superStructure: {fileID: 0}
+  superStructure: {fileID: 8645936080746785867}
   turret: {fileID: 8340991149045225990}
   speed: 9
   tankRotationSpeed: 90
@@ -769,7 +769,7 @@ MonoBehaviour:
   knowsPlayerPosition: 0
   enemyArea: 6
   currentWaypoint: 0
-  currentCornerInThePath: 0
+  currentCornerInThePath: 1
   followingPath: 0
   directionToPlayer: {x: 0, y: 0, z: 0}
   distanceToPlayer: 0

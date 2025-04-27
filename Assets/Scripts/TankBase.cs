@@ -8,7 +8,7 @@ public enum State { accelerating, braking, quiet, constantSpeed }
 public abstract class TankBase : MonoBehaviour
 {
     protected Rigidbody rb;
-    protected State _currentState;    
+    public State _currentState;    
 
     [Header("References")]
     [SerializeField] protected Transform superStructure;
@@ -54,7 +54,22 @@ public abstract class TankBase : MonoBehaviour
         }
     }
 
-    protected abstract void SetState();
+    protected void SetState(float directionOrInput)
+    {
+        bool hasSameDirection = Mathf.Sign(directionOrInput) == Mathf.Sign(movement);
+        bool hasVelocity = rb.linearVelocity.magnitude > 0.05f;
+        float absMovement = Mathf.Abs(movement);
+
+        if (absMovement > 0.01f && absMovement < 0.9f && directionOrInput != 0 && hasSameDirection)
+            currentState = State.accelerating;
+        else if (absMovement > 0.01f && absMovement < 0.99f && hasVelocity && (directionOrInput == 0 || !hasSameDirection))
+            currentState = State.braking;
+        else if (absMovement > 0.9)
+            currentState = State.constantSpeed;
+        else
+            currentState = State.quiet;
+    }
+
     public abstract void RotateTurret();
     protected virtual void RotateTank()
     {

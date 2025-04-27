@@ -41,7 +41,7 @@ public class PlayerController : TankBase
     {
         ReadAndInterpolateInputs();       
         ManipulateMovementInCollision(input.y);
-        SetState();
+        SetState(input.y);
         DrawRays();
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
     }
@@ -74,22 +74,6 @@ public class PlayerController : TankBase
             movement = 0;
         if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement)) 
             movement = 1 * input.y;
-    }
-
-    protected override void SetState()
-    {
-        bool hasSameDirection = Mathf.Sign(input.y) == Mathf.Sign(movement);
-        bool hasVelocity = rb.linearVelocity.magnitude > 0.05f;
-        float absMovement = Mathf.Abs(movement);
-
-        if (absMovement > 0.01f && absMovement < 0.9f && input.y != 0 && hasSameDirection)
-            currentState = State.accelerating;
-        else if (absMovement > 0.01f && absMovement < 0.99f && hasVelocity && (input.y == 0 || !hasSameDirection))
-            currentState = State.braking;
-        else if (absMovement > 0.9)
-            currentState = State.constantSpeed;
-        else
-            currentState = State.quiet;
     }
 
     public override void RotateTurret()

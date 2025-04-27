@@ -3,7 +3,6 @@ using UnityEngine.AI;
 using BehaviorTree;
 using System.Collections.Generic;
 using UnityEngine.Windows;
-using static UnityEngine.GridBrushBase;
 
 
 public class EnemyAI : TankBase
@@ -77,20 +76,22 @@ public class EnemyAI : TankBase
         if (_root != null)
             _root.Evaluate();
 
-        SetKnowsPlayerPosition();
-        DrawPath(path);
-        
+        SetKnowsPlayerPosition(); 
         if (followingPath)
+        {
             CalculateDesiredMovementAndRotation();
+        }  
         else
         {
             desiredMovement = 0;
             desiredRotation = 0;
         }
         InterpolateMovementAndRotation();
-
+        ManipulateMovementInCollision(desiredMovement);
+        SetState(desiredMovement);
         nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
+        DrawPath(path);
     }
     private void FixedUpdate()
     {
@@ -136,10 +137,6 @@ public class EnemyAI : TankBase
         }
     }
 
-    protected override void SetState()
-    {
-        throw new System.NotImplementedException();
-    }
     public void CalculatePath()
     {
         currentCornerInThePath = 1;
