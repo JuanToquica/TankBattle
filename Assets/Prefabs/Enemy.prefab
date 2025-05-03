@@ -648,7 +648,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.09, y: 1.773, z: 42.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8411717959795741513}
@@ -703,8 +703,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5087519, y: 2.393554, z: 3.6371326}
-  m_Center: {x: 0.0041372776, y: 0.3712505, z: 0.09535885}
+  m_Size: {x: 2.5087519, y: 2.6018314, z: 3.65}
+  m_Center: {x: 0.0041372776, y: 0.27906036, z: 0.10191059}
 --- !u!95 &2737446934553717269
 Animator:
   serializedVersion: 7
@@ -739,6 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3829e26be1cc626419753234c04ee8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
   superStructure: {fileID: 8645936080746785867}
   turret: {fileID: 8340991149045225990}
   speed: 9
@@ -747,6 +748,7 @@ MonoBehaviour:
   accelerationTime: 0.4
   angularAccelerationTime: 0.11
   hasMomentum: 0
+  isGrounded: 0
   suspensionRotation: 7
   balanceDuration: 0.9
   regainDuration: 0.7

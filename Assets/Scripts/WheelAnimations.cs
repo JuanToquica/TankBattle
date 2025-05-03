@@ -27,24 +27,24 @@ public class WheelAnimations : MonoBehaviour
         {
             if (rotation != 0 && wantsToMove == 0)
             {
-                trackLeftAnimator.SetFloat("AnimationSpeed", rotation > 0 ? 0.5f : -0.5f);
-                trackRightAnimator.SetFloat("AnimationSpeed", rotation > 0 ? -0.5f : 0.5f);
-                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation > 0 ? 0.5f : -0.5f);
-                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation > 0 ? -0.5f : 0.5f);
+                trackLeftAnimator.SetFloat("AnimationSpeed", rotation > 0 ? 0.2f : -0.2f);
+                trackRightAnimator.SetFloat("AnimationSpeed", rotation > 0 ? -0.2f : 0.2f);
+                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation > 0 ? 0.2f : -0.2f);
+                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation > 0 ? -0.2f : 0.2f);
             }
             if (movement > 0)
             {
-                trackLeftAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement : movement * 0.7f);
-                trackRightAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement : movement * 0.7f);
-                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement : movement * 0.7f);
-                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement : movement * 0.7f);
+                trackLeftAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement + 0.2f : movement * 0.7f + 0.2f);
+                trackRightAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement + 0.2f : movement * 0.7f + 0.2f);
+                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement + 0.2f : movement * 0.7f + 0.2f);
+                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement + 0.2f : movement * 0.7f + 0.2f);
             }
             else if (movement < 0)
             {
-                trackLeftAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement : movement * 0.7f);
-                trackRightAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement : movement * 0.7f);
-                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement : movement * 0.7f);
-                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement : movement * 0.7f);
+                trackLeftAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement - 0.2f : movement * 0.7f - 0.2f);
+                trackRightAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement - 0.2f : movement * 0.7f - 0.2f);
+                LeftWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation < 0 ? movement - 0.2f : movement * 0.7f - 0.2f);
+                RightWheelsAnimator.SetFloat("AnimationSpeed", rotation == 0 || rotation > 0 ? movement - 0.2f : movement * 0.7f - 0.2f);
             }
         }
         else 

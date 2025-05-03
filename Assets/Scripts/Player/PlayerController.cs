@@ -39,6 +39,7 @@ public class PlayerController : TankBase
 
     private void Update()
     {
+        SetIsGrounded();
         ReadAndInterpolateInputs();
         ManipulateMovementInCollision(input.y);
         SetState(input.y);
@@ -59,20 +60,27 @@ public class PlayerController : TankBase
         input = playerInput.Player.Move.ReadValue<Vector2>();
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
-        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, angularAccelerationTime), -1, 1);
-        if (Mathf.Abs(rotation) < 0.01) rotation = 0;
+        if (isGrounded)
+        {
+            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, angularAccelerationTime), -1, 1);
+            if (Mathf.Abs(rotation) < 0.01) rotation = 0;
+        }
+        else
+        {
+            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);
+        }
 
         SetMomentum(input.y);
-
+        
         float smoothTime = input.y != 0 ? accelerationTime : brakingTime;
         if (input.y != 0 && Mathf.Sign(input.y) != Mathf.Sign(movement) && hasMomentum)
             smoothTime = 1;
-        
+
         movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, smoothTime), -1f, 1f);
         brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
-        if (Mathf.Abs(movement) < 0.01f) 
+        if (Mathf.Abs(movement) < 0.01f)
             movement = 0;
-        if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement)) 
+        if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement))
             movement = 1 * input.y;
     }
 

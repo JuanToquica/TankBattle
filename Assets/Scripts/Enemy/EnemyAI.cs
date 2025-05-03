@@ -72,6 +72,7 @@ public class EnemyAI : TankBase
 
     private void Update()               
     {
+        SetIsGrounded();
         UpdatePlayerInfo();
         if (_root != null)
             _root.Evaluate();
@@ -111,16 +112,19 @@ public class EnemyAI : TankBase
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
 
         SetMomentum(desiredMovement);
-        float smoothTime = desiredMovement != 0 ? accelerationTime : brakingTime;
-        if (desiredMovement != 0 && Mathf.Sign(desiredMovement) != Mathf.Sign(movement) && hasMomentum)
-            smoothTime = 1;
+        if (isGrounded)
+        {
+            float smoothTime = desiredMovement != 0 ? accelerationTime : brakingTime;
+            if (desiredMovement != 0 && Mathf.Sign(desiredMovement) != Mathf.Sign(movement) && hasMomentum)
+                smoothTime = 1;
 
-        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, desiredMovement, ref movementRef, smoothTime), -1, 1);
-        brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
-        if (Mathf.Abs(movement) < 0.01f)
-            movement = 0;
-        if (Mathf.Abs(movement) > 0.99f && desiredMovement != 0 && Mathf.Sign(desiredMovement) == Mathf.Sign(movement))
-            movement = 1 * desiredMovement;
+            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, desiredMovement, ref movementRef, smoothTime), -1, 1);
+            brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
+            if (Mathf.Abs(movement) < 0.01f)
+                movement = 0;
+            if (Mathf.Abs(movement) > 0.99f && desiredMovement != 0 && Mathf.Sign(desiredMovement) == Mathf.Sign(movement))
+                movement = 1 * desiredMovement;
+        }  
     }
 
     private void SetKnowsPlayerPosition()

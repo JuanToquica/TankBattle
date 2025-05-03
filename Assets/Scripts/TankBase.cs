@@ -29,10 +29,12 @@ public abstract class TankBase : MonoBehaviour
     protected float currentRotationSpeed;
     protected bool centeringTurret;
     public bool hasMomentum;
-    protected bool frontalCollision;
-    protected bool backCollision;
-    protected bool frontalCollisionWithCorner;
-    protected bool backCollisionWithCorner;
+    public bool isGrounded;
+    public bool frontalCollision;
+    public bool backCollision;
+    public bool frontalCollisionWithCorner;
+    public bool backCollisionWithCorner;
+    
 
     [Header("Suspension")]
     [SerializeField] protected float suspensionRotation;
@@ -68,6 +70,16 @@ public abstract class TankBase : MonoBehaviour
             currentState = State.constantSpeed;
         else
             currentState = State.quiet;
+    }
+    protected void SetIsGrounded()
+    {
+        bool ray = Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 0.95f, 1 << 6);
+        Debug.DrawRay(transform.position, -transform.up * 0.95f, Color.red);
+
+        if (ray && hit.collider.transform.CompareTag("Floor"))
+            isGrounded = true;
+        else
+            isGrounded = false;
     }
 
     public abstract void RotateTurret();
@@ -157,7 +169,8 @@ public abstract class TankBase : MonoBehaviour
                 if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
                 {
                     currentRotationSpeed = 0;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    //if (contact.otherCollider.transform.CompareTag("Wall")) 
+                    //    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                     return;
                 }
 
@@ -167,13 +180,15 @@ public abstract class TankBase : MonoBehaviour
                 {
                     currentRotationSpeed = 30;
                     frontalCollisionWithCorner = true;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    //if (contact.otherCollider.transform.CompareTag("Wall")) 
+                    //    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                 }
                 if (dot < -0.75f)
                 {
                     currentRotationSpeed = 30;
                     backCollisionWithCorner = true;
-                    if (contact.otherCollider.transform.CompareTag("Wall")) transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                    //if (contact.otherCollider.transform.CompareTag("Wall")) 
+                    //    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                 }
             }
         }
