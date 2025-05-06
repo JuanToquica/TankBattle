@@ -2099,7 +2099,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.485442, y: 1.773, z: 17.78933}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4111947535465290403}
@@ -2117,8 +2117,8 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 100
   m_Drag: 0
-  m_AngularDrag: 0.01
-  m_CenterOfMass: {x: 0, y: -1, z: 0}
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: -0.6, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -2154,7 +2154,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2.5087519, y: 2.498453, z: 3.53825}
-  m_Center: {x: 0.0041372776, y: 0.33075032, z: 0.046035133}
+  m_Center: {x: 0, y: 0.33075032, z: 0}
 --- !u!114 &4419308105662984020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2175,8 +2175,13 @@ MonoBehaviour:
   turretRotationSpeed: 50
   accelerationTime: 0.4
   angularAccelerationTime: 0.11
+  movement: 0
   hasMomentum: 0
   isGrounded: 0
+  frontalCollision: 0
+  backCollision: 0
+  frontalCollisionWithCorner: 0
+  backCollisionWithCorner: 0
   suspensionRotation: 7
   balanceDuration: 0.9
   regainDuration: 0.7

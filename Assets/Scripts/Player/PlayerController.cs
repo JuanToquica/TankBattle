@@ -34,54 +34,62 @@ public class PlayerController : TankBase
         playerInput.Player.MoveTurretWithMouse.Disable();
         playerInput.Player.Fire.Disable();
 
-        currentRotationSpeed = tankRotationSpeed;      
+        currentRotationSpeed = tankRotationSpeed;
+        lastDistances = new float[suspensionPoints.Length];
     }
 
     private void Update()
     {
         SetIsGrounded();
+        SetIsOnSlope();
         ReadAndInterpolateInputs();
-        ManipulateMovementInCollision(input.y);
-        SetState(input.y);
+        ManipulateMovementInCollision();
+        SetState();
         DrawRays();
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
     }
     private void FixedUpdate()
     {
+        BrakeTank();
         ApplyMovement();
         RotateTurret();
         RotateTank();
         if (centeringTurret)
             CenterTurret();
+        ApplySuspension();
+        
     }
 
     private void ReadAndInterpolateInputs()
     {
         input = playerInput.Player.Move.ReadValue<Vector2>();
+        directionOrInput = input.y;
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
+        SetMomentum();
         if (isGrounded)
         {
             rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, angularAccelerationTime), -1, 1);
-            if (Mathf.Abs(rotation) < 0.01) rotation = 0;
+            if (Mathf.Abs(rotation) < 0.01f) rotation = 0;
+            
+            float smoothTime = input.y != 0 ? accelerationTime : brakingTime;
+            if (input.y != 0 && movement != 0 && Mathf.Sign(input.y) != Mathf.Sign(movement) && hasMomentum)
+                smoothTime = 1;
+
+            movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, smoothTime), -1f, 1f);
+            if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement))
+                movement = 1 * input.y;
         }
         else
         {
             rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);
+            if (Mathf.Abs(transform.rotation.eulerAngles.x) < 30)
+                movement = Mathf.Clamp(Mathf.SmoothDamp(movement, 0, ref movementRef, accelerationTime * 6), -1f, 1f);
+            
         }
-
-        SetMomentum(input.y);
-        
-        float smoothTime = input.y != 0 ? accelerationTime : brakingTime;
-        if (input.y != 0 && Mathf.Sign(input.y) != Mathf.Sign(movement) && hasMomentum)
-            smoothTime = 1;
-
-        movement = Mathf.Clamp(Mathf.SmoothDamp(movement, input.y, ref movementRef, smoothTime), -1f, 1f);
         brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
         if (Mathf.Abs(movement) < 0.01f)
             movement = 0;
-        if (Mathf.Abs(movement) > 0.99f && input.y != 0 && Mathf.Sign(input.y) == Mathf.Sign(movement))
-            movement = 1 * input.y;
     }
 
     public override void RotateTurret()

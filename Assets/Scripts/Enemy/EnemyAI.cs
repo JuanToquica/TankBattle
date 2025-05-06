@@ -88,8 +88,8 @@ public class EnemyAI : TankBase
             desiredRotation = 0;
         }
         InterpolateMovementAndRotation();
-        ManipulateMovementInCollision(desiredMovement);
-        SetState(desiredMovement);
+        ManipulateMovementInCollision();
+        SetState();
         nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
         DrawPath(path);
@@ -111,7 +111,7 @@ public class EnemyAI : TankBase
         rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, desiredRotation, ref rotationRef, angularAccelerationTime), -1, 1);
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
 
-        SetMomentum(desiredMovement);
+        SetMomentum();
         if (isGrounded)
         {
             float smoothTime = desiredMovement != 0 ? accelerationTime : brakingTime;
@@ -124,7 +124,8 @@ public class EnemyAI : TankBase
                 movement = 0;
             if (Mathf.Abs(movement) > 0.99f && desiredMovement != 0 && Mathf.Sign(desiredMovement) == Mathf.Sign(movement))
                 movement = 1 * desiredMovement;
-        }  
+        }
+        directionOrInput = desiredMovement;
     }
 
     private void SetKnowsPlayerPosition()
