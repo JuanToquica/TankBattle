@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,13 +10,15 @@ public class PlayerController : TankBase
     private WheelAnimations wheelAnimations;
     private PlayerAttack playerAttack;
     private Vector2 input;
-    private float turretRotationInput;
+    public float turretRotationInput;
+    public float mouseInput;
+    public float cameraPivotRotation;
+
 
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private CameraController cameraController;
 
-    
     private void Awake()
     {
         playerInput = new PlayerInput();
@@ -42,28 +45,31 @@ public class PlayerController : TankBase
     {
         SetIsGrounded();
         SetIsOnSlope();
-        ReadAndInterpolateInputs();
+        ReadAndInterpolateInputs();       
         ManipulateMovementInCollision();
         SetState();
-        DrawRays();
+        DrawRays();       
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
     }
     private void FixedUpdate()
     {
+        RotateTank();       
         BrakeTank();
-        ApplyMovement();
+        if (isGrounded)
+            ApplyMovement();       
+        ApplySuspension();
+    }
+    private void LateUpdate()
+    {
         RotateTurret();
-        RotateTank();
         if (centeringTurret)
             CenterTurret();
-        ApplySuspension();
-        
     }
-
     private void ReadAndInterpolateInputs()
     {
         input = playerInput.Player.Move.ReadValue<Vector2>();
         directionOrInput = input.y;
+        mouseInput = playerInput.Player.MoveTurretWithMouse.ReadValue<float>();
         turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
         SetMomentum();
@@ -84,36 +90,37 @@ public class PlayerController : TankBase
         {
             rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);
             if (Mathf.Abs(transform.rotation.eulerAngles.x) < 30)
-                movement = Mathf.Clamp(Mathf.SmoothDamp(movement, 0, ref movementRef, accelerationTime * 6), -1f, 1f);
-            
+                movement = Mathf.Clamp(Mathf.SmoothDamp(movement, 0, ref movementRef, accelerationTime * 6), -1f, 1f);            
         }
         brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
         if (Mathf.Abs(movement) < 0.01f)
             movement = 0;
     }
-
     public override void RotateTurret()
-    {        
-        if (playerInput.Player.MoveTurretWithKeys.enabled)  
+    {
+        if (playerInput.Player.MoveTurretWithKeys.enabled)
         {
             if (turretRotationInput != 0)
             {
                 centeringTurret = false;
-                turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.fixedDeltaTime, 0);
+                turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.deltaTime, 0);               
             }
         }
-        else if (playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivot.rotation.eulerAngles.y)
+        else if (playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivotRotation)
         {
-            float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivot.rotation.eulerAngles.y);
+            float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivotRotation);
             float direction = Mathf.Sign(angleDifference);
-            if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.fixedDeltaTime)
-                turret.Rotate(0, turretRotationSpeed * direction * Time.fixedDeltaTime, 0);
+            
+            if (Mathf.Abs(angleDifference) > turretRotationSpeed * Time.deltaTime)
+            {
+                turret.Rotate(0, turretRotationSpeed * direction * Time.deltaTime, 0);
+            }               
             else
             {
-                turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivot.eulerAngles.y, turret.rotation.eulerAngles.x);
+                turret.rotation = Quaternion.Euler(turret.rotation.eulerAngles.x, cameraPivotRotation, turret.rotation.eulerAngles.x);
                 turret.localRotation = Quaternion.Euler(0, turret.localRotation.eulerAngles.y, 0);
-            }             
-        }   
+            }
+        }
     }
 
     private void ActivateTurretCenteringAndChangeTurretControlToKeys()
@@ -147,10 +154,11 @@ public class PlayerController : TankBase
 
     private void DrawRays()
     {
-        Debug.DrawRay(transform.position + transform.right * 0.3f, transform.forward * 2.1f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -0.3f, transform.forward * 2.1f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * 0.3f, -transform.forward * 1.8f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -0.3f, -transform.forward * 1.8f, Color.red);
+        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        Debug.DrawRay(transform.position + transform.right * 0.3f, flatForward * 1.5f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -0.3f, flatForward * 1.5f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * 0.3f, -flatForward * 1.4f, Color.red);
+        Debug.DrawRay(transform.position + transform.right * -0.3f, -flatForward * 1.4f, Color.red);
     }
 
     private void OnEnable() => playerInput.Enable();

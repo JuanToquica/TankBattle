@@ -27,10 +27,11 @@ public abstract class TankBase : MonoBehaviour
     protected float directionOrInput;
     protected float brakingTime;
     public float movement;
-    protected float rotation;
+    public float rotation;
     protected float movementRef;
     protected float rotationRef;
-    protected float currentRotationSpeed;
+    protected float turretRotationRef;
+    public float currentRotationSpeed;
     protected bool centeringTurret;
     public bool hasMomentum;
     public bool isGrounded;
@@ -70,7 +71,7 @@ public abstract class TankBase : MonoBehaviour
     protected void SetState()
     {
         bool hasSameDirection = Mathf.Sign(directionOrInput) == Mathf.Sign(movement);
-        bool hasVelocity = rb.linearVelocity.magnitude > 0.05f;
+        bool hasVelocity = rb.linearVelocity.magnitude > 0.1f;
         float absMovement = Mathf.Abs(movement);
 
         if (absMovement > 0.01f && absMovement < 0.9f && directionOrInput != 0 && hasSameDirection)
@@ -91,22 +92,25 @@ public abstract class TankBase : MonoBehaviour
         Debug.DrawRay(transform.position + transform.forward * 1, -transform.up * 0.95f, Color.red);
         Debug.DrawRay(transform.position - transform.forward * 1, -transform.up * 0.95f, Color.red);
 
-        if ((ray && hit.collider.transform.CompareTag("Floor")) || (ray2 && hit2.collider.transform.CompareTag("Floor")) || (ray3 && hit3.collider.transform.CompareTag("Floor")))
+        if ((ray && hit.collider.transform.CompareTag("Floor")) &&  (ray2 && hit2.collider.transform.CompareTag("Floor")) && (ray3 && hit3.collider.transform.CompareTag("Floor")))
+            isGrounded = true;
+        else if (((ray && hit.collider.transform.CompareTag("Floor")) || (ray2 && hit2.collider.transform.CompareTag("Floor")) || (ray3 && hit3.collider.transform.CompareTag("Floor"))) && !frontalCollision && !backCollision)
             isGrounded = true;
         else
             isGrounded = false;
+
         //Setear AngularDamping
         if (isGrounded && (ray2 && hit2.collider.transform.CompareTag("Floor")) && (ray3 && hit3.collider.transform.CompareTag("Floor")))
             rb.angularDamping = angularDampingInGround;
         else
             rb.angularDamping = angularDampingOutGround;
-
     }
 
     public abstract void RotateTurret();
     protected virtual void RotateTank()
     {
-        transform.Rotate(0, rotation * currentRotationSpeed * Time.fixedDeltaTime, 0);
+        float targetAngularVelocityY = rotation * currentRotationSpeed * Mathf.Deg2Rad;
+        rb.angularVelocity = new Vector3(rb.angularVelocity.x, targetAngularVelocityY, rb.angularVelocity.z);
     }
 
     protected void SetIsOnSlope()
@@ -117,10 +121,12 @@ public abstract class TankBase : MonoBehaviour
             isOnSlope = Vector3.Angle(hit.normal, Vector3.up) > 5f;
         }
     }
+
     protected void BrakeTank()
     {
-        if (isGrounded && Mathf.Abs(movement) < 0.01f && rb.linearVelocity.magnitude < 0.5f && isOnSlope)
-        {
+        if (isGrounded && Mathf.Abs(movement) < 0.01f && rb.linearVelocity.magnitude < 0.5f && isOnSlope && 
+            ((rb.angularVelocity.magnitude < 0.001 && rotation == 0) || rotation != 0))
+        {           
             rb.linearDamping = 50;
         }
         else
@@ -172,7 +178,7 @@ public abstract class TankBase : MonoBehaviour
                 float totalForce = springForce + dampingForce;
 
                 rb.AddForceAtPosition(point.up * totalForce, point.position);
-                lastDistances[i] = hit.distance;
+                lastDistances[i] = hit.distance;               
             }
         }
     }
@@ -216,10 +222,11 @@ public abstract class TankBase : MonoBehaviour
 
     protected void OnCollisionStay(Collision collision)
     {
-        bool rightFrontalCollision = Physics.Raycast(transform.position + transform.right * 0.3f, transform.forward, 2.3f);
-        bool leftFrontalCollision = Physics.Raycast(transform.position + transform.right * -0.3f, transform.forward, 2.3f);
-        bool rightBackCollision = Physics.Raycast(transform.position + transform.right * 0.3f, -transform.forward, 1.8f);
-        bool leftBackCollision = Physics.Raycast(transform.position + transform.right * -0.3f, -transform.forward, 1.8f);
+        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        bool rightFrontalCollision = Physics.Raycast(transform.position + transform.right * 0.3f, flatForward, 1.5f);
+        bool leftFrontalCollision = Physics.Raycast(transform.position + transform.right * -0.3f, flatForward, 1.5f);
+        bool rightBackCollision = Physics.Raycast(transform.position + transform.right * 0.3f, -flatForward, 1.4f);
+        bool leftBackCollision = Physics.Raycast(transform.position + transform.right * -0.3f, -flatForward, 1.4f);
 
         frontalCollision = rightFrontalCollision || leftFrontalCollision;
         backCollision = rightBackCollision || leftBackCollision;
@@ -238,12 +245,12 @@ public abstract class TankBase : MonoBehaviour
 
             if (dot > 0.5f)
             {
-                currentRotationSpeed = 30;
+                currentRotationSpeed = 20;
                 frontalCollisionWithCorner = true;
             }
             if (dot < -0.5f)
             {
-                currentRotationSpeed = 30;
+                currentRotationSpeed = 20;
                 backCollisionWithCorner = true;
             }
         }

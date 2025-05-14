@@ -164,7 +164,7 @@ public class EnemyAI : TankBase
     }
 
     protected override void RotateTank()
-    {       
+    {
         if (Mathf.Abs(adjustedAngleToTarget) > currentRotationSpeed * Time.fixedDeltaTime)
             base.RotateTank();
     }
