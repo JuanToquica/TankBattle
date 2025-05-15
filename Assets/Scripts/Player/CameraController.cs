@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
         }
 
         float distance = Mathf.Abs(maxOffset.z) + 1;
-        Vector3 directionToCamera = (mainCamera.position - playerTurret.position).normalized;
+        Vector3 directionToCamera = ((mainCamera.position) - playerTurret.position).normalized;
         Debug.DrawRay(playerTurret.position - playerTurret.forward * 0.85f, directionToCamera * distance);
         float targetT = Physics.Raycast(playerTurret.position - playerTurret.forward * 0.85f, directionToCamera, out RaycastHit hit, distance, 1 << 6) ?
             Mathf.Clamp01(hit.distance / distance) : 1;

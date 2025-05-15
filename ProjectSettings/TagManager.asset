@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Floor
   - SlopeWall
+  - Railing
   layers:
   - Default
   - TransparentFX

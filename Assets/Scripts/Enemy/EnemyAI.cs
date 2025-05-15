@@ -72,7 +72,6 @@ public class EnemyAI : TankBase
 
     private void Update()               
     {
-        SetIsGrounded();
         UpdatePlayerInfo();
         if (_root != null)
             _root.Evaluate();

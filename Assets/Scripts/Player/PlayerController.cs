@@ -14,7 +14,6 @@ public class PlayerController : TankBase
     public float mouseInput;
     public float cameraPivotRotation;
 
-
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private CameraController cameraController;
@@ -34,6 +33,7 @@ public class PlayerController : TankBase
         rb = GetComponent<Rigidbody>();
         playerAttack = GetComponent<PlayerAttack>();
         wheelAnimations = GetComponent<WheelAnimations>();
+        tankCollider = GetComponent<BoxCollider>();
         playerInput.Player.MoveTurretWithMouse.Disable();
         playerInput.Player.Fire.Disable();
 
@@ -43,7 +43,6 @@ public class PlayerController : TankBase
 
     private void Update()
     {
-        SetIsGrounded();
         SetIsOnSlope();
         ReadAndInterpolateInputs();       
         ManipulateMovementInCollision();
@@ -88,9 +87,7 @@ public class PlayerController : TankBase
         }
         else
         {
-            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);
-            if (Mathf.Abs(transform.rotation.eulerAngles.x) < 30)
-                movement = Mathf.Clamp(Mathf.SmoothDamp(movement, 0, ref movementRef, accelerationTime * 6), -1f, 1f);            
+            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);        
         }
         brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
         if (Mathf.Abs(movement) < 0.01f)
@@ -153,12 +150,18 @@ public class PlayerController : TankBase
     }
 
     private void DrawRays()
-    {
-        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
-        Debug.DrawRay(transform.position + transform.right * 0.3f, flatForward * 1.5f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -0.3f, flatForward * 1.5f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * 0.3f, -flatForward * 1.4f, Color.red);
-        Debug.DrawRay(transform.position + transform.right * -0.3f, -flatForward * 1.4f, Color.red);
+    {       
+        Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, normalGround).normalized;
+
+        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f + (flatForward * 1.5f));
+        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f + (flatForward * 1.5f));
+        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f));
+        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f));
+
+        Debug.DrawRay(origin1, flatForward * raycastDistance, Color.red);
+        Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);
+        Debug.DrawRay(origin3, -flatForward * raycastDistance, Color.red);
+        Debug.DrawRay(origin4, -flatForward * raycastDistance, Color.red);
     }
 
     private void OnEnable() => playerInput.Enable();
