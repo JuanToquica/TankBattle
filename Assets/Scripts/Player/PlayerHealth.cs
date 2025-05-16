@@ -30,6 +30,11 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void RegainHealth()
+    {
+        health = maxHealth;
+    }
+
     private void Die()
     {
         Debug.Log("MUERTO");

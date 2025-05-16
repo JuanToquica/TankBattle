@@ -1519,7 +1519,7 @@ GameObject:
   - component: {fileID: 86426674}
   - component: {fileID: 86426673}
   - component: {fileID: 86426672}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing30
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -6853,7 +6853,7 @@ GameObject:
   - component: {fileID: 201158537}
   - component: {fileID: 201158536}
   - component: {fileID: 201158535}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing5
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -8301,7 +8301,7 @@ GameObject:
   - component: {fileID: 213172638}
   - component: {fileID: 213172637}
   - component: {fileID: 213172636}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing27
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -9988,7 +9988,7 @@ GameObject:
   - component: {fileID: 260012061}
   - component: {fileID: 260012060}
   - component: {fileID: 260012059}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing23
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -11908,7 +11908,7 @@ GameObject:
   - component: {fileID: 373653518}
   - component: {fileID: 373653517}
   - component: {fileID: 373653516}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railinlg15
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -12500,7 +12500,7 @@ GameObject:
   - component: {fileID: 405060153}
   - component: {fileID: 405060152}
   - component: {fileID: 405060151}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing2
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -13961,7 +13961,7 @@ GameObject:
   - component: {fileID: 435068239}
   - component: {fileID: 435068238}
   - component: {fileID: 435068237}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing22
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -15033,7 +15033,7 @@ GameObject:
   - component: {fileID: 449061708}
   - component: {fileID: 449061707}
   - component: {fileID: 449061706}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing26
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -16030,7 +16030,7 @@ GameObject:
   - component: {fileID: 488043820}
   - component: {fileID: 488043819}
   - component: {fileID: 488043818}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing17
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -16622,7 +16622,7 @@ GameObject:
   - component: {fileID: 498063538}
   - component: {fileID: 498063537}
   - component: {fileID: 498063536}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railinlg14
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -19602,7 +19602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 598893328}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railings
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -25360,7 +25360,7 @@ GameObject:
   - component: {fileID: 670982289}
   - component: {fileID: 670982288}
   - component: {fileID: 670982287}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing3
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -29335,7 +29335,7 @@ GameObject:
   - component: {fileID: 805274062}
   - component: {fileID: 805274061}
   - component: {fileID: 805274060}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing13
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -30407,7 +30407,7 @@ GameObject:
   - component: {fileID: 813348827}
   - component: {fileID: 813348826}
   - component: {fileID: 813348825}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing24
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -32446,7 +32446,7 @@ GameObject:
   - component: {fileID: 870146843}
   - component: {fileID: 870146842}
   - component: {fileID: 870146841}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing18
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -33368,7 +33368,7 @@ GameObject:
   - component: {fileID: 894778273}
   - component: {fileID: 894778272}
   - component: {fileID: 894778271}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing8
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -40186,7 +40186,7 @@ GameObject:
   - component: {fileID: 1011911969}
   - component: {fileID: 1011911968}
   - component: {fileID: 1011911967}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing16
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -41986,7 +41986,7 @@ GameObject:
   - component: {fileID: 1129969717}
   - component: {fileID: 1129969716}
   - component: {fileID: 1129969715}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing7
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -43732,7 +43732,7 @@ GameObject:
   - component: {fileID: 1226741315}
   - component: {fileID: 1226741314}
   - component: {fileID: 1226741313}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing20
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -46834,7 +46834,7 @@ GameObject:
   - component: {fileID: 1310627302}
   - component: {fileID: 1310627301}
   - component: {fileID: 1310627300}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing25
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -52916,7 +52916,7 @@ GameObject:
   - component: {fileID: 1515362846}
   - component: {fileID: 1515362845}
   - component: {fileID: 1515362844}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing1
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -55600,7 +55600,7 @@ GameObject:
   - component: {fileID: 1608429277}
   - component: {fileID: 1608429276}
   - component: {fileID: 1608429275}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing4
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -59725,7 +59725,7 @@ GameObject:
   - component: {fileID: 1731123255}
   - component: {fileID: 1731123254}
   - component: {fileID: 1731123253}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing12
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -61520,7 +61520,7 @@ GameObject:
   - component: {fileID: 1809535837}
   - component: {fileID: 1809535836}
   - component: {fileID: 1809535835}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing9
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -62112,7 +62112,7 @@ GameObject:
   - component: {fileID: 1825822852}
   - component: {fileID: 1825822851}
   - component: {fileID: 1825822850}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing6
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -66564,7 +66564,7 @@ GameObject:
   - component: {fileID: 1948294300}
   - component: {fileID: 1948294299}
   - component: {fileID: 1948294298}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing29
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -67806,7 +67806,7 @@ GameObject:
   - component: {fileID: 2047928354}
   - component: {fileID: 2047928353}
   - component: {fileID: 2047928352}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railingn21
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -69043,7 +69043,7 @@ GameObject:
   - component: {fileID: 2051334336}
   - component: {fileID: 2051334335}
   - component: {fileID: 2051334334}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing19
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -70415,7 +70415,7 @@ GameObject:
   - component: {fileID: 2096528247}
   - component: {fileID: 2096528246}
   - component: {fileID: 2096528245}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing11
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -71007,7 +71007,7 @@ GameObject:
   - component: {fileID: 2102130260}
   - component: {fileID: 2102130259}
   - component: {fileID: 2102130258}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing28
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -72529,7 +72529,7 @@ GameObject:
   - component: {fileID: 2134254450}
   - component: {fileID: 2134254449}
   - component: {fileID: 2134254448}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Railing10
   m_TagString: Railing
   m_Icon: {fileID: 0}
@@ -73271,7 +73271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &3509728854924513601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73329,7 +73329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -73651,6 +73651,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: cooldownWithPowerUp
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: projectilesContainer
       value: 
       objectReference: {fileID: 2137308255}
@@ -73663,6 +73667,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1250683250}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: speedMinMax.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: speedMinMax.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: raycastDistance
       value: 0.22
       objectReference: {fileID: 0}
@@ -73670,6 +73682,22 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 8843277517967702287}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: tankRotationSpeedMinMax.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: tankRotationSpeedMinMax.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: turretRotationSpeedMinMax.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: turretRotationSpeedMinMax.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: 'suspensionPoints.Array.data[1]'
       value: 
@@ -73698,6 +73726,10 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1449295122119180993}
+    - target: {fileID: 6708663462684491620, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: maxHealth
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8142721639310044282, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

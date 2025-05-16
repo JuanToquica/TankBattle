@@ -37,6 +37,7 @@ public class PlayerController : TankBase
         playerInput.Player.MoveTurretWithMouse.Disable();
         playerInput.Player.Fire.Disable();
 
+        RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
         lastDistances = new float[suspensionPoints.Length];
     }

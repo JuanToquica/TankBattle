@@ -1,8 +1,6 @@
 using DG.Tweening;
 using System;
 using UnityEngine;
-using UnityEngine.Profiling;
-using UnityEngine.Windows;
 
 public enum State { accelerating, braking, quiet, constantSpeed }
 
@@ -12,26 +10,22 @@ public abstract class TankBase : MonoBehaviour
     public State _currentState;    
 
     [Header("References")]
-    [SerializeField] protected Transform superStructure;
-    protected BoxCollider tankCollider;
+    [SerializeField] protected Transform superStructure;   
     public Transform turret;
-    
+    protected BoxCollider tankCollider;
+
 
     [Header("Movement")]
-    [SerializeField] protected float speed;
-    [SerializeField] protected float tankRotationSpeed;
-    [SerializeField] protected float turretRotationSpeed;
+    [SerializeField] protected Vector2 speedMinMax;
+    [SerializeField] protected Vector2 tankRotationSpeedMinMax;
+    [SerializeField] protected Vector2 turretRotationSpeedMinMax;    
     [SerializeField] protected float accelerationTime;
     [SerializeField] protected float angularAccelerationTime;
     [SerializeField] protected float angularDampingInGround;
     [SerializeField] protected float angularDampingOutGround;
-    [SerializeField] protected float raycastDistance;
-    protected float directionOrInput;
-    protected float brakingTime;
+    [SerializeField] protected float raycastDistance;   
     public float movement;
-    public float rotation;
-    protected float movementRef;
-    protected float rotationRef;
+    public float rotation;  
     protected float turretRotationRef;
     public float currentRotationSpeed;
     protected bool centeringTurret;
@@ -42,7 +36,14 @@ public abstract class TankBase : MonoBehaviour
     public bool frontalCollisionWithCorner;
     public bool backCollisionWithCorner;
     public bool isOnSlope;
-    public Vector3 normalGround;
+    protected float speed;
+    protected float tankRotationSpeed;
+    protected float turretRotationSpeed;
+    protected float directionOrInput;
+    protected float brakingTime;
+    protected float movementRef;
+    protected float rotationRef;
+    protected Vector3 normalGround;
 
     [Header("Suspension")]
     [SerializeField] protected Transform[] suspensionPoints;
@@ -55,7 +56,7 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected float suspensionRotation;
     [SerializeField] protected float balanceDuration;
     [SerializeField] protected float regainDuration;
-    protected Sequence suspensionRotationSequence;
+    protected Sequence suspensionRotationSequence; 
 
     public State currentState
     {
@@ -272,6 +273,21 @@ public abstract class TankBase : MonoBehaviour
         backCollision = false;
         backCollisionWithCorner = false;
         currentRotationSpeed = tankRotationSpeed;
+    }
+
+    public void SpeedPowerUp(float duration)
+    {
+        speed = speedMinMax.y;
+        tankRotationSpeed = tankRotationSpeedMinMax.y;
+        turretRotationSpeed = turretRotationSpeedMinMax.y;
+        Invoke("RestoreSpeed", duration);
+    }
+
+    protected void RestoreSpeed()
+    {
+        speed = speedMinMax.x;
+        tankRotationSpeed = tankRotationSpeedMinMax.x;
+        turretRotationSpeed = turretRotationSpeedMinMax.x;
     }
 
     void OnDrawGizmos()
