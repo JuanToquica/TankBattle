@@ -19,17 +19,17 @@ NavMeshProjectSettings:
     cost: 1
   - name: Enemy4
     cost: 1
-  - name: 
+  - name: Enemy5
     cost: 1
-  - name: 
+  - name: Enemy6
     cost: 1
-  - name: 
+  - name: Enemy7
     cost: 1
-  - name: 
+  - name: Enemy8
     cost: 1
-  - name: 
+  - name: Enemy9
     cost: 1
-  - name: 
+  - name: Enemy10
     cost: 1
   - name: 
     cost: 1
@@ -91,8 +91,8 @@ NavMeshProjectSettings:
       m_Flags: 0
   - serializedVersion: 3
     agentTypeID: -1372625422
-    agentRadius: 2
-    agentHeight: 2
+    agentRadius: 1
+    agentHeight: 1.5
     agentSlope: 30
     agentClimb: 0.7
     ledgeDropHeight: 0
