@@ -48,9 +48,15 @@ public class EnemyAI : TankBase
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         wheelAnimations = GetComponent<WheelAnimations>();
+        tankCollider = GetComponent<BoxCollider>();
         path = new NavMeshPath();
-        SetUpTree();
+        
+
+        RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
+        lastDistances = new float[suspensionPoints.Length];
+
+        SetUpTree();
     }
 
     private void SetUpTree()
@@ -86,6 +92,7 @@ public class EnemyAI : TankBase
             desiredMovement = 0;
             desiredRotation = 0;
         }
+        SetIsOnSlope();
         InterpolateMovementAndRotation();
         ManipulateMovementInCollision();
         SetState();
@@ -95,8 +102,11 @@ public class EnemyAI : TankBase
     }
     private void FixedUpdate()
     {
-        ApplyMovement();
         RotateTank();
+        BrakeTank();
+        if (isGrounded)
+            ApplyMovement();
+        ApplySuspension();
     }
 
     private void UpdatePlayerInfo()
