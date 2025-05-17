@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using BehaviorTree;
 using System.Collections.Generic;
 using UnityEngine.Windows;
+using UnityEngine.UIElements;
 
 
 public class EnemyAI : TankBase
@@ -11,14 +12,14 @@ public class EnemyAI : TankBase
     private Animator animator;
     private WheelAnimations wheelAnimations;
     public NavMeshPath path;
-    public Transform[] waypoints;
+    public List<Transform> waypoints;
     public LineRenderer lineRenderer;
 
-    [Header("Enemy")]
-    [SerializeField] private Transform player;
-    [SerializeField] private Transform projectileSpawnPoint;
-    [SerializeField] private Transform projectilesContainer;
+    [Header("Enemy")]    
+    [SerializeField] private Transform projectileSpawnPoint;   
     [SerializeField] private GameObject projectilePrefab;
+    public Transform player;
+    public Transform projectilesContainer;
     private float desiredMovement;
     private float desiredRotation;
     private float adjustedAngleToTarget;
@@ -155,6 +156,12 @@ public class EnemyAI : TankBase
     {
         currentCornerInThePath = 1;
         NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, path);
+    }
+
+    private void ChangeArea()
+    {
+        currentCornerInThePath = 1;
+        NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, NavMesh.AllAreas, path);
     }
 
     public void CalculateDesiredMovementAndRotation()

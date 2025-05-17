@@ -6,7 +6,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private Image healthBar;
     [SerializeField] private Transform healthBarCanvas;    
-    [SerializeField] private Transform player;
+    public Transform player;
     private Transform healthBarTransform;
     private float health;
 

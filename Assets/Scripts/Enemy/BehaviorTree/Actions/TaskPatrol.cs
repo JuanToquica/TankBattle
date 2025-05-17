@@ -20,7 +20,7 @@ public class TaskPatrol : Node
             {
                 if (enemy.currentCornerInThePath == enemy.path.corners.Length - 1) //Termino un path a un waypoint
                 {
-                    if (enemy.currentWaypoint == enemy.waypoints.Length - 1)
+                    if (enemy.currentWaypoint == enemy.waypoints.Count - 1)
                         enemy.currentWaypoint = 0;
                     else
                         enemy.currentWaypoint++;
