@@ -16323,6 +16323,8 @@ MonoBehaviour:
   enemyPrefab: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
   player: {fileID: 1250683245}
   projectileContainer: {fileID: 2137308255}
+  timeToRespawn: 5
+  timeBetweenSpawns: 4
 --- !u!43 &478519698
 Mesh:
   m_ObjectHideFlags: 0
@@ -75859,75 +75861,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 4, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &1419063504504109948
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_Name
-      value: Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -34.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.832532
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 70.975006
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.38268209
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9238801
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 225
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630222598177420725, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2225202212155526804, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1250683245}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1250683245}
-    - target: {fileID: 6800237893827168342, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-      propertyPath: projectilesContainer
-      value: 
-      objectReference: {fileID: 2137308255}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
 --- !u!222 &1426601625729769202
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -76399,6 +76332,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 426590842757399879}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: springStrength
+      value: 30000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: dampSensitivity
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 8843277517967702287}
@@ -76514,6 +76455,5 @@ SceneRoots:
   - {fileID: 209217098}
   - {fileID: 8507099174638843365}
   - {fileID: 260851512}
-  - {fileID: 1419063504504109948}
   - {fileID: 1274756966}
   - {fileID: 471887631}

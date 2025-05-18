@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class TaskAttack : Node
 {
-    private EnemyAI enemyAI;
-    public TaskAttack (EnemyAI enemyAI)
+    private EnemyAttack enemyAttack;
+    public TaskAttack (EnemyAttack enemyAttack)
     {
-        this.enemyAI = enemyAI;
+        this.enemyAttack = enemyAttack;
     }
 
     public override NodeState Evaluate()
     {
-        if (enemyAI.CanShoot())
+        if (enemyAttack.CanShoot())
         {
-            enemyAI.Shoot();
+            enemyAttack.Shoot();
             return NodeState.SUCCESS;
         }
         return NodeState.RUNNING;

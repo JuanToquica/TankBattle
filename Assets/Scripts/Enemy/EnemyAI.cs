@@ -4,84 +4,106 @@ using BehaviorTree;
 using System.Collections.Generic;
 using UnityEngine.Windows;
 using UnityEngine.UIElements;
-
+using System.Collections;
+using Unity.Burst.Intrinsics;
 
 public class EnemyAI : TankBase
-{
-    private Node _root = null;
-    private Animator animator;
-    private WheelAnimations wheelAnimations;
-    public NavMeshPath path;
-    public List<Transform> waypoints;
+{    
+    private WheelAnimations wheelAnimations;     
     public LineRenderer lineRenderer;
+    public NavMeshPath path;
+    public EnemyAttack enemyAttack;
+    private Node _rootOfMovement = null;
+    private Node _rootOfTurret = null;
 
-    [Header("Enemy")]    
-    [SerializeField] private Transform projectileSpawnPoint;   
-    [SerializeField] private GameObject projectilePrefab;
-    public Transform player;
-    public Transform projectilesContainer;
-    private float desiredMovement;
-    private float desiredRotation;
+    [Header("Enemy")]       
+    public Transform player;   
+    public float desiredMovement;
+    public float desiredRotation;
     private float adjustedAngleToTarget;
     private Vector3 directionToTarget;
-    
+
 
     [Header("AI Parameters")]
-    [SerializeField] private float coolDown;
+
+    [SerializeField] private float timeToLeaveSpawn;
     [SerializeField] private float timeToForgetPlayer;
     public float distanceToDetectPlayer;
-    public float stoppingDistance;
+    public float farDistance;
+    public float nearDistance;
     public float maxAimingTolerance;
     public bool detectingPlayer;
     public bool knowsPlayerPosition;
     public int enemyArea;
+    public List<Transform> waypoints;
     public int currentWaypoint;
     public int currentCornerInThePath;
-    public bool followingPath;
-    private float nextShootTimer = 0;
+    public bool followingPath;  
     private float timerPlayerNotDetected;
     public Vector3 directionToPlayer;
     public float distanceToPlayer;
     public float angleToPlayer;
+    public bool changingArea;
+    public bool isAwakening;
+    public bool patrolWait;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
         wheelAnimations = GetComponent<WheelAnimations>();
-        tankCollider = GetComponent<BoxCollider>();
-        path = new NavMeshPath();
-        
+        tankCollider = GetComponent<BoxCollider>();       
+        rb = GetComponent<Rigidbody>();
+        path = new NavMeshPath();       
 
         RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
         lastDistances = new float[suspensionPoints.Length];
 
-        SetUpTree();
+        SetUpTrees();
+        changingArea = true;
+        StartCoroutine(InitialDelay());
     }
 
-    private void SetUpTree()
+    IEnumerator InitialDelay()
+    {
+        isAwakening = true;
+        yield return new WaitForSeconds(timeToLeaveSpawn);
+        isAwakening = false;
+    }
+
+    private void SetUpTrees()
     {
         TaskDetectPlayer detectPlayer = new TaskDetectPlayer(this);
         TaskAim aim = new TaskAim(this);
-        TaskAttack attack = new TaskAttack(this);
+        TaskAttack attack = new TaskAttack(enemyAttack);
         TaskChasePlayer chasePlayer = new TaskChasePlayer(this);
         TaskPatrol patrol = new TaskPatrol(this);
+        TaskPausePatrol pausePatrol = new TaskPausePatrol(this);
+        TaskWatch watch = new TaskWatch(this);
+        TaskSearchPlayer searchPlayer = new TaskSearchPlayer(this);
+        TaskAvoidPlayer avoidPlayer = new TaskAvoidPlayer(this);
+        TaskDodgeAttacks dodgeAttacks = new TaskDodgeAttacks(this);
+        TaskChangeArea changeArea = new TaskChangeArea(this);
         ConditionIsPlayerFar playerFar = new ConditionIsPlayerFar(this);
+        ConditionIsPlayerNearby playerNearby = new ConditionIsPlayerNearby(this);
         ConditionalHasLineOfSight hasLineOfSight = new ConditionalHasLineOfSight(this);
 
         Sequence attackSequence = new Sequence(new List<Node> { hasLineOfSight, aim, attack });
         Selector chaseOrNotSelector = new Selector(new List<Node> { playerFar, new Inverter(hasLineOfSight) });
-        Sequence chaseAndAttackSequence = new Sequence(new List<Node> { chaseOrNotSelector, new Parallel(new List<Node> { chasePlayer, attackSequence }) });
+        Sequence chasePlayerSequence = new Sequence(new List<Node> { chaseOrNotSelector, chasePlayer });
+        Sequence avoidPlayerSequence = new Sequence(new List<Node> { playerNearby, avoidPlayer});
 
-        _root = new Selector(new List<Node> { new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { chaseAndAttackSequence, attackSequence }) }), patrol });
+        _rootOfMovement = new Selector(new List<Node> { changeArea, new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { chasePlayerSequence, avoidPlayerSequence, dodgeAttacks }) }), new Selector(new List<Node> { pausePatrol, patrol}) });
+        _rootOfTurret = new Selector(new List<Node> { new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { attackSequence, searchPlayer}) }), watch});
     }
 
     private void Update()               
     {
         UpdatePlayerInfo();
-        if (_root != null)
-            _root.Evaluate();
+        if (_rootOfMovement != null && !isAwakening)
+            _rootOfMovement.Evaluate();
+        if (_rootOfTurret != null && !isAwakening)
+            _rootOfTurret.Evaluate();
 
         SetKnowsPlayerPosition(); 
         if (followingPath)
@@ -96,8 +118,7 @@ public class EnemyAI : TankBase
         SetIsOnSlope();
         InterpolateMovementAndRotation();
         ManipulateMovementInCollision();
-        SetState();
-        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
+        SetState();      
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
         DrawPath(path);
     }
@@ -156,12 +177,15 @@ public class EnemyAI : TankBase
     {
         currentCornerInThePath = 1;
         NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, path);
+        followingPath = true;
     }
 
-    private void ChangeArea()
+    public void ChangeArea()
     {
+        changingArea = true;
         currentCornerInThePath = 1;
-        NavMesh.CalculatePath(transform.position, waypoints[currentWaypoint].position, NavMesh.AllAreas, path);
+        NavMesh.CalculatePath(transform.position, waypoints[Random.Range(0, waypoints.Count-1)].position, NavMesh.AllAreas, path);
+        followingPath = true;
     }
 
     public void CalculateDesiredMovementAndRotation()
@@ -176,39 +200,22 @@ public class EnemyAI : TankBase
         desiredMovement = Mathf.Abs(angle) > 90f ? -1 : 1;
 
         adjustedAngleToTarget = (desiredMovement == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angle;
-        desiredRotation = Mathf.Sign(adjustedAngleToTarget);
+        if (Mathf.Abs(adjustedAngleToTarget) > currentRotationSpeed * Time.fixedDeltaTime * 3)
+            desiredRotation = Mathf.Sign(adjustedAngleToTarget);
+        else
+            desiredRotation = 0;
     }
 
     protected override void RotateTank()
     {
-        if (Mathf.Abs(adjustedAngleToTarget) > currentRotationSpeed * Time.fixedDeltaTime)
-            base.RotateTank();
+        base.RotateTank();
     }
 
     public override void RotateTurret()
     {
         turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angleToPlayer) * Time.fixedDeltaTime, 0);
     }
-
-    public bool CanShoot()
-    {
-        return nextShootTimer == coolDown;
-    }
-
-    public void Shoot()
-    {
-        if (!CanShoot()) return;
-
-        animator.SetBool("Fire", true);
-        GameObject projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.Euler(0, projectileSpawnPoint.rotation.eulerAngles.y, 0));
-        projectile.transform.SetParent(projectilesContainer);
-        projectile.tag = "EnemyProjectile";
-
-        nextShootTimer = 0;
-    }
-
-    public void EndShootAnimation() => animator.SetBool("Fire", false);
-    
+  
     public void DrawPath(NavMeshPath path)
     {
         if (path == null || path.corners.Length < 2) return;

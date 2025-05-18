@@ -1,4 +1,7 @@
 using BehaviorTree;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.UI.GridLayoutGroup;
@@ -6,6 +9,7 @@ using static UnityEngine.UI.GridLayoutGroup;
 public class TaskPatrol : Node
 {
     private EnemyAI enemy;    
+    private Coroutine coroutine;
 
     public TaskPatrol(EnemyAI enemyScript)
     {
@@ -20,18 +24,22 @@ public class TaskPatrol : Node
             {
                 if (enemy.currentCornerInThePath == enemy.path.corners.Length - 1) //Termino un path a un waypoint
                 {
-                    if (enemy.currentWaypoint == enemy.waypoints.Count - 1)
-                        enemy.currentWaypoint = 0;
+                    int random = Random.Range(1, 3);
+                    if (random > 1)
+                    {
+                        enemy.patrolWait = true;
+                        enemy.followingPath = false;
+                        enemy.path = new NavMeshPath();
+                    }
                     else
-                        enemy.currentWaypoint++;
-                    enemy.CalculatePath();
+                    {
+                        enemy.currentWaypoint = Random.Range(0, enemy.waypoints.Count - 1);
+                        enemy.CalculatePath();
+                    }   
                 }
                 else
                 {
-                    if (enemy.currentCornerInThePath == enemy.path.corners.Length - 1)
-                        enemy.currentCornerInThePath = 1;
-                    else
-                        enemy.currentCornerInThePath++;
+                    enemy.currentCornerInThePath++;
                 }    
             }
         }
@@ -39,8 +47,7 @@ public class TaskPatrol : Node
         {
             enemy.CalculatePath();
             return NodeState.RUNNING;
-        }
-        enemy.followingPath = true;
+        }        
         return NodeState.SUCCESS;
-    }
+    }   
 }

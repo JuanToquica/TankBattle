@@ -518,6 +518,7 @@ GameObject:
   - component: {fileID: 1129721750030344175}
   - component: {fileID: 2737446934553717269}
   - component: {fileID: 6800237893827168342}
+  - component: {fileID: -1403795728453670711}
   - component: {fileID: 2225202212155526804}
   - component: {fileID: 8565006817356517853}
   - component: {fileID: 7904873154672580411}
@@ -632,8 +633,8 @@ MonoBehaviour:
   superStructure: {fileID: 8645936080746785867}
   turret: {fileID: 8340991149045225990}
   speedMinMax: {x: 9, y: 11}
-  tankRotationSpeedMinMax: {x: 100, y: 120}
-  turretRotationSpeedMinMax: {x: 70, y: 90}
+  tankRotationSpeedMinMax: {x: 110, y: 130}
+  turretRotationSpeedMinMax: {x: 80, y: 100}
   accelerationTime: 0.4
   angularAccelerationTime: 0.11
   angularDampingInGround: 8
@@ -662,30 +663,47 @@ MonoBehaviour:
   suspensionRotation: 7
   balanceDuration: 0.9
   regainDuration: 0.7
+  lineRenderer: {fileID: 8565006817356517853}
+  enemyAttack: {fileID: -1403795728453670711}
+  player: {fileID: 0}
+  timeToLeaveSpawn: 2
+  timeToForgetPlayer: 5
+  distanceToDetectPlayer: 15
+  farDistance: 0
+  nearDistance: 0
+  maxAimingTolerance: 10
+  detectingPlayer: 0
+  knowsPlayerPosition: 0
+  enemyArea: 6
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  lineRenderer: {fileID: 8565006817356517853}
-  player: {fileID: 0}
-  projectileSpawnPoint: {fileID: 1407597519195156811}
-  projectilesContainer: {fileID: 0}
-  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
-  coolDown: 2
-  timeToForgetPlayer: 5
-  distanceToDetectPlayer: 15
-  stoppingDistance: 20
-  maxAimingTolerance: 10
-  detectingPlayer: 0
-  knowsPlayerPosition: 0
-  enemyArea: 6
   currentWaypoint: 0
   currentCornerInThePath: 1
   followingPath: 0
   directionToPlayer: {x: 0, y: 0, z: 0}
   distanceToPlayer: 0
   angleToPlayer: 0
+  changingArea: 0
+  isAwakening: 0
+--- !u!114 &-1403795728453670711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983249391379277366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a82884bcfea2e3c49b61f6d2803bd773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileSpawnPoint: {fileID: 1407597519195156811}
+  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
+  coolDown: 2
+  projectilesContainer: {fileID: 0}
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0

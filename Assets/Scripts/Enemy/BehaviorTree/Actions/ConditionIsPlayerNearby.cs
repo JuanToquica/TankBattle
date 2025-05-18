@@ -1,18 +1,17 @@
 using BehaviorTree;
 using UnityEngine;
 
-public class ConditionIsPlayerFar : Node
+public class ConditionIsPlayerNearby : Node
 {
     private EnemyAI enemy;
-
-    public ConditionIsPlayerFar(EnemyAI enemyScript)
+    public ConditionIsPlayerNearby(EnemyAI enemyScript)
     {
         this.enemy = enemyScript;
     }
 
     public override NodeState Evaluate()
     {
-        if (enemy.distanceToPlayer > enemy.farDistance)
+        if (enemy.distanceToPlayer < enemy.nearDistance)
             return NodeState.SUCCESS;
         enemy.followingPath = false;
         return NodeState.FAILURE;

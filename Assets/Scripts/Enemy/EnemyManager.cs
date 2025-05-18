@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform player;
     [SerializeField] private Transform projectileContainer;
+    [SerializeField] private float timeToRespawn;
+    [SerializeField] private float timeBetweenSpawns;
     private Transform[][] wayPoints;
 
     private void Start()
@@ -28,16 +32,33 @@ public class EnemyManager : MonoBehaviour
             area7Waypoints, area8Waypoints, 
             area9Waypoints, area10Waypoints
         };
+        //StartCoroutine(SpawnAllEnemies());
+        SpawnEnemy(spawns[0], 12);
     }
 
-    [ContextMenu ("Crear enemigo")]
-    private void SpawnEnemy(Transform spawn)
+    
+    private void SpawnEnemy(Transform spawn, int area)
     {
         GameObject enemy = Instantiate(enemyPrefab, spawn.position, spawn.rotation);
         EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
         EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-        enemyAI.player = player;    
-        enemyAI.projectilesContainer = projectileContainer;
+        EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
+        enemyAI.player = player;       
+        enemyAI.enemyArea = area;
+        enemyAI.waypoints = new List<Transform>(wayPoints[area - 3]); //Las areas de enemigos inician en el indice 3
         enemyHealth.player = player;
+        enemyAttack.projectilesContainer = projectileContainer;
+    }
+
+    private IEnumerator SpawnAllEnemies()
+    {
+        for (int i = 8; i > 0; i-=2)
+        {
+            SpawnEnemy(spawns[0], i + 3);
+            SpawnEnemy(spawns[1], i + 4);
+            yield return new WaitForSeconds(timeBetweenSpawns);
+        }
+        SpawnEnemy(spawns[0], 3);
+        SpawnEnemy(spawns[1], 4);
     }
 }

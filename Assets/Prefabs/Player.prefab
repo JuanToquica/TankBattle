@@ -2307,8 +2307,8 @@ MonoBehaviour:
   superStructure: {fileID: 341341103871839860}
   turret: {fileID: 4043235599059741379}
   speedMinMax: {x: 9, y: 11}
-  tankRotationSpeedMinMax: {x: 100, y: 120}
-  turretRotationSpeedMinMax: {x: 70, y: 90}
+  tankRotationSpeedMinMax: {x: 110, y: 130}
+  turretRotationSpeedMinMax: {x: 80, y: 100}
   accelerationTime: 0.4
   angularAccelerationTime: 0.11
   angularDampingInGround: 8
