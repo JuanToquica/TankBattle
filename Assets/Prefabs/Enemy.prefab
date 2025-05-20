@@ -645,7 +645,7 @@ MonoBehaviour:
   currentRotationSpeed: 0
   hasMomentum: 0
   isGrounded: 0
-  frontalCollision: 0
+  frontalCollision: 1
   backCollision: 0
   frontalCollisionWithCorner: 0
   backCollisionWithCorner: 0
@@ -666,7 +666,9 @@ MonoBehaviour:
   lineRenderer: {fileID: 8565006817356517853}
   enemyAttack: {fileID: -1403795728453670711}
   player: {fileID: 0}
-  timeToLeaveSpawn: 2
+  desiredMovement: 0
+  desiredRotation: 0
+  timeToLeaveSpawn: 1
   timeToForgetPlayer: 5
   distanceToDetectPlayer: 15
   farDistance: 0
@@ -688,6 +690,9 @@ MonoBehaviour:
   angleToPlayer: 0
   changingArea: 0
   isAwakening: 0
+  patrolWait: 0
+  centeringOffset: 5
+  corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
   m_ObjectHideFlags: 0

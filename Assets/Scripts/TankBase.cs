@@ -229,10 +229,10 @@ public abstract class TankBase : MonoBehaviour
         Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f));
         Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f));
 
-        bool rightFrontalCollision = Physics.Raycast(origin1, flatForward, raycastDistance);
-        bool leftFrontalCollision = Physics.Raycast(origin2, flatForward, raycastDistance);
-        bool rightBackCollision = Physics.Raycast(origin3, -flatForward, raycastDistance);
-        bool leftBackCollision = Physics.Raycast(origin4, -flatForward, raycastDistance);
+        bool rightFrontalCollision = Physics.Raycast(origin1, flatForward, raycastDistance, ~0);
+        bool leftFrontalCollision = Physics.Raycast(origin2, flatForward, raycastDistance, ~0);
+        bool rightBackCollision = Physics.Raycast(origin3, -flatForward, raycastDistance, ~0);
+        bool leftBackCollision = Physics.Raycast(origin4, -flatForward, raycastDistance, ~0);
 
         frontalCollision = rightFrontalCollision || leftFrontalCollision;
         backCollision = rightBackCollision || leftBackCollision;

@@ -32,8 +32,8 @@ public class EnemyManager : MonoBehaviour
             area7Waypoints, area8Waypoints, 
             area9Waypoints, area10Waypoints
         };
-        //StartCoroutine(SpawnAllEnemies());
-        SpawnEnemy(spawns[0], 12);
+        StartCoroutine(SpawnAllEnemies());
+        //SpawnEnemy(spawns[0], 12);
     }
 
     
@@ -52,13 +52,13 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator SpawnAllEnemies()
     {
-        for (int i = 8; i > 0; i-=2)
+        SpawnEnemy(spawns[0], 12);
+        SpawnEnemy(spawns[1], 11);
+        for (int i = 4; i > 0; i--)
         {
-            SpawnEnemy(spawns[0], i + 3);
-            SpawnEnemy(spawns[1], i + 4);
             yield return new WaitForSeconds(timeBetweenSpawns);
+            SpawnEnemy(spawns[0], i + 2);
+            SpawnEnemy(spawns[1], i + 6);           
         }
-        SpawnEnemy(spawns[0], 3);
-        SpawnEnemy(spawns[1], 4);
     }
 }

@@ -20,9 +20,9 @@ public class TaskPatrol : Node
     {
         if (enemy.path.status == NavMeshPathStatus.PathComplete)
         {           
-            if ((enemy.transform.position - enemy.path.corners[enemy.currentCornerInThePath]).magnitude < 1.7f)
+            if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 4f)
             {
-                if (enemy.currentCornerInThePath == enemy.path.corners.Length - 1) //Termino un path a un waypoint
+                if (enemy.currentCornerInThePath == enemy.corners.Count - 1) //Termino un path a un waypoint
                 {
                     int random = Random.Range(1, 3);
                     if (random > 1)
@@ -33,7 +33,7 @@ public class TaskPatrol : Node
                     }
                     else
                     {
-                        enemy.currentWaypoint = Random.Range(0, enemy.waypoints.Count - 1);
+                        enemy.currentWaypoint = Random.Range(0, enemy.waypoints.Count);
                         enemy.CalculatePath();
                     }   
                 }
