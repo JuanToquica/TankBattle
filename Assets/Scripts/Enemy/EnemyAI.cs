@@ -46,7 +46,9 @@ public class EnemyAI : TankBase
     public bool changingArea;
     public bool isAwakening;
     public bool patrolWait;
-    public float centeringOffset;
+    public int centeringOffset;
+    private Vector3 flatForward;
+    public float angleToCorner;
 
     private void Start()
     {
@@ -186,25 +188,23 @@ public class EnemyAI : TankBase
     {
         changingArea = true;
         currentCornerInThePath = 1;
-        CalculateCenteredPath(transform.position, waypoints[Random.Range(0, waypoints.Count - 1)].position, NavMesh.AllAreas, 1);
+        int min = 0;
+        if (enemyArea == 4 || enemyArea == 8)
+            min = 1;      
+        CalculateCenteredPath(transform.position, waypoints[Random.Range(min, waypoints.Count - 1)].position, NavMesh.AllAreas, 2);
     }
 
 
     public void ChangeDesiredMovement()
     {
-        directionToTarget = (corners[currentCornerInThePath] - transform.position).normalized;
-        directionToTarget.y = 0f;
+        CalculateDesiredMovementAndRotation();
 
-        Vector3 flatForward = transform.forward;
-        flatForward.y = 0; //Para no tener en cuenta las pendientes en el calculo del angulo
-        float angle = Vector3.SignedAngle(flatForward, directionToTarget, Vector3.up);
-
-        if (Mathf.Abs(angle) > 90)
+        if (Mathf.Abs(angleToCorner) > 90)
         {
             int random = Random.Range(1, 3);
-            if (random == 1)
+            if (random == 1 && !frontalCollisionWithCorner && !backCollisionWithCorner)
             {
-                desiredMovement = Mathf.Abs(angle) > 90f ? -1 : 1;
+                desiredMovement = Mathf.Abs(angleToCorner) > 90f ? -1 : 1;               
             }
             else
             {
@@ -222,20 +222,20 @@ public class EnemyAI : TankBase
         directionToTarget = (corners[currentCornerInThePath] - transform.position).normalized;
         directionToTarget.y = 0f;
 
-        Vector3 flatForward = transform.forward;
+        flatForward = transform.forward;
         flatForward.y = 0; //Para no tener en cuenta las pendientes en el calculo del angulo
-        float angle = Vector3.SignedAngle(flatForward, directionToTarget, Vector3.up);
+        angleToCorner = Vector3.SignedAngle(flatForward, directionToTarget, Vector3.up);
        
         if (frontalCollision && desiredMovement == 1) //Cambiar direccion al chocar
             desiredMovement = -1;
         else if (backCollision && desiredMovement == -1)
             desiredMovement = 1;
-        else if (Mathf.Abs(angle) < 45 && desiredMovement == 0)
-        {
+        else if ((frontalCollision || backCollision) && desiredMovement == 0)
+            desiredMovement = Random.Range(-1, 2);
+        else if (Mathf.Abs(angleToCorner) < 40 && desiredMovement == 0)
             desiredMovement = 1;
-        }
 
-        adjustedAngleToTarget = (desiredMovement == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angle;
+        adjustedAngleToTarget = (desiredMovement == -1) ? Vector3.SignedAngle(-flatForward, directionToTarget, Vector3.up) : angleToCorner;
         if (Mathf.Abs(adjustedAngleToTarget) > currentRotationSpeed * Time.fixedDeltaTime * 3)
             desiredRotation = Mathf.Sign(adjustedAngleToTarget);
         else
@@ -253,7 +253,7 @@ public class EnemyAI : TankBase
     }
     
     public List<Vector3> corners;
-    public void CalculateCenteredPath(Vector3 startPos, Vector3 endPos, int area, float offset)
+    public void CalculateCenteredPath(Vector3 startPos, Vector3 endPos, int area, int offset)
     {
         if (NavMesh.CalculatePath(startPos, endPos, area, path))
         {
@@ -272,10 +272,35 @@ public class EnemyAI : TankBase
 
                     Vector3 displacementDir = (prevDir + nextDir).normalized;
 
-                    centeredCorners[i] += displacementDir * offset;
+                    int randomOffset;
+                    if (area == 1 << 4 || area == 1 << 8 && !changingArea)
+                    {
+                        randomOffset = Random.Range(offset - 1, offset + 1);
+                        centeredCorners[i] += displacementDir * randomOffset;
+                    }
+                    else if (area == 1 << 11 || area == 1 << 12 && !changingArea)
+                    {
+                        randomOffset = Random.Range(offset - 1, offset + 2);
+                        centeredCorners[i] += displacementDir * randomOffset;                       
+                    }
+                    else if (changingArea && i == 1) // Mover el primer punto luego de spawnear hacia adelante
+                    {
+                        if (enemyArea == 5 || enemyArea == 9 || enemyArea == 11 || enemyArea == 12)
+                            centeredCorners[i] += prevDir * offset * 3;
+                        else
+                            centeredCorners[i] += prevDir * offset;
+                    }
+                    else
+                    {
+                        centeredCorners[i] += displacementDir * offset;
+                    }
 
                     NavMeshHit hit;
-                    if (NavMesh.SamplePosition(centeredCorners[i], out hit, offset * 2f, 1 << enemyArea))
+                    if (!changingArea && NavMesh.SamplePosition(centeredCorners[i], out hit, offset * 2f, 1 << enemyArea))
+                    {
+                        centeredCorners[i] = hit.position;
+                    }
+                    else if (changingArea && NavMesh.SamplePosition(centeredCorners[i], out hit, offset * 2f,NavMesh.AllAreas))
                     {
                         centeredCorners[i] = hit.position;
                     }

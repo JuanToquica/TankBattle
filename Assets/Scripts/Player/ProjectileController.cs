@@ -24,7 +24,7 @@ public class ProjectileController : MonoBehaviour
             {
                 EnemyHealth enemy = other.GetComponent<EnemyHealth>();
                 if (enemy != null)
-                    enemy.TakeDamage(10);
+                    enemy.TakeDamage(25);
                 Destroy(gameObject);
             }
             if (!other.CompareTag("Player"))

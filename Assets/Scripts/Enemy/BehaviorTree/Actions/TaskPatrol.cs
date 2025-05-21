@@ -22,18 +22,25 @@ public class TaskPatrol : Node
         {           
             if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 4f)
             {
+                Debug.Log("esquina alcanzada");
                 if (enemy.currentCornerInThePath == enemy.corners.Count - 1) //Termino un path a un waypoint
                 {
-                    int random = Random.Range(1, 3);
-                    if (random > 1)
+                    
+                    int random = Random.Range(1, 4);
+                    if (random > 2)
                     {
                         enemy.patrolWait = true;
                         enemy.followingPath = false;
                         enemy.path = new NavMeshPath();
                     }
                     else
-                    {
-                        enemy.currentWaypoint = Random.Range(0, enemy.waypoints.Count);
+                    {    
+                        int randomWaypoint;
+                        do
+                        {
+                            randomWaypoint = Random.Range(0, enemy.waypoints.Count);
+                        } while (enemy.currentWaypoint == randomWaypoint);
+                        enemy.currentWaypoint = randomWaypoint;
                         enemy.CalculatePath();
                     }   
                 }
@@ -45,6 +52,11 @@ public class TaskPatrol : Node
         }
         else
         {
+            int randomWaypoint;
+            do
+            {
+                randomWaypoint = Random.Range(0, enemy.waypoints.Count);
+            } while (enemy.currentWaypoint == randomWaypoint);
             enemy.CalculatePath();
             return NodeState.RUNNING;
         }        

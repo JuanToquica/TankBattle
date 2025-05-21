@@ -29,7 +29,7 @@ public class TaskPausePatrol : Node
             }
             else
             {
-                waitTime = Random.Range(2,5);
+                waitTime = Random.Range(1,5);
             }           
             return NodeState.RUNNING;
         }

@@ -691,7 +691,7 @@ MonoBehaviour:
   changingArea: 0
   isAwakening: 0
   patrolWait: 0
-  centeringOffset: 5
+  centeringOffset: 3
   corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
