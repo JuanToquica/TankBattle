@@ -130,11 +130,10 @@ public abstract class TankBase : MonoBehaviour
 
     protected void ManipulateMovementInCollision()
     {
-        bool hasVelocity = rb.linearVelocity.magnitude > 0.1f;
-        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner) && !hasVelocity)
+        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner))
             movement = 0;
 
-        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner) && !hasVelocity)
+        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner))
             movement = 0;
     }
 
@@ -194,19 +193,26 @@ public abstract class TankBase : MonoBehaviour
 
     protected void ApplySuspensionAnimation()
     {
+        if (superStructure == null)
+        {
+            if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
+                suspensionRotationSequence.Kill();
+            return;
+        }
+
         if (suspensionRotationSequence != null && suspensionRotationSequence.IsActive())
             suspensionRotationSequence.Kill();
 
-        suspensionRotationSequence = DOTween.Sequence();
+        suspensionRotationSequence = DOTween.Sequence().SetLink(superStructure.gameObject);
 
         if (currentState == State.accelerating)
         {
             if (movement > 0 && frontalCollision || movement < 0 && backCollision)
                 return;
             suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * -1, 0, 0),
-            accelerationTime).SetEase(Ease.InOutQuad));
+            accelerationTime).SetEase(Ease.InOutQuad)).SetLink(superStructure.gameObject);
 
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine));
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine)).SetLink(superStructure.gameObject);
         }
 
         if (currentState == State.braking)
@@ -214,9 +220,13 @@ public abstract class TankBase : MonoBehaviour
             float percentage = MathF.Abs(movement) > 0.9 ? 1 : Mathf.Abs(movement) - 0.3f;
 
             suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * percentage, 0, 0),
-                accelerationTime).SetEase(Ease.OutQuad));
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).SetEase(Ease.InOutSine));
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).SetEase(Ease.InSine));
+                accelerationTime).SetEase(Ease.OutQuad)).
+                SetLink(superStructure.gameObject);
+
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).
+                SetEase(Ease.InOutSine)).SetLink(superStructure.gameObject);
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).
+                SetEase(Ease.InSine)).SetLink(superStructure.gameObject);
         }
     }
 

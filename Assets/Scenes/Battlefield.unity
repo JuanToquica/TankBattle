@@ -11462,7 +11462,7 @@ GameObject:
   - component: {fileID: 266800285}
   - component: {fileID: 266800286}
   m_Layer: 6
-  m_Name: Area9
+  m_Name: Area12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11509,7 +11509,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 26, y: 1, z: 60}
   m_Center: {x: 0, y: 1, z: 3}
-  m_Area: 11
+  m_Area: 12
   m_AffectedAgents: ffffffff
 --- !u!4 &281932819 stripped
 Transform:
@@ -16462,14 +16462,14 @@ Transform:
   m_Children:
   - {fileID: 1513387724}
   - {fileID: 1397477152}
-  - {fileID: 938233175}
   - {fileID: 1763784178}
+  - {fileID: 938233175}
+  - {fileID: 1958129578}
   - {fileID: 1245336129}
   - {fileID: 718566487}
-  - {fileID: 1994817477}
   - {fileID: 683057768}
+  - {fileID: 1994817477}
   - {fileID: 266800285}
-  - {fileID: 1958129578}
   - {fileID: 1614491844}
   - {fileID: 2082347943}
   m_Father: {fileID: 0}
@@ -16486,22 +16486,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62310a1efe58de344be0d6780b1fbd6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
+  player: {fileID: 1250683245}
+  projectileContainer: {fileID: 2137308255}
   spawns:
   - {fileID: 1614491844}
   - {fileID: 2082347943}
-  area1Waypoints:
+  area3Waypoints:
   - {fileID: 1242459608}
   - {fileID: 2013804046}
   - {fileID: 575524617}
   - {fileID: 1641332705}
   - {fileID: 1072806076}
-  area2Waypoints:
+  area4Waypoints:
   - {fileID: 155578737}
   - {fileID: 1349898789}
   - {fileID: 646534685}
   - {fileID: 1608750081}
   - {fileID: 829231259}
-  area3Waypoints:
+  area5Waypoints:
+  - {fileID: 1614642328}
+  - {fileID: 1448088109}
+  - {fileID: 718130859}
+  - {fileID: 385391673}
+  - {fileID: 1008815951}
+  area6Waypoints:
   - {fileID: 1170733153}
   - {fileID: 2023823242}
   - {fileID: 2088698198}
@@ -16509,25 +16518,32 @@ MonoBehaviour:
   - {fileID: 822184775}
   - {fileID: 381833985}
   - {fileID: 353777372}
-  area4Waypoints:
-  - {fileID: 1614642328}
-  - {fileID: 1448088109}
-  - {fileID: 718130859}
-  - {fileID: 385391673}
-  - {fileID: 1008815951}
-  area5Waypoints:
+  area7Waypoints:
+  - {fileID: 1138909048}
+  - {fileID: 1126582475}
+  - {fileID: 1119887332}
+  - {fileID: 2073666963}
+  - {fileID: 1108888451}
+  - {fileID: 241299658}
+  area8Waypoints:
   - {fileID: 243962543}
   - {fileID: 736958181}
   - {fileID: 1990532047}
   - {fileID: 797165862}
   - {fileID: 1851356005}
-  area6Waypoints:
+  area9Waypoints:
   - {fileID: 1659735232}
   - {fileID: 1233117400}
   - {fileID: 855706160}
   - {fileID: 1131171989}
   - {fileID: 1193120908}
-  area7Waypoints:
+  area10Waypoints:
+  - {fileID: 1826754680}
+  - {fileID: 390429077}
+  - {fileID: 1183682518}
+  - {fileID: 933032437}
+  - {fileID: 1977730989}
+  area11Waypoints:
   - {fileID: 1124418260}
   - {fileID: 236269105}
   - {fileID: 680884298}
@@ -16535,13 +16551,7 @@ MonoBehaviour:
   - {fileID: 547207186}
   - {fileID: 1988756895}
   - {fileID: 854996469}
-  area8Waypoints:
-  - {fileID: 1826754680}
-  - {fileID: 390429077}
-  - {fileID: 1183682518}
-  - {fileID: 933032437}
-  - {fileID: 1977730989}
-  area9Waypoints:
+  area12Waypoints:
   - {fileID: 1797707369}
   - {fileID: 687743012}
   - {fileID: 368745511}
@@ -16553,20 +16563,11 @@ MonoBehaviour:
   - {fileID: 1477092155}
   - {fileID: 638624047}
   - {fileID: 1246050253}
-  area10Waypoints:
-  - {fileID: 1138909048}
-  - {fileID: 1126582475}
-  - {fileID: 1119887332}
-  - {fileID: 2073666963}
-  - {fileID: 1108888451}
-  - {fileID: 241299658}
-  enemyPrefab: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
-  player: {fileID: 1250683245}
-  projectileContainer: {fileID: 2137308255}
   timeToRespawn: 5
   timeBetweenSpawns: 3
   centeringOffset1: 2
   centeringOffset2: 4
+  activeEnemies: []
 --- !u!43 &478519698
 Mesh:
   m_ObjectHideFlags: 0
@@ -27016,7 +27017,7 @@ GameObject:
   - component: {fileID: 683057768}
   - component: {fileID: 683057769}
   m_Layer: 6
-  m_Name: Area8
+  m_Name: Area10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27297,7 +27298,7 @@ GameObject:
   - component: {fileID: 718566487}
   - component: {fileID: 718566488}
   m_Layer: 6
-  m_Name: Area6
+  m_Name: Area9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27338,7 +27339,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 30, y: 1, z: 55}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Area: 8
+  m_Area: 9
   m_AffectedAgents: ffffffff
 --- !u!43 &720144316
 Mesh:
@@ -39775,7 +39776,7 @@ GameObject:
   - component: {fileID: 938233175}
   - component: {fileID: 938233176}
   m_Layer: 6
-  m_Name: Area3
+  m_Name: Area6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39818,7 +39819,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 32, y: 1, z: 61}
   m_Center: {x: 0, y: 1, z: 0}
-  m_Area: 5
+  m_Area: 6
   m_AffectedAgents: ffffffff
 --- !u!43 &941599597
 Mesh:
@@ -46682,7 +46683,7 @@ GameObject:
   - component: {fileID: 1245336129}
   - component: {fileID: 1245336130}
   m_Layer: 6
-  m_Name: Area5
+  m_Name: Area8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46723,7 +46724,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 44, y: 8, z: 18}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Area: 7
+  m_Area: 8
   m_AffectedAgents: ffffffff
 --- !u!1 &1246050252
 GameObject:
@@ -53312,7 +53313,7 @@ GameObject:
   - component: {fileID: 1397477152}
   - component: {fileID: 1397477153}
   m_Layer: 6
-  m_Name: Area2
+  m_Name: Area4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55296,7 +55297,7 @@ GameObject:
   - component: {fileID: 1513387724}
   - component: {fileID: 1513387725}
   m_Layer: 6
-  m_Name: Area1
+  m_Name: Area3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63975,7 +63976,7 @@ GameObject:
   - component: {fileID: 1763784178}
   - component: {fileID: 1763784179}
   m_Layer: 6
-  m_Name: Area4
+  m_Name: Area5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64016,7 +64017,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 45, y: 1, z: 20}
   m_Center: {x: 0, y: 1, z: 0}
-  m_Area: 6
+  m_Area: 5
   m_AffectedAgents: ffffffff
 --- !u!43 &1766764333
 Mesh:
@@ -70523,7 +70524,7 @@ GameObject:
   - component: {fileID: 1958129578}
   - component: {fileID: 1958129579}
   m_Layer: 6
-  m_Name: Area10
+  m_Name: Area7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70565,7 +70566,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 40, y: 1, z: 38}
   m_Center: {x: 0, y: 1, z: 0}
-  m_Area: 12
+  m_Area: 7
   m_AffectedAgents: ffffffff
 --- !u!1 &1977730988
 GameObject:
@@ -70671,7 +70672,7 @@ GameObject:
   - component: {fileID: 1994817477}
   - component: {fileID: 1994817478}
   m_Layer: 6
-  m_Name: Area7
+  m_Name: Area11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70714,7 +70715,7 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_Size: {x: 32, y: 1, z: 61}
   m_Center: {x: 0, y: 1, z: 0}
-  m_Area: 9
+  m_Area: 11
   m_AffectedAgents: ffffffff
 --- !u!1 &2013804045
 GameObject:

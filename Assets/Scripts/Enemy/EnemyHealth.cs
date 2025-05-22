@@ -52,7 +52,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("ENEMY MUERTO");
-        enemyManager.DeadEnemy(enemyAI.enemyArea);
+        enemyManager.DeadEnemy(enemyAI.enemyArea);    
         Debug.Log(enemyAI.enemyArea);
         Destroy(gameObject);
     }

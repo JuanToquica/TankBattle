@@ -32,7 +32,7 @@ NavMeshProjectSettings:
   - name: Enemy10
     cost: 1
   - name: 
-    cost: 0
+    cost: 1
   - name: 
     cost: 1
   - name: 

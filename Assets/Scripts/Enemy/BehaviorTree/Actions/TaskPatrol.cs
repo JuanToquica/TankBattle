@@ -19,13 +19,11 @@ public class TaskPatrol : Node
     public override NodeState Evaluate()
     {
         if (enemy.path.status == NavMeshPathStatus.PathComplete)
-        {           
-            if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 4f)
+        {
+            if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 3)
             {
-                Debug.Log("esquina alcanzada");
                 if (enemy.currentCornerInThePath == enemy.corners.Count - 1) //Termino un path a un waypoint
-                {
-                    
+                {                   
                     int random = Random.Range(1, 4);
                     if (random > 2)
                     {
@@ -57,6 +55,7 @@ public class TaskPatrol : Node
             {
                 randomWaypoint = Random.Range(0, enemy.waypoints.Count);
             } while (enemy.currentWaypoint == randomWaypoint);
+            enemy.currentWaypoint = randomWaypoint;
             enemy.CalculatePath();
             return NodeState.RUNNING;
         }        

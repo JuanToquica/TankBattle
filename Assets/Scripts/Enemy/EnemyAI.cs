@@ -179,7 +179,7 @@ public class EnemyAI : TankBase
 
     public void CalculatePath()
     {
-        currentCornerInThePath = 1;   
+        currentCornerInThePath = 1;
         CalculateCenteredPath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, centeringOffset);
         ChangeDesiredMovement();
     }
@@ -189,9 +189,10 @@ public class EnemyAI : TankBase
         changingArea = true;
         currentCornerInThePath = 1;
         int min = 0;
-        if (enemyArea == 4 || enemyArea == 8)
-            min = 1;      
+        if (enemyArea == 4 || enemyArea == 9)
+            min = 3;      
         CalculateCenteredPath(transform.position, waypoints[Random.Range(min, waypoints.Count - 1)].position, NavMesh.AllAreas, 2);
+        ChangeDesiredMovement();
     }
 
 
@@ -202,7 +203,7 @@ public class EnemyAI : TankBase
         if (Mathf.Abs(angleToCorner) > 90)
         {
             int random = Random.Range(1, 3);
-            if (random == 1 && !frontalCollisionWithCorner && !backCollisionWithCorner)
+            if (random == 1 && !frontalCollisionWithCorner && !backCollisionWithCorner && !changingArea)
             {
                 desiredMovement = Mathf.Abs(angleToCorner) > 90f ? -1 : 1;               
             }
@@ -273,19 +274,19 @@ public class EnemyAI : TankBase
                     Vector3 displacementDir = (prevDir + nextDir).normalized;
 
                     int randomOffset;
-                    if (area == 1 << 4 || area == 1 << 8 && !changingArea)
+                    if (area == 1 << 4 || area == 1 << 9 && !changingArea)
                     {
                         randomOffset = Random.Range(offset - 1, offset + 1);
                         centeredCorners[i] += displacementDir * randomOffset;
                     }
-                    else if (area == 1 << 11 || area == 1 << 12 && !changingArea)
+                    else if (area == 1 << 7 || area == 1 << 12 && !changingArea)
                     {
                         randomOffset = Random.Range(offset - 1, offset + 2);
                         centeredCorners[i] += displacementDir * randomOffset;                       
                     }
                     else if (changingArea && i == 1) // Mover el primer punto luego de spawnear hacia adelante
                     {
-                        if (enemyArea == 5 || enemyArea == 9 || enemyArea == 11 || enemyArea == 12)
+                        if (enemyArea == 6 || enemyArea == 7 || enemyArea == 11 || enemyArea == 12)
                             centeredCorners[i] += prevDir * offset * 3;
                         else
                             centeredCorners[i] += prevDir * offset;

@@ -12,8 +12,8 @@ public class TaskChasePlayer : Node
 
     public override NodeState Evaluate()
     {
-        Debug.Log("Persiguiendo jugador");
-        enemy.followingPath = true;
+        
+        
         return NodeState.SUCCESS;
     }
 }
