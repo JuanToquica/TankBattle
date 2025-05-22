@@ -13,7 +13,6 @@ public class ConditionIsPlayerNearby : Node
     {
         if (enemy.distanceToPlayer < enemy.nearDistance)
             return NodeState.SUCCESS;
-        enemy.followingPath = false;
         return NodeState.FAILURE;
     }
 }

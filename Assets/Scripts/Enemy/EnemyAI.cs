@@ -49,6 +49,7 @@ public class EnemyAI : TankBase
     public int centeringOffset;
     private Vector3 flatForward;
     public float angleToCorner;
+    public bool dodgingAttacks;
 
     private void Start()
     {
@@ -96,8 +97,15 @@ public class EnemyAI : TankBase
         Sequence chasePlayerSequence = new Sequence(new List<Node> { chaseOrNotSelector, chasePlayer });
         Sequence avoidPlayerSequence = new Sequence(new List<Node> { playerNearby, avoidPlayer});
 
-        _rootOfMovement = new Selector(new List<Node> { changeArea, new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { chasePlayerSequence, avoidPlayerSequence, dodgeAttacks }) }), new Selector(new List<Node> { pausePatrol, patrol}) });
-        _rootOfTurret = new Selector(new List<Node> { new Sequence(new List<Node> { detectPlayer, new Selector(new List<Node> { attackSequence, searchPlayer}) }), watch});
+        _rootOfMovement = new Selector(new List<Node> { changeArea, 
+            new Sequence(new List<Node> { detectPlayer, 
+                new Selector(new List<Node> { chasePlayerSequence, avoidPlayerSequence, 
+                    new Selector(new List<Node> { pausePatrol, dodgeAttacks })}) }), 
+            new Selector(new List<Node> { pausePatrol, patrol}) });
+        
+        _rootOfTurret = new Selector(new List<Node> { 
+            new Sequence(new List<Node> { detectPlayer, 
+                new Selector(new List<Node> { attackSequence, searchPlayer}) }), watch});
     }
 
     private void Update()               
@@ -177,21 +185,18 @@ public class EnemyAI : TankBase
         }
     }
 
-    public void CalculatePath()
+    public void CalculatePath(Vector3 newPosition)
     {
         currentCornerInThePath = 1;
-        CalculateCenteredPath(transform.position, waypoints[currentWaypoint].position, 1 << enemyArea, centeringOffset);
+        CalculateCenteredPath(transform.position, newPosition, 1 << enemyArea, centeringOffset);
         ChangeDesiredMovement();
     }
 
     public void ChangeArea()
     {
         changingArea = true;
-        currentCornerInThePath = 1;
-        int min = 0;
-        if (enemyArea == 4 || enemyArea == 9)
-            min = 3;      
-        CalculateCenteredPath(transform.position, waypoints[Random.Range(min, waypoints.Count - 1)].position, NavMesh.AllAreas, 2);
+        currentCornerInThePath = 1;    
+        CalculateCenteredPath(transform.position, waypoints[0].position, NavMesh.AllAreas, 2);
         ChangeDesiredMovement();
     }
 
@@ -203,7 +208,7 @@ public class EnemyAI : TankBase
         if (Mathf.Abs(angleToCorner) > 90)
         {
             int random = Random.Range(1, 3);
-            if (random == 1 && !frontalCollisionWithCorner && !backCollisionWithCorner && !changingArea)
+            if ((random == 1 && !frontalCollisionWithCorner && !backCollisionWithCorner && !changingArea) || dodgingAttacks)
             {
                 desiredMovement = Mathf.Abs(angleToCorner) > 90f ? -1 : 1;               
             }

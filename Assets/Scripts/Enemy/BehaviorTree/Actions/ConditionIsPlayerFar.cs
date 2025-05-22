@@ -14,7 +14,6 @@ public class ConditionIsPlayerFar : Node
     {
         if (enemy.distanceToPlayer > enemy.farDistance)
             return NodeState.SUCCESS;
-        enemy.followingPath = false;
         return NodeState.FAILURE;
     }
 }

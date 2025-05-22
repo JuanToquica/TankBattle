@@ -29,7 +29,10 @@ public class TaskPausePatrol : Node
             }
             else
             {
-                waitTime = Random.Range(1,5);
+                if (enemy.knowsPlayerPosition)
+                    waitTime = Random.Range(1f, 2f);
+                else
+                    waitTime = Random.Range(1f, 5f);
             }           
             return NodeState.RUNNING;
         }

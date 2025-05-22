@@ -23,7 +23,7 @@ public class TaskChangeArea : Node
                     {
                         enemy.changingArea = false;
                         enemy.currentWaypoint = Random.Range(0, enemy.waypoints.Count);
-                        enemy.CalculatePath();
+                        enemy.CalculatePath(enemy.waypoints[enemy.currentWaypoint].position);
                         return NodeState.SUCCESS;
                     }
                     else

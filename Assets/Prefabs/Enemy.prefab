@@ -671,8 +671,8 @@ MonoBehaviour:
   timeToLeaveSpawn: 1
   timeToForgetPlayer: 5
   distanceToDetectPlayer: 15
-  farDistance: 0
-  nearDistance: 0
+  farDistance: 250
+  nearDistance: 15
   maxAimingTolerance: 10
   detectingPlayer: 0
   knowsPlayerPosition: 0
@@ -692,6 +692,7 @@ MonoBehaviour:
   isAwakening: 0
   patrolWait: 0
   centeringOffset: 3
+  angleToCorner: 0
   corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
@@ -724,6 +725,8 @@ MonoBehaviour:
   maxHealth: 20
   healthBar: {fileID: 9055663720333651912}
   healthBarCanvas: {fileID: 8831676335023892345}
+  enemyManager: {fileID: 0}
+  enemyAI: {fileID: 0}
   player: {fileID: 0}
 --- !u!120 &8565006817356517853
 LineRenderer:

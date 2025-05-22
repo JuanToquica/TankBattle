@@ -39,7 +39,7 @@ public class TaskPatrol : Node
                             randomWaypoint = Random.Range(0, enemy.waypoints.Count);
                         } while (enemy.currentWaypoint == randomWaypoint);
                         enemy.currentWaypoint = randomWaypoint;
-                        enemy.CalculatePath();
+                        enemy.CalculatePath(enemy.waypoints[enemy.currentWaypoint].position);
                     }   
                 }
                 else
@@ -56,7 +56,7 @@ public class TaskPatrol : Node
                 randomWaypoint = Random.Range(0, enemy.waypoints.Count);
             } while (enemy.currentWaypoint == randomWaypoint);
             enemy.currentWaypoint = randomWaypoint;
-            enemy.CalculatePath();
+            enemy.CalculatePath(enemy.waypoints[enemy.currentWaypoint].position);
             return NodeState.RUNNING;
         }        
         return NodeState.SUCCESS;
