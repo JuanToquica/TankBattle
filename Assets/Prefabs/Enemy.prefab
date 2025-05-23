@@ -522,6 +522,7 @@ GameObject:
   - component: {fileID: 2225202212155526804}
   - component: {fileID: 8565006817356517853}
   - component: {fileID: 7904873154672580411}
+  - component: {fileID: 8090152331157290795}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -693,6 +694,7 @@ MonoBehaviour:
   patrolWait: 0
   centeringOffset: 3
   angleToCorner: 0
+  dodgingAttacks: 0
   corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
@@ -851,6 +853,24 @@ MonoBehaviour:
   trackRightAnimator: {fileID: 8026374212970832448}
   LeftWheelsAnimator: {fileID: 1025052606601450933}
   RightWheelsAnimator: {fileID: 6597188790165030257}
+--- !u!114 &8090152331157290795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983249391379277366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
+  outlineWidth: 10
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1188205941721291907
 GameObject:
   m_ObjectHideFlags: 0

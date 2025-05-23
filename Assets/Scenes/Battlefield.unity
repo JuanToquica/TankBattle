@@ -12198,6 +12198,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 747922983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &342816809 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2327042614831684458, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &353777371
 GameObject:
   m_ObjectHideFlags: 0
@@ -77079,9 +77084,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: range
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: aimAngle
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: firePoint
+      value: 
+      objectReference: {fileID: 342816809}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: amountOfRaycast
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: projectilesContainer
       value: 
       objectReference: {fileID: 2137308255}
+    - target: {fileID: 873664337873309746, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: m_Name
+      value: FirePoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327042614831684458, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.9
+      objectReference: {fileID: 0}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: cameraPivot
       value: 

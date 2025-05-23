@@ -1,17 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private Animator animator;       
-    [SerializeField] private Transform spawnPoint;
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private Transform projectilesContainer;
+    [SerializeField] private Transform firePoint;
     [SerializeField] private float cooldown;
+    [SerializeField] private float range;
+    [SerializeField] private float aimAngle;
+    [SerializeField] private float amountOfRaycast;
+    private Animator animator;
     public float cooldownWithPowerUp;
     private float currentCooldown;
     private float cooldownTimer;
-    private Coroutine restoreCoroutine;
+    private RaycastHit mainHit;
 
     private void Start()
     {
@@ -26,32 +28,64 @@ public class PlayerAttack : MonoBehaviour
         {
             cooldownTimer = Mathf.Clamp(cooldownTimer + Time.deltaTime, 0, currentCooldown);
         }
+        Aim();
     }
+
+    public void Aim()
+    {
+        float halfAngle = aimAngle / 2f;
+        float angleStep = aimAngle / amountOfRaycast;
+        int hitEnemyCounter = 0;
+        for (int i = 0; i < amountOfRaycast; i++)
+        {
+            float currentVerticalAngle = -halfAngle + (i * angleStep);
+            Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, firePoint.right);
+            Vector3 rayDirection = rotation * firePoint.forward;
+
+            if (Physics.Raycast(firePoint.position, rayDirection, out RaycastHit hit, range))
+            {                   
+                Debug.DrawLine(firePoint.position, hit.point, Color.red, 0.2f);
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    mainHit = hit;
+                }
+                else
+                {
+                    hitEnemyCounter++;
+                }
+            }
+        }
+        if (hitEnemyCounter == amountOfRaycast)
+        {
+            Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, range);
+            mainHit = hit;
+        }
+    }
+
     public void Fire()
     {
         if (cooldownTimer == currentCooldown)
         {
             animator.SetBool("Fire", true);
-            GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.Euler(0, spawnPoint.rotation.eulerAngles.y, 0));
-            projectile.transform.SetParent(projectilesContainer);
-            projectile.tag = "PlayerProjectile";
+            if (mainHit.collider.CompareTag("Enemy"))
+            {
+                EnemyHealth enemy = mainHit.collider.GetComponent<EnemyHealth>();
+                enemy.TakeDamage(3);
+            }
             cooldownTimer = 0;
         }        
     }
 
     public void RecharchingPowerUp(float duration)
     {
-        if (restoreCoroutine != null)
-            StopCoroutine(restoreCoroutine);
         currentCooldown = cooldownWithPowerUp;
         if (cooldownTimer >= currentCooldown)
             cooldownTimer = currentCooldown;
-        restoreCoroutine = StartCoroutine(RestoreCooldown(duration));
+        Invoke("RestoreCooldown", duration);
     }
 
-    private IEnumerator RestoreCooldown(float duration)
+    private void RestoreCooldown()
     {
-        yield return new WaitForSeconds(duration);
         currentCooldown = cooldown;
     }
 
