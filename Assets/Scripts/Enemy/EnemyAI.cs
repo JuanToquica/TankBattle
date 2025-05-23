@@ -84,7 +84,6 @@ public class EnemyAI : TankBase
         TaskPatrol patrol = new TaskPatrol(this);
         TaskPausePatrol pausePatrol = new TaskPausePatrol(this);
         TaskWatch watch = new TaskWatch(this);
-        TaskSearchPlayer searchPlayer = new TaskSearchPlayer(this);
         TaskAvoidPlayer avoidPlayer = new TaskAvoidPlayer(this);
         TaskDodgeAttacks dodgeAttacks = new TaskDodgeAttacks(this);
         TaskChangeArea changeArea = new TaskChangeArea(this);
@@ -105,7 +104,7 @@ public class EnemyAI : TankBase
         
         _rootOfTurret = new Selector(new List<Node> { 
             new Sequence(new List<Node> { detectPlayer, 
-                new Selector(new List<Node> { attackSequence, searchPlayer}) }), watch});
+                new Selector(new List<Node> { attackSequence, watch}) }), watch});
     }
 
     private void Update()               
@@ -255,7 +254,12 @@ public class EnemyAI : TankBase
 
     public override void RotateTurret()
     {
-        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angleToPlayer) * Time.fixedDeltaTime, 0);
+        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angleToPlayer) * Time.deltaTime, 0);
+    }
+
+    public void RotatoTurretToWatch(float angle)
+    {
+        turret.Rotate(0, turretRotationSpeed* Mathf.Sign(angle) * Time.deltaTime, 0);
     }
     
     public List<Vector3> corners;
