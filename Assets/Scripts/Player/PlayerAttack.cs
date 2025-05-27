@@ -1,19 +1,27 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform projectileContainer;
     [SerializeField] private float cooldown;
     [SerializeField] private float range;
     [SerializeField] private float aimAngle;
     [SerializeField] private float amountOfRaycast;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float bulletRange;
+    [SerializeField] private float damageAmount;   
     private Animator animator;
     public float cooldownWithPowerUp;
     private float currentCooldown;
-    private float cooldownTimer;
+    public float cooldownTimer;
+    private Outline currentOutlinedEnemy;
     private RaycastHit mainHit;
+    private bool _isAimingAtEnemy;
 
     private void Start()
     {
@@ -35,42 +43,90 @@ public class PlayerAttack : MonoBehaviour
     {
         float halfAngle = aimAngle / 2f;
         float angleStep = aimAngle / amountOfRaycast;
-        int hitEnemyCounter = 0;
+
+        bool foundEnemyInThisScan = false;
+        RaycastHit bestHitInThisScan = new RaycastHit();
+        bestHitInThisScan.distance = Mathf.Infinity;
+
         for (int i = 0; i < amountOfRaycast; i++)
         {
             float currentVerticalAngle = -halfAngle + (i * angleStep);
             Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, firePoint.right);
             Vector3 rayDirection = rotation * firePoint.forward;
-
-            if (Physics.Raycast(firePoint.position, rayDirection, out RaycastHit hit, range))
-            {                   
-                Debug.DrawLine(firePoint.position, hit.point, Color.red, 0.2f);
-                if (hit.collider.CompareTag("Enemy"))
+            bool ray = Physics.Raycast(firePoint.position, rayDirection, out RaycastHit hit, range);
+            Debug.DrawRay(firePoint.position, rayDirection * range, Color.red);
+            
+            if (ray)
+            {                                 
+                if (hit.transform.CompareTag("Enemy"))
                 {
-                    mainHit = hit;
-                }
-                else
-                {
-                    hitEnemyCounter++;
+                    if (hit.distance < bestHitInThisScan.distance)
+                    {
+                        bestHitInThisScan = hit;                      
+                    }
+                    foundEnemyInThisScan = true;
                 }
             }
         }
-        if (hitEnemyCounter == amountOfRaycast)
-        {
-            Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, range);
-            mainHit = hit;
+
+        if (foundEnemyInThisScan)
+        {           
+            Outline newEnemyOutline = bestHitInThisScan.transform.GetComponent<Outline>();
+
+            if (newEnemyOutline != null && newEnemyOutline != currentOutlinedEnemy)
+            {
+                if (currentOutlinedEnemy != null)
+                {
+                    currentOutlinedEnemy.enabled = false;
+                }
+                newEnemyOutline.enabled = true;
+                currentOutlinedEnemy = newEnemyOutline;
+            }
+            else if (newEnemyOutline != null && newEnemyOutline == currentOutlinedEnemy)
+            {
+                currentOutlinedEnemy.enabled = true;
+            }
+            mainHit = bestHitInThisScan;
+            _isAimingAtEnemy = true;
         }
+        else
+        {
+            if (currentOutlinedEnemy != null)
+            {
+                currentOutlinedEnemy.enabled = false;
+                currentOutlinedEnemy = null;
+            }
+            Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, 200);
+            mainHit = hit;
+            _isAimingAtEnemy = false;
+        }
+        Debug.DrawLine(firePoint.position, mainHit.point, Color.red, 0.2f);
     }
 
     public void Fire()
-    {
+    { 
         if (cooldownTimer == currentCooldown)
         {
             animator.SetBool("Fire", true);
-            if (mainHit.collider.CompareTag("Enemy"))
+
+            Vector3 startPos = firePoint.position;
+            Vector3 fireDirection;
+
+            if (_isAimingAtEnemy)
             {
-                EnemyHealth enemy = mainHit.collider.GetComponent<EnemyHealth>();
-                enemy.TakeDamage(3);
+                fireDirection = (mainHit.point - startPos).normalized;
+            }
+            else
+            {
+                fireDirection = firePoint.forward;
+            }
+
+            GameObject bulletInstance = Instantiate(projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
+            ProjectileController bulletSim = bulletInstance.GetComponent<ProjectileController>();
+
+            if (bulletSim != null)
+            {
+                bulletSim.Initialize(startPos, fireDirection, bulletSpeed, bulletRange, damageAmount);
             }
             cooldownTimer = 0;
         }        

@@ -77085,20 +77085,40 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: range
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: aimAngle
-      value: 30
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: cooldown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 342816809}
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-      propertyPath: amountOfRaycast
-      value: 10
+      propertyPath: bulletRange
+      value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: bulletSpeed
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: damageAmount
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: amountOfRaycast
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      propertyPath: projectileContainer
+      value: 
+      objectReference: {fileID: 2137308255}
     - target: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: projectilesContainer
       value: 
