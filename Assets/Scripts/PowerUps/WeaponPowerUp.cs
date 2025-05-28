@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class RechargingPowerUp : MonoBehaviour
+public class WeaponPowerUp : MonoBehaviour
 {
-    [SerializeField] private float powerUpDuration;
     public PowerUpSpawner powerUpSpawner;
     public Transform targetPoint;
     public int index;
@@ -28,14 +27,16 @@ public class RechargingPowerUp : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerAttack player = other.GetComponent<PlayerAttack>();
-            if (player != null)
-                player.RecharchingPowerUp(powerUpDuration);
-            powerUpSpawner.PowerUpCollected(PowerUps.recharging, index);
+            powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);
+            Destroy(gameObject);
+        }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);
             Destroy(gameObject);
         }
     }
