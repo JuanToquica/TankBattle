@@ -3,10 +3,10 @@ using UnityEngine.SearchService;
 
 public class ProjectileController : MonoBehaviour
 {
-    public float speed;
-    public float maxRange;
-    public float damageAmount = 3;
-
+    [SerializeField] private GameObject impactVfx;
+    private float speed;
+    private float maxRange;
+    private float damageAmount = 3;
     private Vector3 currentPosition;
     private Vector3 direction;
     private float travelledDistance = 0f;
@@ -35,12 +35,21 @@ public class ProjectileController : MonoBehaviour
 
             if (hit.transform.CompareTag("Enemy"))
             {
-                EnemyHealth enemy = hit.transform.GetComponentInParent<EnemyHealth>();
+                EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damageAmount);
                 }
             }
+            if (hit.transform.CompareTag("Player"))
+            {
+                PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
+                if (player != null)
+                {
+                    player.TakeDamage(damageAmount);
+                }
+            }
+            Instantiate(impactVfx, hit.point -direction * 0.2f, Quaternion.identity);
             Destroy(gameObject);
         }
         else
@@ -54,22 +63,6 @@ public class ProjectileController : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {      
-        if (this.CompareTag("EnemyProjectile"))
-        {
-            if (other.CompareTag("Player"))
-            {
-                PlayerHealth player = other.GetComponent<PlayerHealth>();
-                if (player != null)
-                    player.TakeDamage(3);
-                Destroy(gameObject);
-            }
-            if (!other.CompareTag("Enemy"))
-                Destroy(gameObject);
         }
     }
 

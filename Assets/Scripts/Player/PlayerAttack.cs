@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder;
 using UnityEngine.UIElements;
 
 public class PlayerAttack : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileContainer;
+    [SerializeField] private GameObject shotVfx;
     [SerializeField] private float cooldown;
     [SerializeField] private float range;
     [SerializeField] private float aimAngle;
@@ -108,7 +110,7 @@ public class PlayerAttack : MonoBehaviour
         if (cooldownTimer == currentCooldown)
         {
             animator.SetBool("Fire", true);
-
+            Instantiate(shotVfx, firePoint.position, firePoint.rotation);
             Vector3 startPos = firePoint.position;
             Vector3 fireDirection;
 
@@ -123,6 +125,7 @@ public class PlayerAttack : MonoBehaviour
 
             GameObject bulletInstance = Instantiate(projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
             ProjectileController bulletSim = bulletInstance.GetComponent<ProjectileController>();
+            bulletInstance.transform.SetParent(projectileContainer);
 
             if (bulletSim != null)
             {

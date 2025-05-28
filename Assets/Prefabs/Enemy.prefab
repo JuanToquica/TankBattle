@@ -708,10 +708,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82884bcfea2e3c49b61f6d2803bd773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpawnPoint: {fileID: 1407597519195156811}
+  firePoint: {fileID: 1407597519195156811}
   projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
   coolDown: 2
-  projectilesContainer: {fileID: 0}
+  projectileContainer: {fileID: 0}
+  shotVfx: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
+  bulletSpeed: 400
+  bulletRange: 150
+  damageAmount: 3
+  aimAngle: 40
+  amountOfRaycast: 16
+  range: 60
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8731,7 +8738,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1407597519195156811}
   m_Layer: 0
-  m_Name: ProjectileSpawnPoint
+  m_Name: FirePoint
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
