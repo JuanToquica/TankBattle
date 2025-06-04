@@ -7,31 +7,38 @@ public class EnemyAttack : MonoBehaviour
     private Animator animator;
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float coolDown;
+    [SerializeField] private float cooldown;
     [HideInInspector] public Transform projectileContainer;
     [SerializeField] private GameObject shotVfx;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletRange;
     [SerializeField] private float damageAmount;
+    public float cooldownWithPowerUp;
+    private float currentCooldown;
     public float aimAngle;
     public float amountOfRaycast;
     public float range;
     private EnemyAI enemy;
-    private float nextShootTimer = 0;
+    private float cooldownTimer = 0;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         enemy = GetComponent<EnemyAI>();
+        currentCooldown = cooldown;
+        cooldownTimer = currentCooldown;
     }
 
     private void Update()
     {
-        nextShootTimer = Mathf.Clamp(nextShootTimer + Time.deltaTime, 0, coolDown);
+        if (cooldownTimer < currentCooldown)
+        {
+            cooldownTimer = Mathf.Clamp(cooldownTimer + Time.deltaTime, 0, currentCooldown);
+        }
     }
     public bool CanShoot()
     {
-        return nextShootTimer == coolDown;
+        return cooldownTimer == currentCooldown;
     }
 
     public void Shoot()
@@ -87,7 +94,20 @@ public class EnemyAttack : MonoBehaviour
             bulletSim.Initialize(firePoint.position, fireDirection.normalized, bulletSpeed, bulletRange, damageAmount);
         }
 
-        nextShootTimer = 0;
+        cooldownTimer = 0;
+    }
+
+    public void RecharchingPowerUp(float duration)
+    {
+        currentCooldown = cooldownWithPowerUp;
+        if (cooldownTimer >= currentCooldown)
+            cooldownTimer = currentCooldown;
+        Invoke("RestoreCooldown", duration);
+    }
+
+    private void RestoreCooldown()
+    {
+        currentCooldown = cooldown;
     }
 
     public void EndShootAnimation() => animator.SetBool("Fire", false);

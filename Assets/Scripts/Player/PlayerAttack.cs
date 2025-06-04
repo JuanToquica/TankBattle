@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -16,7 +16,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float amountOfRaycast;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletRange;
-    [SerializeField] private float damageAmount;   
+    [SerializeField] private float damageAmount;
+    [SerializeField] private Image cooldownImage;
     private Animator animator;
     public float cooldownWithPowerUp;
     private float currentCooldown;
@@ -25,11 +26,15 @@ public class PlayerAttack : MonoBehaviour
     private RaycastHit mainHit;
     private bool _isAimingAtEnemy;
 
+    private void OnEnable()
+    {
+        currentCooldown = cooldown;
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         currentCooldown = cooldown;
-        cooldownTimer = currentCooldown;
     }
 
     private void Update()
@@ -39,6 +44,7 @@ public class PlayerAttack : MonoBehaviour
             cooldownTimer = Mathf.Clamp(cooldownTimer + Time.deltaTime, 0, currentCooldown);
         }
         Aim();
+        cooldownImage.fillAmount = cooldownTimer / currentCooldown;
     }
 
     public void Aim()

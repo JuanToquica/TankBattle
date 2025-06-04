@@ -121,4 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797b8bda97c18884dba69f677bd70224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpDuration: 5
+  powerUpDuration: 20
+  powerUpSpawner: {fileID: 0}
+  targetPoint: {fileID: 0}
+  index: 0

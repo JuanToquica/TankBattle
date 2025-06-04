@@ -21,6 +21,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform[] area10Waypoints;
     [SerializeField] private Transform[] area11Waypoints;
     [SerializeField] private Transform[] area12Waypoints;
+    [SerializeField] private Transform[] chaseArea1Waypoints;
+    [SerializeField] private Transform[] chaseArea2Waypoints;
 
     [Header("Time and Offset")]
     [SerializeField] private float timeToRespawn;
@@ -33,6 +35,7 @@ public class EnemyManager : MonoBehaviour
     public Queue<int> spawnQueue_Spawn1 = new Queue<int>(); //Areas 7,8,9,10,11
     public bool spawn0Available;
     public bool spawn1Available;
+    public bool chasingInArea14;
     private Dictionary<int, Transform[]> wayPointsByArea;
 
     private void Awake()
@@ -48,6 +51,8 @@ public class EnemyManager : MonoBehaviour
         wayPointsByArea.Add(10, area10Waypoints);
         wayPointsByArea.Add(11, area11Waypoints);
         wayPointsByArea.Add(12, area12Waypoints);
+        wayPointsByArea.Add(13, chaseArea1Waypoints);
+        wayPointsByArea.Add(14, chaseArea2Waypoints);
 
         activeEnemiesByArea = new Dictionary<int, EnemyAI>();
     }
@@ -65,7 +70,8 @@ public class EnemyManager : MonoBehaviour
         EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
         EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
         EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
-        enemyAI.player = player;       
+        enemyAI.player = player;
+        enemyAI.enemyManager = this;
         enemyAI.enemyArea = area;
         enemyAI.waypoints = new List<Transform>(wayPointsByArea[area]);
         enemyHealth.player = player;
@@ -198,5 +204,26 @@ public class EnemyManager : MonoBehaviour
             }
         }
         return newSpawnArea;
+    }
+
+    public void ChangeAreaToChase(int area)
+    {
+        if (area == 7 && activeEnemiesByArea.TryGetValue(area, out EnemyAI enemy) && enemy != null)
+        {
+            enemy.oldArea = area;
+            enemy.enemyArea = 13;
+            enemy.waypoints.Clear();
+            enemy.waypoints = new List<Transform>(wayPointsByArea[13]);
+            enemy.ChangeArea();
+        }
+        else if ((area == 5 || area == 10) && activeEnemiesByArea.TryGetValue(area, out EnemyAI enemy2) && enemy2 != null)
+        {
+            enemy2.oldArea = area;
+            enemy2.enemyArea = 14;
+            enemy2.waypoints.Clear();
+            enemy2.waypoints = new List<Transform>(wayPointsByArea[14]);
+            enemy2.ChangeArea();
+            chasingInArea14 = true;
+        }
     }
 }

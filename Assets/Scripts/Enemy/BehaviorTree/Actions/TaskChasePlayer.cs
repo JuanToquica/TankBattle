@@ -35,6 +35,7 @@ public class TaskChasePlayer : Node
                 if (enemy.currentCornerInThePath == enemy.corners.Count - 1)
                 {
                     enemy.followingPath = false;
+                    enemy.path = new NavMeshPath();
                 }
                 else
                 {

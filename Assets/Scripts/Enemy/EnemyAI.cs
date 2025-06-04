@@ -9,7 +9,8 @@ using Unity.Burst.Intrinsics;
 
 public class EnemyAI : TankBase
 {    
-    private WheelAnimations wheelAnimations;     
+    private WheelAnimations wheelAnimations;  
+    public EnemyManager enemyManager;
     public LineRenderer lineRenderer;
     public NavMeshPath path;
     public EnemyAttack enemyAttack;
@@ -50,6 +51,7 @@ public class EnemyAI : TankBase
     private Vector3 flatForward;
     public float angleToCorner;
     public bool dodgingAttacks;
+    public int oldArea = 0;
 
     private void Start()
     {
@@ -57,7 +59,11 @@ public class EnemyAI : TankBase
         wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();       
         rb = GetComponent<Rigidbody>();
-        path = new NavMeshPath();       
+        path = new NavMeshPath();
+
+        springStrength = minSpringStrength;
+        dampSensitivity = minDampSensitivity;
+        rb.inertiaTensor = minInertiaTensor;
 
         RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
@@ -87,7 +93,7 @@ public class EnemyAI : TankBase
         TaskAvoidPlayer avoidPlayer = new TaskAvoidPlayer(this);
         TaskDodgeAttacks dodgeAttacks = new TaskDodgeAttacks(this);
         TaskChangeArea changeArea = new TaskChangeArea(this);
-        ConditionIsPlayerFar playerFar = new ConditionIsPlayerFar(this);
+        ConditionIsPlayerFar playerFar = new ConditionIsPlayerFar(this, enemyManager);
         ConditionIsPlayerNearby playerNearby = new ConditionIsPlayerNearby(this);
         ConditionalHasLineOfSight hasLineOfSight = new ConditionalHasLineOfSight(this);
 
@@ -194,8 +200,33 @@ public class EnemyAI : TankBase
     public void ChangeArea()
     {
         changingArea = true;
-        currentCornerInThePath = 1;    
-        CalculateCenteredPath(transform.position, waypoints[0].position, NavMesh.AllAreas, 2);
+        currentCornerInThePath = 1;
+        int waypoint = 0;
+        if (enemyArea == 13)
+        {
+            if ((player.position - waypoints[1].position).magnitude < (player.position - waypoints[0].position).magnitude)
+            {
+                waypoint = 1;
+            }
+        }
+        else if (enemyArea == 14)
+        {
+            Debug.Log(oldArea);
+            if (oldArea == 10)
+            {
+                if ((player.position - waypoints[1].position).magnitude < (player.position - waypoints[3].position).magnitude)
+                    waypoint = 1;
+                else
+                    waypoint = 3;
+            }
+            else if (oldArea == 5)
+            {
+                if ((player.position - waypoints[2].position).magnitude < (player.position - waypoints[0].position).magnitude)
+                    waypoint = 2;
+            }
+
+        }
+        CalculateCenteredPath(transform.position, waypoints[waypoint].position, NavMesh.AllAreas, 2);
         ChangeDesiredMovement();
     }
 
@@ -341,10 +372,10 @@ public class EnemyAI : TankBase
     {
         Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, normalGround).normalized;
 
-        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f));
-        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f));
+        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f)) + transform.forward * 0.1f;
+        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
         Debug.DrawRay(origin1, flatForward * raycastDistance, Color.red);
         Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);

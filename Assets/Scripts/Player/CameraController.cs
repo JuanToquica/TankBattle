@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform playerTurret;
+    [SerializeField] private Transform player;
     [SerializeField] private Transform mainCamera;
+    [SerializeField] private Transform raycastOrigin;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private InputManager inputManager;
     [SerializeField] private Vector3 maxOffset;
     [SerializeField] private Vector3 minOffset;
     [SerializeField] private float maxRotation;
@@ -13,32 +17,45 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothingInCollision;
     [SerializeField] private float rotationSmoothingWithKeys;
     [SerializeField] private float rotationSmoothingWithMouse;
+    public float originOffset;
     public float sensitivity;
     private float currentT = 1;
     public float horizontalRotation;
     private float rotationRef;
+    LayerMask combinedLayers;
+    public float distanceA;
+    public float distanceB;
 
+    private void Start()
+    {
+        combinedLayers = (1 << 6) | (1 << 2);
+    }
     private void Update()
     {
-        if (playerController.playerInput.Player.MoveTurretWithKeys.enabled)
+        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
         {
             Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, playerTurret.rotation.eulerAngles.y, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithKeys * Time.deltaTime);
             horizontalRotation = transform.eulerAngles.y;
         }
-        else if (playerController.playerInput.Player.MoveTurretWithMouse.enabled)
+        else if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled)
         {
             horizontalRotation += playerController.mouseInput * sensitivity * Time.deltaTime;
             Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, horizontalRotation, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
         }
 
-        float distance = Mathf.Abs(maxOffset.z) + 1;
-        Vector3 directionToCamera = ((mainCamera.position) - playerTurret.position).normalized;
-        Debug.DrawRay(playerTurret.position - playerTurret.forward * 0.85f, directionToCamera * distance);
+        
+       
+        
+        Vector3 directionToCamera = (mainCamera.position - raycastOrigin.position).normalized;
+        Vector3 origin = raycastOrigin.position + directionToCamera * distanceA;
+        float distance = Mathf.Abs(maxOffset.z) + distanceB;
 
-        float targetT = Physics.Raycast(playerTurret.position - playerTurret.forward * 0.85f, directionToCamera, out RaycastHit hit, distance, 1 << 6)?
-            Mathf.Clamp01(hit.distance / distance) : 1;
+        Debug.DrawRay(origin, directionToCamera * distance);
+
+        float targetT = Physics.Raycast(origin, directionToCamera, out RaycastHit hit, distance, combinedLayers) ?
+            Mathf.Clamp01((hit.distance / distance) - originOffset) : 1;
 
         currentT = Mathf.Lerp(currentT, targetT, Time.deltaTime * smoothingInCollision);
         mainCamera.localPosition = Vector3.Lerp(minOffset, maxOffset, currentT);

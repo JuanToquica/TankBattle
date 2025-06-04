@@ -7,7 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Image healthBar;
     [SerializeField] private Transform healthBarCanvas;
     public EnemyManager enemyManager;
-    [SerializeField] private EnemyAI enemyAI;
+    private EnemyAI enemyAI;
     public Transform player;
     private Transform healthBarTransform;
     private float health;
@@ -52,8 +52,15 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("ENEMY MUERTO");
-        enemyManager.DeadEnemy(enemyAI.enemyArea);    
-        Debug.Log(enemyAI.enemyArea);
+        int area = enemyAI.enemyArea;
+        if (enemyAI.enemyArea == 13)
+            area = 7;
+        if (enemyAI.enemyArea == 14)
+        {
+            enemyManager.chasingInArea14 = false;
+            area = enemyAI.oldArea;
+        }         
+        enemyManager.DeadEnemy(area);    
         Destroy(gameObject);
     }
 }

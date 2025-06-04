@@ -31,9 +31,9 @@ NavMeshProjectSettings:
     cost: 1
   - name: Enemy10
     cost: 1
-  - name: 
+  - name: AreaDePersecusion1
     cost: 1
-  - name: 
+  - name: AreaDePersecusion2
     cost: 1
   - name: 
     cost: 1

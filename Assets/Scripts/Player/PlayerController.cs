@@ -6,9 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : TankBase
 {
-    public PlayerInput playerInput;
-    private WheelAnimations wheelAnimations;
-    private PlayerAttack playerAttack;
+    [SerializeField] private InputManager inputManager;
+    private WheelAnimations wheelAnimations;   
     private Vector2 input;
     public float turretRotationInput;
     public float mouseInput;
@@ -18,28 +17,35 @@ public class PlayerController : TankBase
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private CameraController cameraController;
 
-    private void Awake()
-    {
-        playerInput = new PlayerInput();
-
-        playerInput.Player.CenterTurret.started += ctx => ActivateTurretCenteringAndChangeTurretControlToKeys();
-        playerInput.Player.Fire.started += ctx => playerAttack.Fire();
-        playerInput.Player.FireKeyOnly.started += ctx => playerAttack.Fire();
-        playerInput.Player.SwitchTurretControlToMouse.started += ctx => SwitchTurretControlToMouse();
+    private void OnEnable()
+    {        
+        currentRotationSpeed = tankRotationSpeed;
+        movement = 0;
+        rotation = 0;
+        lastDistances = new float[suspensionPoints.Length];
+        springStrength = minSpringStrength;
+        dampSensitivity = minDampSensitivity;
+        if (rb != null)
+        {
+            RestoreSpeed();
+            rb.inertiaTensor = minInertiaTensor;
+        }      
     }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        playerAttack = GetComponent<PlayerAttack>();
         wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();
-        playerInput.Player.MoveTurretWithMouse.Disable();
-        playerInput.Player.Fire.Disable();
+        inputManager.playerInput.Player.MoveTurretWithMouse.Disable();
+        inputManager.playerInput.Player.Fire.Disable();
 
         RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
         lastDistances = new float[suspensionPoints.Length];
+        springStrength = minSpringStrength;
+        dampSensitivity = minDampSensitivity;
+        rb.inertiaTensor = minInertiaTensor;
     }
 
     private void Update()
@@ -67,10 +73,10 @@ public class PlayerController : TankBase
     }
     private void ReadAndInterpolateInputs()
     {
-        input = playerInput.Player.Move.ReadValue<Vector2>();
+        input = inputManager.playerInput.Player.Move.ReadValue<Vector2>();
         directionOrInput = input.y;
-        mouseInput = playerInput.Player.MoveTurretWithMouse.ReadValue<float>();
-        turretRotationInput = playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
+        mouseInput = inputManager.playerInput.Player.MoveTurretWithMouse.ReadValue<float>();
+        turretRotationInput = inputManager.playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
 
         SetMomentum();
         if (isGrounded)
@@ -96,7 +102,7 @@ public class PlayerController : TankBase
     }
     public override void RotateTurret()
     {
-        if (playerInput.Player.MoveTurretWithKeys.enabled)
+        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
         {
             if (turretRotationInput != 0)
             {
@@ -104,7 +110,7 @@ public class PlayerController : TankBase
                 turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.deltaTime, 0);               
             }
         }
-        else if (playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivotRotation)
+        else if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivotRotation)
         {
             float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivotRotation);
             float direction = Mathf.Sign(angleDifference);
@@ -121,29 +127,31 @@ public class PlayerController : TankBase
         }
     }
 
-    private void ActivateTurretCenteringAndChangeTurretControlToKeys()
+    public void ActivateTurretCenteringAndChangeTurretControlToKeys()
     {
+        if (GameManager.instance.isTheGamePaused) return;
         centeringTurret = true;
-        if (playerInput.Player.MoveTurretWithMouse.enabled)
+        if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled)
         {
-            playerInput.Player.Fire.Disable();
-            playerInput.Player.MoveTurretWithMouse.Disable();
-            playerInput.Player.FireKeyOnly.Enable();            
-            playerInput.Player.SwitchTurretControlToMouse.Enable();
-            playerInput.Player.MoveTurretWithKeys.Enable();
+            inputManager.playerInput.Player.Fire.Disable();
+            inputManager.playerInput.Player.MoveTurretWithMouse.Disable();
+            inputManager.playerInput.Player.FireKeyOnly.Enable();
+            inputManager.playerInput.Player.SwitchTurretControlToMouse.Enable();
+            inputManager.playerInput.Player.MoveTurretWithKeys.Enable();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
     }
-    private void SwitchTurretControlToMouse()
+    public void SwitchTurretControlToMouse()
     {
-        if (playerInput.Player.MoveTurretWithKeys.enabled)
+        if (GameManager.instance.isTheGamePaused) return;
+        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
         {
-            playerInput.Player.FireKeyOnly.Disable();
-            playerInput.Player.MoveTurretWithKeys.Disable();
-            playerInput.Player.Fire.Enable();
-            playerInput.Player.SwitchTurretControlToMouse.Disable();           
-            playerInput.Player.MoveTurretWithMouse.Enable();
+            inputManager.playerInput.Player.FireKeyOnly.Disable();
+            inputManager.playerInput.Player.MoveTurretWithKeys.Disable();
+            inputManager.playerInput.Player.Fire.Enable();
+            inputManager.playerInput.Player.SwitchTurretControlToMouse.Disable();
+            inputManager.playerInput.Player.MoveTurretWithMouse.Enable();
             centeringTurret = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;           
@@ -154,10 +162,10 @@ public class PlayerController : TankBase
     {       
         Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, normalGround).normalized;
 
-        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f));
-        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f));
+        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
+        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
         Debug.DrawRay(origin1, flatForward * raycastDistance, Color.red);
         Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);
@@ -165,8 +173,6 @@ public class PlayerController : TankBase
         Debug.DrawRay(origin4, -flatForward * raycastDistance, Color.red);
     }
 
-    private void OnEnable() => playerInput.Enable();
-    private void OnDisable() => playerInput.Disable();
     void OnDrawGizmos()
     {
         if (rb != null)

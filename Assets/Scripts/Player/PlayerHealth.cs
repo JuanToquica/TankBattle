@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [SerializeField] private PlayerSpawner spawner;
     [SerializeField] private float maxHealth;
     [SerializeField] private Image healthBar;
     private float health;
@@ -37,6 +38,11 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("MUERTO");
+        if (GameManager.instance.playerHasTheFlag)
+        {
+            GameManager.instance.OnPlayerDeathWithFlag();
+        }
+        healthBar.fillAmount = 0;
+        spawner.OnPlayerDead();
     }
 }

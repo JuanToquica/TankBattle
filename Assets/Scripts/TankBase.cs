@@ -23,7 +23,9 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected float angularAccelerationTime;
     [SerializeField] protected float angularDampingInGround;
     [SerializeField] protected float angularDampingOutGround;
-    [SerializeField] protected float raycastDistance;   
+    [SerializeField] protected float raycastDistance;
+    public Vector3 minInertiaTensor;
+    public Vector3 maxInertiaTensor;
     public float movement;
     public float rotation;  
     protected float turretRotationRef;
@@ -48,9 +50,13 @@ public abstract class TankBase : MonoBehaviour
     [Header("Suspension")]
     [SerializeField] protected Transform[] suspensionPoints;
     [SerializeField] protected float suspensionLenght;
-    [SerializeField] protected float springStrength;
-    [SerializeField] protected float dampSensitivity;
+    [SerializeField] protected float minSpringStrength;
+    [SerializeField] protected float minDampSensitivity;
+    [SerializeField] protected float maxSpringStrength;
+    [SerializeField] protected float maxDampSensitivity;
     protected float[] lastDistances;
+    public float springStrength;
+    public float dampSensitivity;
 
     [Header("Suspension Animation")]
     [SerializeField] protected float suspensionRotation;
@@ -116,7 +122,7 @@ public abstract class TankBase : MonoBehaviour
         }
         else
         {
-            rb.linearDamping = 0.2f;
+            rb.linearDamping = 0.4f;
         }
     }
 
@@ -130,10 +136,10 @@ public abstract class TankBase : MonoBehaviour
 
     protected void ManipulateMovementInCollision()
     {
-        if (movement > 0 && directionOrInput < 0 && (frontalCollision || frontalCollisionWithCorner))
+        if (movement > 0 && directionOrInput < 0 && frontalCollision)
             movement = 0;
 
-        if (movement < 0 && directionOrInput > 0 && (backCollision || backCollisionWithCorner))
+        if (movement < 0 && directionOrInput > 0 && backCollision)
             movement = 0;
     }
 
@@ -169,9 +175,9 @@ public abstract class TankBase : MonoBehaviour
                     contactPointsWithGround++;
             }
         }
-        if (contactPointsWithGround == 6)
+        if (contactPointsWithGround == 9)
             isGrounded = true;       
-        else if (contactPointsWithGround >=2 && contactPointsWithGround <= 5 && !frontalCollision && !backCollision)
+        else if (contactPointsWithGround >=3 && contactPointsWithGround <= 8 && !frontalCollision && !backCollision)
             isGrounded = true;
         else
             isGrounded = false;
@@ -230,14 +236,14 @@ public abstract class TankBase : MonoBehaviour
         }
     }
 
-    protected void OnCollisionStay(Collision collision)
+    public void OnCollisionStay(Collision collision)
     {
         Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, normalGround).normalized;
 
-        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f + (flatForward * 1.5f));
-        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f));
-        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f));
+        Vector3 origin1 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin2 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f + (flatForward * 1.5f)) - transform.forward * 0.1f;
+        Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
+        Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
         bool rightFrontalCollision = Physics.Raycast(origin1, flatForward, raycastDistance, ~0);
         bool leftFrontalCollision = Physics.Raycast(origin2, flatForward, raycastDistance, ~0);
@@ -276,7 +282,7 @@ public abstract class TankBase : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    public void OnCollisionExit(Collision collision)
     {
         frontalCollision = false;
         frontalCollisionWithCorner = false;
@@ -290,6 +296,9 @@ public abstract class TankBase : MonoBehaviour
         speed = speedMinMax.y;
         tankRotationSpeed = tankRotationSpeedMinMax.y;
         turretRotationSpeed = turretRotationSpeedMinMax.y;
+        rb.inertiaTensor = maxInertiaTensor;
+        springStrength = maxSpringStrength;
+        dampSensitivity = maxDampSensitivity;
         Invoke("RestoreSpeed", duration);
     }
 
@@ -298,6 +307,9 @@ public abstract class TankBase : MonoBehaviour
         speed = speedMinMax.x;
         tankRotationSpeed = tankRotationSpeedMinMax.x;
         turretRotationSpeed = turretRotationSpeedMinMax.x;
+        rb.inertiaTensor = minInertiaTensor;
+        springStrength = minSpringStrength;
+        dampSensitivity = minDampSensitivity;
     }
 
     void OnDrawGizmos()
