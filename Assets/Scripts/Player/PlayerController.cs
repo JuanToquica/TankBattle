@@ -6,11 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : TankBase
 {
-    [SerializeField] private InputManager inputManager;
     private WheelAnimations wheelAnimations;   
     private Vector2 input;
     public float turretRotationInput;
-    public float mouseInput;
     public float cameraPivotRotation;
 
     [Header ("Camera")]
@@ -37,8 +35,9 @@ public class PlayerController : TankBase
         rb = GetComponent<Rigidbody>();
         wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();
-        inputManager.playerInput.Player.MoveTurretWithMouse.Disable();
-        inputManager.playerInput.Player.Fire.Disable();
+        InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
+        InputManager.Instance.playerInput.actions["Shoot1"].Disable();
+        InputManager.Instance.player = this;
 
         RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;
@@ -73,10 +72,9 @@ public class PlayerController : TankBase
     }
     private void ReadAndInterpolateInputs()
     {
-        input = inputManager.playerInput.Player.Move.ReadValue<Vector2>();
+        input = InputManager.Instance.moveInput;
         directionOrInput = input.y;
-        mouseInput = inputManager.playerInput.Player.MoveTurretWithMouse.ReadValue<float>();
-        turretRotationInput = inputManager.playerInput.Player.MoveTurretWithKeys.ReadValue<float>();
+        turretRotationInput = InputManager.Instance.turretInput;
 
         SetMomentum();
         if (isGrounded)
@@ -102,7 +100,7 @@ public class PlayerController : TankBase
     }
     public override void RotateTurret()
     {
-        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
+        if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
         {
             if (turretRotationInput != 0)
             {
@@ -110,7 +108,7 @@ public class PlayerController : TankBase
                 turret.Rotate(0, turretRotationSpeed * turretRotationInput * Time.deltaTime, 0);               
             }
         }
-        else if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled && turret.rotation.eulerAngles.y != cameraPivotRotation)
+        else if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled && turret.rotation.eulerAngles.y != cameraPivotRotation)
         {
             float angleDifference = Mathf.DeltaAngle(turret.rotation.eulerAngles.y, cameraPivotRotation);
             float direction = Mathf.Sign(angleDifference);
@@ -129,29 +127,25 @@ public class PlayerController : TankBase
 
     public void ActivateTurretCenteringAndChangeTurretControlToKeys()
     {
-        if (GameManager.instance.isTheGamePaused) return;
         centeringTurret = true;
-        if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled)
+        if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled)
         {
-            inputManager.playerInput.Player.Fire.Disable();
-            inputManager.playerInput.Player.MoveTurretWithMouse.Disable();
-            inputManager.playerInput.Player.FireKeyOnly.Enable();
-            inputManager.playerInput.Player.SwitchTurretControlToMouse.Enable();
-            inputManager.playerInput.Player.MoveTurretWithKeys.Enable();
+            InputManager.Instance.playerInput.actions["Shoot1"].Disable();
+            InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
+            InputManager.Instance.playerInput.actions["SwitchTurretControlToMouse"].Enable();
+            InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].Enable();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
     }
     public void SwitchTurretControlToMouse()
     {
-        if (GameManager.instance.isTheGamePaused) return;
-        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
+        if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
         {
-            inputManager.playerInput.Player.FireKeyOnly.Disable();
-            inputManager.playerInput.Player.MoveTurretWithKeys.Disable();
-            inputManager.playerInput.Player.Fire.Enable();
-            inputManager.playerInput.Player.SwitchTurretControlToMouse.Disable();
-            inputManager.playerInput.Player.MoveTurretWithMouse.Enable();
+            InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].Disable();
+            InputManager.Instance.playerInput.actions["Shoot1"].Enable();
+            InputManager.Instance.playerInput.actions["SwitchTurretControlToMouse"].Disable();
+            InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Enable();
             centeringTurret = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;           

@@ -18,5 +18,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Garage.unity
     guid: eea7234707a93e24796966b42ee63b3d
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 1d818d7b22044a8408c81cd33a8947e1, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_UseUCBPForAssetBundles: 0

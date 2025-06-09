@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -31,5 +32,10 @@ public class PauseIU : MonoBehaviour
     {
         ConfirmationIU.SetActive(true);
         gameObject.SetActive(false);
+    }
+
+    public void OnEnable()
+    {
+        EventSystem.current.firstSelectedGameObject = resumeButton.gameObject;
     }
 }

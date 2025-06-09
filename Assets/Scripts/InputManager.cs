@@ -1,21 +1,148 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
     public PlayerInput playerInput;
-    [SerializeField] private PlayerController player;
-    [SerializeField] private PlayerAttack playerAttack;
+    public PlayerController player;
+    public PlayerAttack playerAttack;
+    public Vector2 moveInput;
+    public float mouseInput;
+    public float turretInput;
+
     private void Awake()
     {
-        playerInput = new PlayerInput();
-
-        playerInput.Player.CenterTurret.started += ctx => player.ActivateTurretCenteringAndChangeTurretControlToKeys();
-        playerInput.Player.Fire.started += ctx => playerAttack.Fire();
-        playerInput.Player.FireKeyOnly.started += ctx => playerAttack.Fire();
-        playerInput.Player.SwitchTurretControlToMouse.started += ctx => player.SwitchTurretControlToMouse();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            playerInput = GetComponent<PlayerInput>();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            LoadActionMaps();          
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
 
-    private void OnEnable() => playerInput.Enable();
-    private void OnDisable() => playerInput.Disable();
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        string currentScene = scene.name;
+
+        if (currentScene == "Battlefield")
+        {
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.GetComponent<PlayerController>();
+                playerAttack = playerObj.GetComponent<PlayerAttack>();
+            }
+
+            playerInput.actions.FindActionMap("Player").Enable();
+            playerInput.actions.FindAction("Pause").Enable();
+        }
+        else
+        {
+            playerInput.actions.FindActionMap("Player").Disable();
+            playerInput.actions.FindAction("Pause").Disable();
+        }
+    }
+
+    private void LoadActionMaps()
+    {
+        foreach (var map in playerInput.actions.actionMaps)
+        {
+            string json = PlayerPrefs.GetString(map.name);
+            if (!string.IsNullOrEmpty(json))
+            {
+                map.LoadBindingOverridesFromJson(json);
+            }
+        }
+    }
+
+    public void ResetActionMaps()
+    {
+        foreach (var map in playerInput.actions.actionMaps)
+        {
+            if (PlayerPrefs.HasKey(map.name))
+            {
+                PlayerPrefs.DeleteKey(map.name);
+            }
+            map.RemoveAllBindingOverrides();
+        }       
+    }
+
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    public void OnMoveTurretWithKeys(InputAction.CallbackContext ctx)
+    {
+        turretInput = ctx.ReadValue<float>();
+    }
+
+    public void OnMoveTurretWithMouse(InputAction.CallbackContext ctx)
+    {
+        mouseInput = ctx.ReadValue<float>();
+    }
+
+    public void OnCenterTurret(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && player != null)
+            player.ActivateTurretCenteringAndChangeTurretControlToKeys();
+    }
+        
+    public void OnShoot1(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && playerAttack != null)
+            playerAttack.Fire();
+    }
+        
+    public void OnShoot2(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && playerAttack != null)
+            playerAttack.Fire();
+    }
+        
+    public void OnSwitchTurretControlToMouse(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && player != null)
+            player.SwitchTurretControlToMouse();
+    }
+        
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+            GameManager.instance.PauseAndUnpauseGame();
+    }       
+
+    public void OnSelectButton()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            StartCoroutine(SelectFirstNextFrame());
+        }
+    }
+
+    private IEnumerator SelectFirstNextFrame()
+    {
+        yield return null; //Para que no pase al siguiente boton, ya que se usa el mismo bind para el move hacia abajo
+        EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
+    }
+
+    private void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
+    private void OnEnable() => playerInput.enabled = true;
+    private void OnDisable()
+    {
+        if (playerInput != null)
+            playerInput.enabled = false;
+    }
 }

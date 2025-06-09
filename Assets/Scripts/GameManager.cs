@@ -5,8 +5,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseUI;
-    public static GameManager instance;
-    private InputManager inputManager;   
+    public static GameManager instance; 
     [SerializeField] private GameObject flag1;
     [SerializeField] private GameObject flag2;
     public int playerMaxScore;
@@ -30,8 +29,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        inputManager = GetComponent<InputManager>();
-        inputManager.playerInput.IU.Pause.started += ctx => PauseAndUnpauseGame();
         playerScore = 0;
         enemyScore = 0;        
     }
@@ -66,6 +63,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             pauseUI.SetActive(false);
             isTheGamePaused = false;
+            InputManager.Instance.playerInput.actions.FindActionMap("Player").Enable();
+            InputManager.Instance.playerInput.actions["SelectButton"].Disable();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -74,6 +73,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             pauseUI.SetActive(true);
             isTheGamePaused = true;
+            InputManager.Instance.playerInput.actions.FindActionMap("Player").Disable();
+            InputManager.Instance.playerInput.actions["SelectButton"].Enable();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

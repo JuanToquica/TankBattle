@@ -35,6 +35,7 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         currentCooldown = cooldown;
+        InputManager.Instance.playerAttack = this;
     }
 
     private void Update()

@@ -9,7 +9,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform raycastOrigin;
     [SerializeField] private PlayerController playerController;
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private Vector3 maxOffset;
     [SerializeField] private Vector3 minOffset;
     [SerializeField] private float maxRotation;
@@ -32,15 +31,15 @@ public class CameraController : MonoBehaviour
     }
     private void Update()
     {
-        if (inputManager.playerInput.Player.MoveTurretWithKeys.enabled)
+        if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
         {
             Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, playerTurret.rotation.eulerAngles.y, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithKeys * Time.deltaTime);
             horizontalRotation = transform.eulerAngles.y;
         }
-        else if (inputManager.playerInput.Player.MoveTurretWithMouse.enabled)
+        else if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled)
         {
-            horizontalRotation += playerController.mouseInput * sensitivity * Time.deltaTime;
+            horizontalRotation += InputManager.Instance.mouseInput * sensitivity * Time.deltaTime;
             Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, horizontalRotation, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
         }

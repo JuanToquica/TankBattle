@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MainMenuiu : MonoBehaviour
 {
@@ -28,7 +29,13 @@ public class MainMenuiu : MonoBehaviour
 
     public void OnSettingsButtonClicked()
     {
-        SettingsIU.SetActive(false);
+        SettingsIU.SetActive(true);
+        gameObject.SetActive(false);
     }
 
+
+    public void OnEnable()
+    {
+        EventSystem.current.firstSelectedGameObject = playButton.gameObject;
+    }
 }

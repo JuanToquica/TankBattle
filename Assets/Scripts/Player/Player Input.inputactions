@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fire",
+                    "name": "Shoot1",
                     "type": "Button",
                     "id": "c7936966-c199-4bd1-8e13-be19fc56b757",
                     "expectedControlType": "",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FireKeyOnly",
+                    "name": "Shoot2",
                     "type": "Button",
                     "id": "b203f756-93a3-4f1d-8140-2a28cc11fb95",
                     "expectedControlType": "",
@@ -171,23 +171,12 @@
                 },
                 {
                     "name": "",
-                    "id": "1ae85ace-8e0c-415f-973f-7caf5a6e02a2",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Fire",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "11627d60-6588-4653-8815-82851e200018",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Fire",
+                    "action": "Shoot1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -198,7 +187,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "FireKeyOnly",
+                    "action": "Shoot2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -227,13 +216,22 @@
             ]
         },
         {
-            "name": "IU",
+            "name": "UI",
             "id": "4c813216-c83b-4572-92e9-289cd67d05bb",
             "actions": [
                 {
+                    "name": "SelectButton",
+                    "type": "Button",
+                    "id": "ed3acba9-256d-4dac-a68f-961c88987da0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Pause",
                     "type": "Button",
-                    "id": "7bd5578c-3679-4b0a-87e3-84110a2ddefe",
+                    "id": "f5a88bb1-8d75-45f5-8ce1-9cbc7f7c001f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -243,8 +241,19 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "41ffbbe6-2b38-4f7c-a0c7-499f9cd3521b",
-                    "path": "<Keyboard>/escape",
+                    "id": "cba1aacb-1d1b-4c3d-8536-3b857c145a23",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4228f640-dbce-4473-b638-75928f498c81",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

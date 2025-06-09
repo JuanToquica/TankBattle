@@ -12532,7 +12532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 316804941}
   - component: {fileID: 316804939}
-  - component: {fileID: 316804942}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12582,20 +12581,6 @@ Transform:
   - {fileID: 678474658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &316804942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316804938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 123bf3c7c20eb554fb72b0386c8fa7ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1250683242}
-  playerAttack: {fileID: 1708100496}
 --- !u!43 &325199416
 Mesh:
   m_ObjectHideFlags: 0
@@ -67262,17 +67247,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1708100496 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 661628349888591672, guid: f762bb6c7085af94eae3192f43847643, type: 3}
-  m_PrefabInstance: {fileID: 8507099174638843365}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641265707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd33cc23c0d82294399185936efbc18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1712346332
 GameObject:
   m_ObjectHideFlags: 0
@@ -83348,7 +83322,7 @@ PrefabInstance:
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: inputManager
       value: 
-      objectReference: {fileID: 316804942}
+      objectReference: {fileID: 0}
     - target: {fileID: 4419308105662984020, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       propertyPath: springStrength
       value: 30000
@@ -83581,7 +83555,7 @@ MonoBehaviour:
   mainCamera: {fileID: 158061943366694656}
   raycastOrigin: {fileID: 1752298588}
   playerController: {fileID: 1250683242}
-  inputManager: {fileID: 316804942}
+  inputManager: {fileID: 0}
   maxOffset: {x: 0, y: 2.1, z: -7.2}
   minOffset: {x: 0, y: 0, z: 0}
   maxRotation: 22

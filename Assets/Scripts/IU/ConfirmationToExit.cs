@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class ConfirmationToExit : MonoBehaviour
 {
@@ -24,5 +25,10 @@ public class ConfirmationToExit : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OnEnable()
+    {
+        EventSystem.current.firstSelectedGameObject = cancelButton.gameObject;
     }
 }
