@@ -27,7 +27,9 @@ public class PlayerController : TankBase
         {
             RestoreSpeed();
             rb.inertiaTensor = minInertiaTensor;
-        }      
+        }
+        if (InputManager.Instance != null)
+            InputManager.Instance.player = this;
     }
 
     private void Start()

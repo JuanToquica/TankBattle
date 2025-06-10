@@ -262,6 +262,96 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "GaragePlayer",
+            "id": "cf97a0c1-d40b-4274-bcff-bc0e384dd832",
+            "actions": [
+                {
+                    "name": "CenterTurretInGarage",
+                    "type": "Button",
+                    "id": "f3646b6d-c1b2-4fae-9e1d-4c2eba376ae5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveTurretWithKey",
+                    "type": "Value",
+                    "id": "22fc69ea-9a22-4e0c-b08d-b53f15de4324",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Rotate",
+                    "type": "Value",
+                    "id": "8120aad5-ab5c-46df-a1ba-9f2f6561c94a",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "15db5509-289a-4b73-b033-edd6fea9e582",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CenterTurretInGarage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "623b6386-aacf-4515-b253-2b9b51e5a7e6",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveTurretWithKey",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3ff79da8-90e2-4bf6-b5f1-fd5acd8270d6",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveTurretWithKey",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "6287309a-d193-4527-a62f-cf13805d577e",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveTurretWithKey",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c2e81ba2-e08f-43ac-8467-814105e28b0b",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

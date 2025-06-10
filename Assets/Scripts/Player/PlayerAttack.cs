@@ -29,6 +29,8 @@ public class PlayerAttack : MonoBehaviour
     private void OnEnable()
     {
         currentCooldown = cooldown;
+        if (InputManager.Instance != null)
+            InputManager.Instance.playerAttack = this;
     }
 
     private void Start()

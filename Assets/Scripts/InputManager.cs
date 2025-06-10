@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     public PlayerInput playerInput;
     public PlayerController player;
+    public GarageTankController garageTankController;
     public PlayerAttack playerAttack;
     public Vector2 moveInput;
     public float mouseInput;
@@ -38,21 +39,37 @@ public class InputManager : MonoBehaviour
 
         if (currentScene == "Battlefield")
         {
-            GameObject playerObj = GameObject.FindWithTag("Player");
-            if (playerObj != null)
-            {
-                player = playerObj.GetComponent<PlayerController>();
-                playerAttack = playerObj.GetComponent<PlayerAttack>();
-            }
-
             playerInput.actions.FindActionMap("Player").Enable();
             playerInput.actions.FindAction("Pause").Enable();
+            playerInput.actions.FindActionMap("GaragePlayer").Disable();
+        }
+        else if (currentScene == "Garage")
+        {
+            playerInput.actions.FindActionMap("Player").Disable();
+            playerInput.actions.FindActionMap("GaragePlayer").Enable();
+            playerInput.actions.FindAction("Pause").Disable();
         }
         else
         {
             playerInput.actions.FindActionMap("Player").Disable();
             playerInput.actions.FindAction("Pause").Disable();
+            playerInput.actions.FindActionMap("GaragePlayer").Disable();
         }
+    }
+
+    public void RegisterPlayerController(PlayerController controller)
+    {
+        player = controller;
+    }
+
+    public void RegisterPlayerAttack(PlayerAttack playerAttack)
+    {
+        this.playerAttack = playerAttack;
+    }
+
+    public void RegisterGarageTankController(GarageTankController controller)
+    {
+        garageTankController = controller;
     }
 
     private void LoadActionMaps()
@@ -99,7 +116,12 @@ public class InputManager : MonoBehaviour
         if (ctx.started && player != null)
             player.ActivateTurretCenteringAndChangeTurretControlToKeys();
     }
-        
+    public void OnCenterTurretInGarage(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && garageTankController != null)
+            garageTankController.StartTurretCentering();
+    }
+
     public void OnShoot1(InputAction.CallbackContext ctx)
     {
         if (ctx.started && playerAttack != null)
@@ -122,7 +144,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.started)
             GameManager.instance.PauseAndUnpauseGame();
-    }       
+    }
 
     public void OnSelectButton()
     {
@@ -131,6 +153,7 @@ public class InputManager : MonoBehaviour
             StartCoroutine(SelectFirstNextFrame());
         }
     }
+   
 
     private IEnumerator SelectFirstNextFrame()
     {
