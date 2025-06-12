@@ -7947,8 +7947,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1532596278}
+  - component: {fileID: 1532596279}
   m_Layer: 0
-  m_Name: EconomyManager
+  m_Name: DataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7969,6 +7970,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1532596279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532596277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1001ea343086f2d4e9db9920d69cc5b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armorStrengthUpgradeData: {fileID: 11400000, guid: da773bc33ab27874284addacb027956a, type: 2}
+  mainGunUpgradeData: {fileID: 11400000, guid: 895008055a836034299a85ac9d3fff46, type: 2}
+  railgunUpgradeData: {fileID: 11400000, guid: c57460101dd883f41ab6c2c941f4d7f5, type: 2}
+  machineGunUpgradeData: {fileID: 11400000, guid: 3fbe8e8638180d4489a3bc3c8ab155c7, type: 2}
+  rocketUpgradeData: {fileID: 11400000, guid: 9e958204e9b4d3d41827f7ea18c05d49, type: 2}
 --- !u!1 &1558955290
 GameObject:
   m_ObjectHideFlags: 0

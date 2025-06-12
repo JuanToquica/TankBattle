@@ -9,9 +9,9 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance;
     public PlayerInput playerInput;
-    public PlayerController player;
-    public GarageTankController garageTankController;
-    public PlayerAttack playerAttack;
+    private PlayerController player;
+    private GarageTankController garageTankController;
+    private PlayerAttack playerAttack;
     public Vector2 moveInput;
     public float mouseInput;
     public float turretInput;

@@ -29,7 +29,7 @@ public class PlayerController : TankBase
             rb.inertiaTensor = minInertiaTensor;
         }
         if (InputManager.Instance != null)
-            InputManager.Instance.player = this;
+            InputManager.Instance.RegisterPlayerController(this);
     }
 
     private void Start()
@@ -39,7 +39,7 @@ public class PlayerController : TankBase
         tankCollider = GetComponent<BoxCollider>();
         InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
         InputManager.Instance.playerInput.actions["Shoot1"].Disable();
-        InputManager.Instance.player = this;
+        InputManager.Instance.RegisterPlayerController(this);
 
         RestoreSpeed();
         currentRotationSpeed = tankRotationSpeed;

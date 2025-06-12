@@ -54643,7 +54643,7 @@ Transform:
   m_GameObject: {fileID: 1353540963}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.585, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -66562,6 +66562,30 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6541809429596402474, guid: f762bb6c7085af94eae3192f43847643, type: 3}
   m_PrefabInstance: {fileID: 8507099174638843365}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1641265708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641265707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6623720748091154dbeca3e777cd37b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialsData: {fileID: 11400000, guid: ff08802e5848cc743a1e42e80b546079, type: 2}
+  turretMeshRenderer: {fileID: 8507099174638843376}
+  cannonMeshRenderer: {fileID: 8507099174638843375}
+  tankMeshRenderer: {fileID: 8507099174638843374}
+  SmallWheelsRightMeshRenderer: {fileID: 8507099174638843373}
+  WheelFrontRightMeshRenderer: {fileID: 8507099174638843372}
+  WheelBackRightMeshRenderer: {fileID: 8507099174638843371}
+  SmallWheelsLeftMeshRenderer: {fileID: 8507099174638843370}
+  WheelFrontLeftMeshRenderer: {fileID: 8507099174638843369}
+  WheelBackLeftMeshRenderer: {fileID: 8507099174638843368}
+  TrackRightMeshRenderer: {fileID: 8507099174638843367}
+  TrackLeftMeshRenderer: {fileID: 8507099174638843366}
 --- !u!1 &1641332704
 GameObject:
   m_ObjectHideFlags: 0
@@ -83499,8 +83523,66 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3193176132853621179, guid: f762bb6c7085af94eae3192f43847643, type: 3}
       insertIndex: -1
       addedObject: {fileID: 988444465}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6541809429596402474, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1641265708}
   m_SourcePrefab: {fileID: 100100000, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+--- !u!137 &8507099174638843366 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 11792249647925766, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8507099174638843367 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8076953207214133561, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843368 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5015743796141225867, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843369 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8394352859198284393, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843370 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2281448857499713386, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843371 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4928522343527945240, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843372 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6994981913223040425, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843373 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4255014498974934890, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843374 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3790577397443085212, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843375 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4899805131934725077, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8507099174638843376 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4552667795278613353, guid: f762bb6c7085af94eae3192f43847643, type: 3}
+  m_PrefabInstance: {fileID: 8507099174638843365}
+  m_PrefabAsset: {fileID: 0}
 --- !u!222 &8524153122578263937
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -83555,7 +83637,6 @@ MonoBehaviour:
   mainCamera: {fileID: 158061943366694656}
   raycastOrigin: {fileID: 1752298588}
   playerController: {fileID: 1250683242}
-  inputManager: {fileID: 0}
   maxOffset: {x: 0, y: 2.1, z: -7.2}
   minOffset: {x: 0, y: 0, z: 0}
   maxRotation: 22

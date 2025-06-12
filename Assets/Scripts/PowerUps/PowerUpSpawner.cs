@@ -50,7 +50,7 @@ public class PowerUpSpawner : MonoBehaviour
         {
             case PowerUps.speed:
                 Vector3 position1 = speedPowerUpSpawnPoints[index].position + new Vector3(0, spawnHeight, 0);
-                GameObject speedPowerUp = Instantiate(speedPowerUpPrefab, position1, Quaternion.identity);
+                GameObject speedPowerUp = Instantiate(speedPowerUpPrefab, position1, Quaternion.Euler(-90,0,0));
                 speedPowerUp.transform.SetParent(powerUpsContainer);
                 SpeedPowerUp script1 = speedPowerUp.GetComponent<SpeedPowerUp>();
                 if (script1 != null)
@@ -63,7 +63,7 @@ public class PowerUpSpawner : MonoBehaviour
                 break;
             case PowerUps.recovery:
                 Vector3 position2 = recoveryPowerUpSpawnPoints[index].position + new Vector3(0, spawnHeight, 0);
-                GameObject recoveryPowerUp = Instantiate(recoveryPowerUpPrefab, position2, Quaternion.identity);
+                GameObject recoveryPowerUp = Instantiate(recoveryPowerUpPrefab, position2, Quaternion.Euler(-90, 0, 0));
                 RecoveryPowerUp script2 = recoveryPowerUp.GetComponent<RecoveryPowerUp>();
                 recoveryPowerUp.transform.SetParent(powerUpsContainer);
                 if (script2 != null)
@@ -76,7 +76,7 @@ public class PowerUpSpawner : MonoBehaviour
                 break;
             case PowerUps.recharging:
                 Vector3 position3 = rechargingPowerUpSpawnPoints[index].position + new Vector3(0, spawnHeight, 0);
-                GameObject rechargingPowerUp = Instantiate(rechargingPowerUpPrefab, position3, Quaternion.identity);
+                GameObject rechargingPowerUp = Instantiate(rechargingPowerUpPrefab, position3, Quaternion.Euler(-90, 0, 0));
                 RechargingPowerUp script3 = rechargingPowerUp.GetComponent<RechargingPowerUp>();
                 rechargingPowerUp.transform.SetParent(powerUpsContainer);
                 if (script3 != null)
@@ -89,7 +89,7 @@ public class PowerUpSpawner : MonoBehaviour
                 break;
             case PowerUps.weapon:
                 Vector3 position4 = weaponPowerUpSpawnPoints[index].position + new Vector3(0, spawnHeight, 0);
-                GameObject weaponPowerUp = Instantiate(weaponPowerUpPrefab, position4, Quaternion.identity);
+                GameObject weaponPowerUp = Instantiate(weaponPowerUpPrefab, position4, Quaternion.Euler(-90, 0, 0));
                 WeaponPowerUp script4 = weaponPowerUp.GetComponent<WeaponPowerUp>();
                 weaponPowerUp.transform.SetParent(powerUpsContainer);
                 if (script4 != null)

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d70b3c546e287040ab8f37f4f255072, type: 3}
+  m_Name: MaterialsData
+  m_EditorClassIdentifier: 
+  tankPaintings:
+  - materials:
+    - {fileID: 2100000, guid: d465bd4ca7e98f2439ae8d8fe977628f, type: 2}
+    - {fileID: 2100000, guid: d4507e9f699c1194b8f3770e9be475f0, type: 2}
+  - materials:
+    - {fileID: 2100000, guid: 2f9c7c361c457f04eaab3cd1971b31e8, type: 2}
+    - {fileID: 2100000, guid: eeb5e9068dd60c842a4041094ce29542, type: 2}
+  - materials:
+    - {fileID: 2100000, guid: 663cb48fb185b924b93d781f6c22c69e, type: 2}
+    - {fileID: 2100000, guid: aab619a2b1c126348b15a43e2ecc730b, type: 2}
+  - materials:
+    - {fileID: 2100000, guid: 0889654206df15949a39fda592ac0b2b, type: 2}
+    - {fileID: 2100000, guid: 4d0b464abe2a94c4c9e4d9987dfff383, type: 2}
+  - materials:
+    - {fileID: 2100000, guid: 5883bd2d3c3391f4eb89daf65de22696, type: 2}
+    - {fileID: 2100000, guid: 667ae18d2624fa644a43154af7d76ff4, type: 2}
+  cost: 0
