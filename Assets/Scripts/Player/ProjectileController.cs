@@ -49,7 +49,7 @@ public class ProjectileController : MonoBehaviour
                     player.TakeDamage(damageAmount);
                 }
             }
-            Instantiate(impactVfx, hit.point -direction * 0.3f, Quaternion.identity);
+            Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
             Destroy(gameObject);
         }
         else

@@ -121,8 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797b8bda97c18884dba69f677bd70224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}
   index: 0
   gravity: 0
+  vfxOffset: 1.2
   powerUpDuration: 20
+  rechargingVFX: {fileID: 7155335147208632822, guid: 065e39191648d2842bf627078f75bd81, type: 3}
