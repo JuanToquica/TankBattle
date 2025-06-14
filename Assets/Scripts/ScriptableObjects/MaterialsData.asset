@@ -28,4 +28,4 @@ MonoBehaviour:
   - materials:
     - {fileID: 2100000, guid: 5883bd2d3c3391f4eb89daf65de22696, type: 2}
     - {fileID: 2100000, guid: 667ae18d2624fa644a43154af7d76ff4, type: 2}
-  cost: 0
+  cost: 10

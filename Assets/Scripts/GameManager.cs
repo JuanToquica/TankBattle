@@ -4,16 +4,23 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     [SerializeField] private GameObject pauseUI;
-    public static GameManager instance; 
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject defeatPanel;
+    [SerializeField] private GameObject drawPanel;   
     [SerializeField] private GameObject flag1;
     [SerializeField] private GameObject flag2;
+    [SerializeField] private int coinsPerEnemy;
+    [SerializeField] private int coinsPerPoint;
+    [SerializeField] private int coinsPerGameWon;
     public int playerMaxScore;
     public int enemyMaxScore;
     public float time;
     public bool isTheGamePaused;    
     public int playerScore, enemyScore;
     public bool playerHasTheFlag;
+    public int coinsEarned;
 
     private void Awake()
     {
@@ -30,7 +37,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerScore = 0;
-        enemyScore = 0;        
+        enemyScore = 0;
+        coinsEarned = 5;
     }
 
     public void OnFlagPickedUp()
@@ -46,6 +54,9 @@ public class GameManager : MonoBehaviour
         playerScore ++;
         flag1.SetActive(true);
         flag2.SetActive(true);
+        coinsEarned += coinsPerPoint;
+        if (playerScore >= playerMaxScore)
+            EndGame();
     }
 
     public void OnPlayerDeathWithFlag()
@@ -54,8 +65,19 @@ public class GameManager : MonoBehaviour
         enemyScore++;
         flag1.SetActive(true);
         flag2.SetActive(true);
+        if (enemyScore >= enemyMaxScore)
+            EndGame();
     }
 
+    public int GetCoinsEarned()
+    {
+        return coinsEarned;
+    }
+
+    public void OnEnemyDead()
+    {
+        coinsEarned += coinsPerEnemy;
+    }
     public void PauseAndUnpauseGame()
     {
         if (isTheGamePaused)
@@ -78,5 +100,29 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
+
+    public void EndGame()
+    {
+        InputManager.Instance.playerInput.actions.FindActionMap("Player").Disable();
+        InputManager.Instance.playerInput.actions["SelectButton"].Enable();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        if (playerScore > enemyScore)
+        {
+            coinsEarned += coinsPerGameWon;
+            victoryPanel.SetActive(true);
+        }        
+        else if (enemyScore > playerScore)
+        {
+            defeatPanel.SetActive(true);
+        }           
+        else
+        {
+            coinsEarned += coinsPerGameWon / 2;
+            drawPanel.SetActive(true);
+        }
+        DataManager.Instance.AddCoins(coinsEarned);    
     }
 }

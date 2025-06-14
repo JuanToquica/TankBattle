@@ -31,6 +31,7 @@ public class PlayerAttack : MonoBehaviour
         currentCooldown = cooldown;
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
+        damageAmount = DataManager.Instance.GetMainTurretDamage();
     }
 
     private void Start()

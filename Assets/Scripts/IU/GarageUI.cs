@@ -142,7 +142,10 @@ public class GarageUI : MonoBehaviour
     {
         if (DataManager.Instance.TryPurchaseColor(currentColorSelected, materialsData.cost))
             DataManager.Instance.SetSelectedTankColor(currentColorSelected);
+        else
+            notEnoughCoinsImage.SetActive(true);
         UpdateUIButtons();
+        UpdateUITexts();
     }
 
     public void OnEquipButton()
@@ -153,31 +156,36 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeArmorButton()
     {
-        DataManager.Instance.UpgradeArmorStrength();
+        if (!DataManager.Instance.UpgradeArmorStrength())
+            notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
     }
 
     public void OnUpgradeMainGunDamageButton()
     {
-        DataManager.Instance.UpgradeMainTurret();
+        if (!DataManager.Instance.UpgradeMainTurret())
+            notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
     }
 
     public void OnUpgradeRailgunDamageButton()
     {
-        DataManager.Instance.UpgradeRailgun();
+        if (!DataManager.Instance.UpgradeRailgun())
+            notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
     }
 
     public void OnUpgradeMachineGunDamageButton()
     {
-        DataManager.Instance.UpgradeMachineGun();
+        if (!DataManager.Instance.UpgradeMachineGun())
+            notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
     }
 
     public void OnUpgradeRocketDamageButton()
     {
-        DataManager.Instance.UpgradeRocketLauncher();
+        if (!DataManager.Instance.UpgradeRocketLauncher())
+            notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
     }
 

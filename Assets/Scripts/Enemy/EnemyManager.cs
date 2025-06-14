@@ -106,6 +106,7 @@ public class EnemyManager : MonoBehaviour
 
     public void DeadEnemy(int deadEnemyArea)
     {
+        GameManager.instance.OnEnemyDead();
         if (deadEnemyArea >= 3 && deadEnemyArea <= 7)
         {
             spawnQueue_Spawn0.Enqueue(deadEnemyArea);

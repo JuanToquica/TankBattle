@@ -53,6 +53,11 @@ public class DataManager : MonoBehaviour
         SaveCurrentPlayerData();
     }
 
+    public void AddCoins(int amount)
+    {
+        _currentPlayerData.coins += amount;
+    }
+
     public float GetCoinsAmount() { return _currentPlayerData.coins; }
     public float GetArmorStrengthDamage() { return GetUpgradeDamage(armorStrengthUpgradeData, _currentPlayerData.armorStrengthLevel); }
     public float GetMainTurretDamage() { return GetUpgradeDamage(mainGunUpgradeData, _currentPlayerData.mainGunDamageLevel); }
@@ -128,7 +133,7 @@ public class DataManager : MonoBehaviour
         if (nextLevel >= upgradeData.maxLevel)
         {
             Debug.Log("NivelMaximoAlcanzado.");
-            return false;
+            return true;
         }
 
         UpgradeLevel nextLevelData = null;
