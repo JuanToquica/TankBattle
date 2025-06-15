@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1639fdaa70c11c143a33ead43c154f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 2199184184761098392}
   puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}

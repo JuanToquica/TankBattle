@@ -1418,7 +1418,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Barra Espaciadora
+  m_text: Space
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 22028e1428b91bc42a5c973edc940ca4, type: 2}
   m_sharedMaterial: {fileID: -3711877791472578306, guid: 22028e1428b91bc42a5c973edc940ca4, type: 2}
@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.1
+  m_fontSize: 40
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1

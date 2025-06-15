@@ -2,18 +2,34 @@ using UnityEngine;
 
 public class PowerUpBase : MonoBehaviour
 {
-    [SerializeField] private GameObject puffVFX;
+    [SerializeField] protected MeshRenderer meshRenderer;
+    [SerializeField] protected GameObject puffVFX;
+    [SerializeField] protected float duration;
+    [SerializeField] protected float vfxOffset;
     public PowerUpSpawner powerUpSpawner;
     public Transform targetPoint;
-    public int index;
     public float gravity;
-    public float vfxOffset;
-    private bool isFalling = true;
-    private float verticalSpeed;
-    private bool vfxInstantiated;
+    public int index;
+    protected bool isFalling = true;
+    protected float verticalSpeed;
+    protected bool vfxInstantiated;
+    protected bool isDissolving;
+    protected float _startTime;
+    protected float currentValue;
 
     void Update()
     {
+        if (isDissolving)
+        {
+            float elapsedTime = Time.time - _startTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+            currentValue = Mathf.Lerp(-1f, 1f, t);
+
+            meshRenderer.material.SetFloat("_DissolveFactor", currentValue);
+            if (currentValue >= 1)
+                Destroy(gameObject);
+        }
+
         if (!isFalling) return;
 
         verticalSpeed += gravity * Time.deltaTime;
@@ -31,9 +47,9 @@ public class PowerUpBase : MonoBehaviour
                 transform.position.x,
                 targetPoint.position.y,
                 transform.position.z
-            );           
+            );
             isFalling = false;
             verticalSpeed = 0f;
-        }
+        }      
     }
 }

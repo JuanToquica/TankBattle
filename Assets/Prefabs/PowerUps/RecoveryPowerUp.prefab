@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e4b8073a005cfdd408b177bf1baaa399, type: 2}
+  - {fileID: 2100000, guid: 4dcd8c01471ee1b40bbfddf93b434ba6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,12 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883172c6a6e165547bfbd623c204355e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 1873253276802209452}
   puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
+  duration: 1
+  vfxOffset: 1.2
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}
-  index: 0
   gravity: 0
-  vfxOffset: 1.2
+  index: 0
   healingVFX: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
 --- !u!65 &5695314154777065699
 BoxCollider:
