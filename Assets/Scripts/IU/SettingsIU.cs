@@ -65,6 +65,7 @@ public class SettingsIU : MonoBehaviour
         if (PlayerPrefs.HasKey("SFXVolume"))
             PlayerPrefs.DeleteKey("SFXVolume");
         LoadSliderSettins();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnResetControlsClicked()
@@ -73,12 +74,13 @@ public class SettingsIU : MonoBehaviour
             PlayerPrefs.DeleteKey("Sensitivity");
         LoadSliderSettins();
         InputManager.Instance.ResetActionMaps();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
 
     private void OnEnable()
     {
-        EventSystem.current.firstSelectedGameObject = backButton.gameObject;
+        EventSystem.current.firstSelectedGameObject = masterVolume.gameObject;
         LoadSliderSettins();
     }
 }

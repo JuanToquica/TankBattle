@@ -8,7 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
-    [SerializeField] private GameObject drawPanel;   
+    [SerializeField] private GameObject drawPanel;
+    [SerializeField] private GameObject coins;
+    [SerializeField] private GameObject mainMenuButton;
     [SerializeField] private GameObject flag1;
     [SerializeField] private GameObject flag2;
     [SerializeField] private int coinsPerEnemy;
@@ -113,15 +115,21 @@ public class GameManager : MonoBehaviour
         {
             coinsEarned += coinsPerGameWon;
             victoryPanel.SetActive(true);
+            coins.SetActive(true);
+            mainMenuButton.SetActive(true);
         }        
         else if (enemyScore > playerScore)
         {
             defeatPanel.SetActive(true);
+            coins.SetActive(true);
+            mainMenuButton.SetActive(true);
         }           
         else
         {
             coinsEarned += coinsPerGameWon / 2;
             drawPanel.SetActive(true);
+            coins.SetActive(true);
+            mainMenuButton.SetActive(true);
         }
         DataManager.Instance.AddCoins(coinsEarned);    
     }

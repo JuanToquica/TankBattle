@@ -58,6 +58,13 @@ public class DataManager : MonoBehaviour
         _currentPlayerData.coins += amount;
     }
 
+    public int GetMaxLevel() { return mainGunUpgradeData.maxLevel; }
+    public int GetArmorStrengthLevel() { return _currentPlayerData.armorStrengthLevel; }
+    public int GetMainTurretLevel() { return _currentPlayerData.mainGunDamageLevel; }
+    public int GetRailgunLevel() { return _currentPlayerData.railgunDamageLevel; }
+    public int GetMachineGunLevel() { return _currentPlayerData.machineGunDamageLevel; }
+    public int GetRocketLevel() { return _currentPlayerData.rocketDamageLevel; }
+
     public float GetCoinsAmount() { return _currentPlayerData.coins; }
     public float GetArmorStrengthDamage() { return GetUpgradeDamage(armorStrengthUpgradeData, _currentPlayerData.armorStrengthLevel); }
     public float GetMainTurretDamage() { return GetUpgradeDamage(mainGunUpgradeData, _currentPlayerData.mainGunDamageLevel); }

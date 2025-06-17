@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 21c7775440fce6a478312aaa3f594f2d, type: 2}
+  - {fileID: 2100000, guid: 51dd55dc515c63245af965a7e6c2a38a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,10 +123,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 422624547198024172}
   puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
+  duration: 1
+  vfxOffset: 1.2
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}
-  index: 0
   gravity: 0
-  vfxOffset: 1.2
+  index: 0
   powerUpDuration: 20
   speedVFX: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}

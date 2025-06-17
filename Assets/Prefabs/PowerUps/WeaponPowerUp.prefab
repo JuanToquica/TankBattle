@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 29ae0d9e360457840a4feea5b8176bb3, type: 2}
+  - {fileID: 2100000, guid: dac40a5a062ca524bb85d149c1efa5e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -123,9 +123,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 2199184184761098392}
   puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
+  duration: 1
+  vfxOffset: 1.2
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}
-  index: 0
   gravity: 0
-  vfxOffset: 1.2
+  index: 0
   weaponVFX: {fileID: 7131401307255788800, guid: 4d9a3b35b3bc07649b697df7fb497b6d, type: 3}

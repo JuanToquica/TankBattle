@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,9 +32,16 @@ public class GarageUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rocketDamageValue;
 
     [Header ("Image References")]
+    [SerializeField] private GameObject[] colorPadlocks;
+    [SerializeField] private Image[] colorBackgrounds;
     [SerializeField] private GameObject equippedImage;
     [SerializeField] private GameObject notEnoughCoinsImage;
-
+    [SerializeField] private Image armorBar;
+    [SerializeField] private Image mainGunBar;
+    [SerializeField] private Image railgunBar;
+    [SerializeField] private Image machineGunBar;
+    [SerializeField] private Image rocketBar;
+    
     [Header ("Other Referernces")]
     [SerializeField] private ChangeTankPaint tank;
     [SerializeField] private MaterialsData materialsData;
@@ -57,11 +65,10 @@ public class GarageUI : MonoBehaviour
         upgradeMachinegunDamageButton.onClick.AddListener(OnUpgradeMachineGunDamageButton);
         upgradeRocketDamageButton.onClick.AddListener(OnUpgradeRocketDamageButton);
 
-        buyButton.gameObject.SetActive(false);
-        equippedImage.SetActive(false);
-        equipButton.gameObject.SetActive(false);
+        HideColorButtons();
 
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
     }
 
     private void UpdateUITexts()
@@ -98,44 +105,78 @@ public class GarageUI : MonoBehaviour
             equipButton.gameObject.SetActive(false);
         }
     }
+
+    private void UpdateUIBarsAndUpdateButtons()
+    {
+        int armorLevel = DataManager.Instance.GetArmorStrengthLevel() + 1;
+        int mainGunLevel = DataManager.Instance.GetMainTurretLevel() + 1;
+        int railgunLevel = DataManager.Instance.GetRailgunLevel() + 1;
+        int machineGunLevel = DataManager.Instance.GetMachineGunLevel() + 1;
+        int rocketLevel = DataManager.Instance.GetRocketLevel() + 1;
+        float maxLevel = (float)DataManager.Instance.GetMaxLevel();
+
+        armorBar.fillAmount = armorLevel / maxLevel;
+        mainGunBar.fillAmount = mainGunLevel / maxLevel;
+        railgunBar.fillAmount = railgunLevel / maxLevel;
+        machineGunBar.fillAmount = machineGunLevel / maxLevel;
+        rocketBar.fillAmount = rocketLevel / maxLevel;
+
+        if (armorLevel == maxLevel) upgradeArmorButton.gameObject.SetActive(false);
+        if (mainGunLevel == maxLevel) upgradeMainGunDamageButton.gameObject.SetActive(false);
+        if (railgunLevel == maxLevel) upgradeRailgunDamageButton.gameObject.SetActive(false);
+        if (machineGunLevel == maxLevel) upgradeMachinegunDamageButton.gameObject.SetActive(false);
+        if (rocketLevel == maxLevel) upgradeRocketDamageButton.gameObject.SetActive(false);
+
+        HideColorButtons();
+    }
+
+    private void HideColorButtons()
+    {
+        buyButton.gameObject.SetActive(false);
+        equippedImage.SetActive(false);
+        equipButton.gameObject.SetActive(false);
+    }
+
+    private void UpdateColorBackgrounds()
+    {
+        int currentColor = DataManager.Instance.GetCurrentColorSelected();
+        for (int i = 0; i < 5; i++)
+        {
+            if (i == currentColor)
+                colorBackgrounds[i].enabled = true;
+            else
+                colorBackgrounds[i].enabled = false;
+        }
+    }
+
+    private void UpdateColorPadlocks()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (DataManager.Instance.IsColorPurchased(i))
+                colorPadlocks[i].SetActive(false);
+            else
+                colorPadlocks[i].SetActive(true);              
+        }
+    }
+
     public void OnBackButtonClicked()
     {
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void OnRedPaintButton()
-    {
-        tank.LoadTankMaterial(0);
-        currentColorSelected = 0;
-        UpdateUIButtons();
-    }
+    public void OnRedPaintButton() => OnPaintButton(0);
+    public void OnBluePaintButton() => OnPaintButton(1);
+    public void OnPurplePaintButton() => OnPaintButton(2);
+    public void OnYellowPaintButton() => OnPaintButton(3);
+    public void OnGreenPaintButton() => OnPaintButton(4);
 
-    public void OnBluePaintButton()
+    private void OnPaintButton(int index)
     {
-        tank.LoadTankMaterial(1);
-        currentColorSelected = 1;
+        tank.LoadTankMaterial(index);
+        currentColorSelected = index;
         UpdateUIButtons();
-    }
-
-    public void OnPurplePaintButton()
-    {
-        tank.LoadTankMaterial(2);
-        currentColorSelected = 2;
-        UpdateUIButtons();
-    }
-
-    public void OnYellowPaintButton()
-    {
-        tank.LoadTankMaterial(3);
-        currentColorSelected = 3;
-        UpdateUIButtons();
-    }
-
-    public void OnGreenPaintButton()
-    {
-        tank.LoadTankMaterial(4);
-        currentColorSelected = 4;
-        UpdateUIButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnBuyButton()
@@ -146,12 +187,15 @@ public class GarageUI : MonoBehaviour
             notEnoughCoinsImage.SetActive(true);
         UpdateUIButtons();
         UpdateUITexts();
+        UpdateColorBackgrounds();
+        UpdateColorPadlocks();
     }
 
     public void OnEquipButton()
     {
         DataManager.Instance.SetSelectedTankColor(currentColorSelected);
         UpdateUIButtons();
+        UpdateColorBackgrounds();
     }
 
     public void OnUpgradeArmorButton()
@@ -159,6 +203,8 @@ public class GarageUI : MonoBehaviour
         if (!DataManager.Instance.UpgradeArmorStrength())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnUpgradeMainGunDamageButton()
@@ -166,6 +212,8 @@ public class GarageUI : MonoBehaviour
         if (!DataManager.Instance.UpgradeMainTurret())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnUpgradeRailgunDamageButton()
@@ -173,6 +221,8 @@ public class GarageUI : MonoBehaviour
         if (!DataManager.Instance.UpgradeRailgun())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnUpgradeMachineGunDamageButton()
@@ -180,6 +230,8 @@ public class GarageUI : MonoBehaviour
         if (!DataManager.Instance.UpgradeMachineGun())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnUpgradeRocketDamageButton()
@@ -187,16 +239,22 @@ public class GarageUI : MonoBehaviour
         if (!DataManager.Instance.UpgradeRocketLauncher())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnOkButton()
     {
         notEnoughCoinsImage.SetActive(false);
+        HideColorButtons();
     }
 
     private void OnEnable()
     {
         EventSystem.current.firstSelectedGameObject = backButton.gameObject;
         UpdateUITexts();
+        UpdateUIBarsAndUpdateButtons();
+        UpdateColorBackgrounds();
+        UpdateColorPadlocks();
     }
 }

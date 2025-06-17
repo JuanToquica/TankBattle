@@ -4,40 +4,65 @@ using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
+public enum Weapons
+{
+    mainTurret,
+    railGun,
+    machineGun,
+    rocket
+}
+
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject projectilePrefab;
+    [Header ("References")]
+    [SerializeField] private Transform mainGunFirePoint;
+    [SerializeField] private GameObject[] fakeRockets;
     [SerializeField] private Transform projectileContainer;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject rocketPrefab;
     [SerializeField] private GameObject shotVfx;
-    [SerializeField] private float cooldown;
-    [SerializeField] private float range;
+    [SerializeField] private Image cooldownImage;
+    [SerializeField] private Mesh[] turretMeshes;
+    [SerializeField] private MeshFilter turretMesh;
+    private Outline currentOutlinedEnemy;
+    private Animator mainTurretAnimator;
+    private Animator railgunAnimator;
+    private Animator machineGunAnimator;
+    private Animator rocketAnimator;
+    public Weapons currentWeapon;
+
+    [Header ("Fire Specifications")]
+    [SerializeField] private Vector2[] turretCooldowns;
+    [SerializeField] private float[] rangeOfTurrets;
     [SerializeField] private float aimAngle;
     [SerializeField] private float amountOfRaycast;
     [SerializeField] private float bulletSpeed;
+    [SerializeField] private float rocketSpeed;
     [SerializeField] private float bulletRange;
-    [SerializeField] private float damageAmount;
-    [SerializeField] private Image cooldownImage;
-    private Animator animator;
-    public float cooldownWithPowerUp;
-    private float currentCooldown;
-    public float cooldownTimer;
-    private Outline currentOutlinedEnemy;
+    [SerializeField] private float mainTurretDamage;
+    [SerializeField] private float railgunDamage;
+    [SerializeField] private float machineGunDamage;
+    [SerializeField] private float rocketDamage;
+    public float currentCooldown;
+    public float currentRange;   
+    public float cooldownTimer;   
     private RaycastHit mainHit;
     private bool _isAimingAtEnemy;
+    public bool rechargingPowerUpActive;
+    public int rocketsFired;
+    
 
     private void OnEnable()
     {
-        currentCooldown = cooldown;
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
-        damageAmount = DataManager.Instance.GetMainTurretDamage();
+        LoadTurretDamage();
+        BackToMainTurret();
     }
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
-        currentCooldown = cooldown;
+        mainTurretAnimator = GetComponent<Animator>();
         InputManager.Instance.RegisterPlayerAttack(this);
     }
 
@@ -51,7 +76,16 @@ public class PlayerAttack : MonoBehaviour
         cooldownImage.fillAmount = cooldownTimer / currentCooldown;
     }
 
-    public void Aim()
+    private void LoadTurretDamage()
+    {
+        mainTurretDamage = DataManager.Instance.GetMainTurretDamage();
+        railgunDamage = DataManager.Instance.GetRailgunDamage();
+        machineGunDamage = DataManager.Instance.GetMachineGunDamage();
+        rocketDamage = DataManager.Instance.GetRocketDamage();
+    }
+
+
+    private void Aim()
     {
         float halfAngle = aimAngle / 2f;
         float angleStep = aimAngle / amountOfRaycast;
@@ -63,10 +97,10 @@ public class PlayerAttack : MonoBehaviour
         for (int i = 0; i < amountOfRaycast; i++)
         {
             float currentVerticalAngle = -halfAngle + (i * angleStep);
-            Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, firePoint.right);
-            Vector3 rayDirection = rotation * firePoint.forward;
-            bool ray = Physics.Raycast(firePoint.position, rayDirection, out RaycastHit hit, range);
-            Debug.DrawRay(firePoint.position, rayDirection * range, Color.red);
+            Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
+            Vector3 rayDirection = rotation * mainGunFirePoint.forward;
+            bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
+            Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
             
             if (ray)
             {                                 
@@ -108,46 +142,121 @@ public class PlayerAttack : MonoBehaviour
                 currentOutlinedEnemy.enabled = false;
                 currentOutlinedEnemy = null;
             }
-            Physics.Raycast(firePoint.position, firePoint.forward, out RaycastHit hit, 200);
+            Physics.Raycast(mainGunFirePoint.position, mainGunFirePoint.forward, out RaycastHit hit, 200);
             mainHit = hit;
             _isAimingAtEnemy = false;
         }
-        Debug.DrawLine(firePoint.position, mainHit.point, Color.red, 0.2f);
+        Debug.DrawLine(mainGunFirePoint.position, mainHit.point, Color.red, 0.2f);
     }
 
     public void Fire()
     { 
         if (cooldownTimer == currentCooldown)
         {
-            animator.SetBool("Fire", true);
-            Instantiate(shotVfx, firePoint.position, firePoint.rotation);
-            Vector3 startPos = firePoint.position;
-            Vector3 fireDirection;
-
-            if (_isAimingAtEnemy)
+            switch (currentWeapon)
             {
-                fireDirection = (mainHit.point - startPos).normalized;
+                case Weapons.mainTurret:
+                    FireWithMainTurret();
+                    break;
+                case Weapons.railGun:
+                    FireWithRailgun();
+                    break;
+                case Weapons.machineGun:
+                    FireWithMachineGun();
+                    break;
+                case Weapons.rocket:
+                    FireWithRocket();
+                    break;
             }
-            else
-            {
-                fireDirection = firePoint.forward;
-            }
-
-            GameObject bulletInstance = Instantiate(projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
-            ProjectileController bulletSim = bulletInstance.GetComponent<ProjectileController>();
-            bulletInstance.transform.SetParent(projectileContainer);
-
-            if (bulletSim != null)
-            {
-                bulletSim.Initialize(startPos, fireDirection, bulletSpeed, bulletRange, damageAmount);
-            }
-            cooldownTimer = 0;
         }        
+    }
+
+    private void FireWithMainTurret()
+    {
+        mainTurretAnimator.SetBool("Fire", true);
+        Instantiate(shotVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
+        Vector3 startPos = mainGunFirePoint.position;
+        Vector3 fireDirection;
+
+        if (_isAimingAtEnemy)
+            fireDirection = (mainHit.point - startPos).normalized;
+        else
+            fireDirection = mainGunFirePoint.forward;
+
+        GameObject bulletInstance = Instantiate(projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
+        ProjectileController bulletSim = bulletInstance.GetComponent<ProjectileController>();
+        bulletInstance.transform.SetParent(projectileContainer);
+
+        if (bulletSim != null)
+            bulletSim.Initialize(startPos, fireDirection, bulletSpeed, bulletRange, mainTurretDamage);
+
+        cooldownTimer = 0;
+    }
+
+    private void FireWithRailgun()
+    {
+        Debug.Log("Disparo con railgun");
+    }
+
+    private void FireWithMachineGun()
+    {
+        Debug.Log("Disparo con machineGun");
+    }
+
+    private void FireWithRocket()
+    {
+        Debug.Log("Disparo con rocket");
+        rocketsFired++;
+        if (rocketsFired == 4)
+            BackToMainTurret();
+    }
+
+
+    public void OnWeaponPowerUp()
+    {
+        int random = 3;
+        turretMesh.mesh = turretMeshes[random];
+        currentWeapon = (Weapons)random;
+        currentRange = rangeOfTurrets[random];
+        if (rechargingPowerUpActive)
+            currentCooldown = turretCooldowns[(int)currentWeapon].y;
+        else
+            currentCooldown = turretCooldowns[(int)currentWeapon].x;
+        if (cooldownTimer > currentCooldown)
+            cooldownTimer = currentCooldown;
+
+        if (currentWeapon == Weapons.rocket)
+        {
+            rocketsFired = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                fakeRockets[i].SetActive(true);
+            }
+        }
+    }
+
+    [ContextMenu ("backtomainturret")]
+    private void BackToMainTurret()
+    {
+        currentWeapon = Weapons.mainTurret;
+        turretMesh.mesh = turretMeshes[0];
+        currentRange = rangeOfTurrets[0];
+        if (rechargingPowerUpActive)
+            currentCooldown = turretCooldowns[0].y;
+        else
+            currentCooldown = turretCooldowns[0].x;
+        if (cooldownTimer > currentCooldown)
+            cooldownTimer = currentCooldown;
+        for (int i = 0; i < 4; i++)
+        {
+            fakeRockets[i].SetActive(false);
+        }
     }
 
     public void RecharchingPowerUp(float duration)
     {
-        currentCooldown = cooldownWithPowerUp;
+        currentCooldown = turretCooldowns[(int)currentWeapon].y;
+        rechargingPowerUpActive = true;
         if (cooldownTimer >= currentCooldown)
             cooldownTimer = currentCooldown;
         Invoke("RestoreCooldown", duration);
@@ -155,11 +264,14 @@ public class PlayerAttack : MonoBehaviour
 
     private void RestoreCooldown()
     {
-        currentCooldown = cooldown;
+        currentCooldown = turretCooldowns[(int) currentWeapon].x;
+        if (cooldownTimer > currentCooldown)
+            cooldownTimer = currentCooldown;
+        rechargingPowerUpActive = false;
     }
 
     public void EndAnimation()
     {
-        animator.SetBool("Fire", false);
+        mainTurretAnimator.SetBool("Fire", false);
     }
 }
