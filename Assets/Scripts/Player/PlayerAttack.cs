@@ -36,7 +36,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Vector2[] turretCooldowns;
     [SerializeField] private float[] rangeOfTurrets;
     [SerializeField] private float aimAngle;
-    [SerializeField] private float amountOfRaycast;
+    [SerializeField] private int defaultAmountOfRaycast;
+    [SerializeField] private int railGunAmountOfRaycast;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float rocketSpeed;
     [SerializeField] private float bulletRange;
@@ -56,7 +57,10 @@ public class PlayerAttack : MonoBehaviour
     private bool _isAimingAtEnemy;
     public bool rechargingPowerUpActive;
     public int shotsFired;
-    
+    private int aimPhase;
+    private bool foundEnemyInThisScan;
+    private RaycastHit bestHitInThisScan;
+    private int currentAmountOfRaycast;
 
     private void OnEnable()
     {
@@ -64,6 +68,7 @@ public class PlayerAttack : MonoBehaviour
             InputManager.Instance.RegisterPlayerAttack(this);
         LoadTurretDamage();
         BackToMainTurret();
+        aimPhase = 1;
     }
 
     private void Start()
@@ -94,66 +99,93 @@ public class PlayerAttack : MonoBehaviour
     private void Aim()
     {
         float halfAngle = aimAngle / 2f;
-        float angleStep = aimAngle / amountOfRaycast;
+        float angleStep = aimAngle / currentAmountOfRaycast;
 
-        bool foundEnemyInThisScan = false;
-        RaycastHit bestHitInThisScan = new RaycastHit();
-        bestHitInThisScan.distance = Mathf.Infinity;
-
-        for (int i = 0; i < amountOfRaycast; i++)
+        if (aimPhase == 1)
         {
-            float currentVerticalAngle = -halfAngle + (i * angleStep);
-            Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
-            Vector3 rayDirection = rotation * mainGunFirePoint.forward;
-            bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
-            Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
-            
-            if (ray)
-            {                                 
-                if (hit.transform.CompareTag("Enemy"))
+            foundEnemyInThisScan = false;
+            bestHitInThisScan = new RaycastHit();
+            bestHitInThisScan.distance = Mathf.Infinity;
+            for (int i = 0; i < currentAmountOfRaycast / 2; i++)
+            {
+                float currentVerticalAngle = -halfAngle + (i * angleStep);
+                Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
+                Vector3 rayDirection = rotation * mainGunFirePoint.forward;
+                bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
+                Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
+
+                if (ray)
                 {
-                    if (hit.distance < bestHitInThisScan.distance)
+                    if (hit.transform.CompareTag("Enemy"))
                     {
-                        bestHitInThisScan = hit;
-                        mainRay = new Ray(mainGunFirePoint.position, rayDirection);
+                        if (hit.distance < bestHitInThisScan.distance)
+                        {
+                            bestHitInThisScan = hit;
+                            mainRay = new Ray(mainGunFirePoint.position, rayDirection);
+                        }
+                        foundEnemyInThisScan = true;
                     }
-                    foundEnemyInThisScan = true;
                 }
             }
+            aimPhase = 2;
         }
+        else if (aimPhase == 2)
+        {
+            for (int i = currentAmountOfRaycast / 2; i < currentAmountOfRaycast; i++)
+            {
+                float currentVerticalAngle = -halfAngle + (i * angleStep);
+                Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
+                Vector3 rayDirection = rotation * mainGunFirePoint.forward;
+                bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
+                Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
 
-        if (foundEnemyInThisScan)
-        {           
-            Outline newEnemyOutline = bestHitInThisScan.transform.GetComponent<Outline>();
+                if (ray)
+                {
+                    if (hit.transform.CompareTag("Enemy"))
+                    {
+                        if (hit.distance < bestHitInThisScan.distance)
+                        {
+                            bestHitInThisScan = hit;
+                            mainRay = new Ray(mainGunFirePoint.position, rayDirection);
+                        }
+                        foundEnemyInThisScan = true;
+                    }
+                }
+            }
+            if (foundEnemyInThisScan)
+            {
+                Outline newEnemyOutline = bestHitInThisScan.transform.GetComponent<Outline>();
 
-            if (newEnemyOutline != null && newEnemyOutline != currentOutlinedEnemy)
+                if (newEnemyOutline != null && newEnemyOutline != currentOutlinedEnemy)
+                {
+                    if (currentOutlinedEnemy != null)
+                    {
+                        currentOutlinedEnemy.enabled = false;
+                    }
+                    newEnemyOutline.enabled = true;
+                    currentOutlinedEnemy = newEnemyOutline;
+                }
+                else if (newEnemyOutline != null && newEnemyOutline == currentOutlinedEnemy)
+                {
+                    currentOutlinedEnemy.enabled = true;
+                }
+                mainHit = bestHitInThisScan;
+                _isAimingAtEnemy = true;
+            }
+            else
             {
                 if (currentOutlinedEnemy != null)
                 {
                     currentOutlinedEnemy.enabled = false;
+                    currentOutlinedEnemy = null;
                 }
-                newEnemyOutline.enabled = true;
-                currentOutlinedEnemy = newEnemyOutline;
+                mainRay = new Ray(mainGunFirePoint.position, mainGunFirePoint.forward);
+                Physics.Raycast(mainRay, out RaycastHit hit, 200);
+                mainHit = hit;
+                _isAimingAtEnemy = false;
             }
-            else if (newEnemyOutline != null && newEnemyOutline == currentOutlinedEnemy)
-            {
-                currentOutlinedEnemy.enabled = true;
-            }
-            mainHit = bestHitInThisScan;
-            _isAimingAtEnemy = true;
-        }
-        else
-        {
-            if (currentOutlinedEnemy != null)
-            {
-                currentOutlinedEnemy.enabled = false;
-                currentOutlinedEnemy = null;
-            }
-            mainRay = new Ray(mainGunFirePoint.position, mainGunFirePoint.forward);
-            Physics.Raycast(mainRay, out RaycastHit hit, 200);
-            mainHit = hit;
-            _isAimingAtEnemy = false;
-        }
+            aimPhase = 1;
+        }   
         Debug.DrawLine(mainGunFirePoint.position, mainHit.point, Color.red, 0.2f);
     }
 
@@ -277,6 +309,10 @@ public class PlayerAttack : MonoBehaviour
                 fakeRockets[i].SetActive(true);
             }
         }
+        else if (currentWeapon == Weapons.railGun)
+        {
+            currentAmountOfRaycast = railGunAmountOfRaycast;
+        }
     }
 
     [ContextMenu ("backtomainturret")]
@@ -285,6 +321,7 @@ public class PlayerAttack : MonoBehaviour
         currentWeapon = Weapons.mainTurret;
         turretMesh.mesh = turretMeshes[0];
         currentRange = rangeOfTurrets[0];
+        currentAmountOfRaycast = defaultAmountOfRaycast;
         if (rechargingPowerUpActive)
             currentCooldown = turretCooldowns[0].y;
         else

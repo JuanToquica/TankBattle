@@ -88322,12 +88322,13 @@ MonoBehaviour:
   - {x: 2, y: 1.5}
   - {x: 1, y: 0.5}
   rangeOfTurrets:
-  - 100
-  - 300
+  - 70
+  - 130
   - 50
   - 80
-  aimAngle: 40
-  amountOfRaycast: 16
+  aimAngle: 25
+  defaultAmountOfRaycast: 16
+  railGunAmountOfRaycast: 26
   bulletSpeed: 300
   rocketSpeed: 125
   bulletRange: 200

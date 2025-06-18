@@ -759,7 +759,7 @@ MonoBehaviour:
   bulletRange: 150
   damageAmount: 3
   cooldownWithPowerUp: 0.7
-  aimAngle: 40
+  aimAngle: 25
   amountOfRaycast: 16
   range: 60
 --- !u!114 &2225202212155526804
