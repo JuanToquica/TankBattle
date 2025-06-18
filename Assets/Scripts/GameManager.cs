@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour
             coins.SetActive(true);
             mainMenuButton.SetActive(true);
         }
-        DataManager.Instance.AddCoins(coinsEarned);    
+        DataManager.Instance.AddCoins(coinsEarned);
+        Debug.Log("Monedas añadidas");
     }
 }

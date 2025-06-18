@@ -65,13 +65,4 @@ public class ProjectileController : MonoBehaviour
             }
         }
     }
-
-    void OnDrawGizmos()
-    {
-        if (Application.isPlaying && direction != Vector3.zero)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawRay(currentPosition, direction * speed * Time.deltaTime);
-        }
-    }
 }

@@ -42,6 +42,7 @@ public class InputManager : MonoBehaviour
             playerInput.actions.FindActionMap("Player").Enable();
             playerInput.actions.FindAction("Pause").Enable();
             playerInput.actions.FindActionMap("GaragePlayer").Disable();
+            Time.timeScale = 1;
         }
         else if (currentScene == "Garage")
         {
@@ -126,12 +127,16 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.started && playerAttack != null)
             playerAttack.Fire();
+        else if (ctx.canceled && playerAttack != null)
+            playerAttack.StopFiring();
     }
         
     public void OnShoot2(InputAction.CallbackContext ctx)
     {
         if (ctx.started && playerAttack != null)
             playerAttack.Fire();
+        else if (ctx.canceled && playerAttack != null)
+            playerAttack.StopFiring();
     }
         
     public void OnSwitchTurretControlToMouse(InputAction.CallbackContext ctx)

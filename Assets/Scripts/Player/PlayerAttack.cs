@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public enum Weapons
 {
@@ -20,8 +21,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private GameObject[] fakeRockets;
     [SerializeField] private Transform projectileContainer;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject rocketPrefab;
     [SerializeField] private GameObject shotVfx;
+    [SerializeField] private Transform machineGunCannon;
     [SerializeField] private Image cooldownImage;
     [SerializeField] private Mesh[] turretMeshes;
     [SerializeField] private MeshFilter turretMesh;
@@ -35,23 +38,29 @@ public class PlayerAttack : MonoBehaviour
     [Header ("Fire Specifications")]
     [SerializeField] private Vector2[] turretCooldowns;
     [SerializeField] private float[] rangeOfTurrets;
+    [SerializeField] private Vector2 amountOfShotsInOneRound;
     [SerializeField] private float aimAngle;
     [SerializeField] private int defaultAmountOfRaycast;
     [SerializeField] private int railGunAmountOfRaycast;
+    [SerializeField] private float projectileSpeed;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float rocketSpeed;
     [SerializeField] private float bulletRange;
-    [SerializeField] private int mainTurretDamage;
-    [SerializeField] private int railgunDamage;
-    [SerializeField] private int machineGunDamage;
-    [SerializeField] private int rocketDamage;
     [SerializeField] private float railgunDelay;
     [SerializeField] private float railgunAmmo;
     [SerializeField] private float machineGunAmmo;
     [SerializeField] private float rocketAmmo;
+    [SerializeField] private float timeBetweenShoots;
+    [SerializeField] private float machineGunAngularSpeed;
     public float currentCooldown;
     public float currentRange;   
-    public float cooldownTimer;   
+    public float cooldownTimer;
+    public float currentAmountOfShotsInOneRound;
+    public float machineGunRotation;
+    private int mainTurretDamage;
+    private int railgunDamage;
+    private int machineGunDamage;
+    private int rocketDamage;
     private RaycastHit mainHit;
     private Ray mainRay;
     private bool _isAimingAtEnemy;
@@ -61,6 +70,8 @@ public class PlayerAttack : MonoBehaviour
     private bool foundEnemyInThisScan;
     private RaycastHit bestHitInThisScan;
     private int currentAmountOfRaycast;
+    public bool firing;
+    private float lastShoot;
 
     private void OnEnable()
     {
@@ -79,11 +90,43 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (cooldownTimer < currentCooldown)
+        SetCooldown();
+        Aim();
+        SetMachineGunRotation();
+    }
+
+    private void SetMachineGunRotation()
+    {
+        if (currentWeapon == Weapons.machineGun)
+        {
+            machineGunCannon.Rotate(0,0,machineGunAngularSpeed *  machineGunRotation * 5);
+            if (firing)
+            {
+                machineGunRotation = Mathf.Clamp(Mathf.MoveTowards(machineGunRotation, 1, machineGunAngularSpeed * Time.deltaTime), 0, 1);
+                //if (machineGunRotation > 0.99f) machineGunRotation = 1;
+
+                if (Time.time > lastShoot + timeBetweenShoots && machineGunRotation == 1)
+                    FireWithMachineGun();
+            }
+            else
+            {
+                machineGunRotation = Mathf.Clamp(Mathf.MoveTowards(machineGunRotation, 0, (machineGunAngularSpeed / 3) * Time.deltaTime), 0, 1);
+                //if (machineGunRotation < 0.05f) machineGunRotation = 0;
+            }
+        }
+    }
+
+    private void SetCooldown()
+    {
+        if (cooldownTimer < currentCooldown && (!firing || currentWeapon != Weapons.machineGun))
         {
             cooldownTimer = Mathf.Clamp(cooldownTimer + Time.deltaTime, 0, currentCooldown);
         }
-        Aim();
+        else if (firing && currentWeapon == Weapons.machineGun)
+        {
+            float decreasingFactor = currentCooldown / (currentAmountOfShotsInOneRound * timeBetweenShoots);
+            cooldownTimer = Mathf.Clamp(cooldownTimer - Time.deltaTime * decreasingFactor, 0, currentCooldown);
+        }
         cooldownImage.fillAmount = cooldownTimer / currentCooldown;
     }
 
@@ -154,23 +197,26 @@ public class PlayerAttack : MonoBehaviour
             }
             if (foundEnemyInThisScan)
             {
-                Outline newEnemyOutline = bestHitInThisScan.transform.GetComponent<Outline>();
+                if (bestHitInThisScan.transform != null)
+                {
+                    Outline newEnemyOutline = bestHitInThisScan.transform.GetComponent<Outline>();
 
-                if (newEnemyOutline != null && newEnemyOutline != currentOutlinedEnemy)
-                {
-                    if (currentOutlinedEnemy != null)
+                    if (newEnemyOutline != null && newEnemyOutline != currentOutlinedEnemy)
                     {
-                        currentOutlinedEnemy.enabled = false;
+                        if (currentOutlinedEnemy != null)
+                        {
+                            currentOutlinedEnemy.enabled = false;
+                        }
+                        newEnemyOutline.enabled = true;
+                        currentOutlinedEnemy = newEnemyOutline;
                     }
-                    newEnemyOutline.enabled = true;
-                    currentOutlinedEnemy = newEnemyOutline;
+                    else if (newEnemyOutline != null && newEnemyOutline == currentOutlinedEnemy)
+                    {
+                        currentOutlinedEnemy.enabled = true;
+                    }
+                    mainHit = bestHitInThisScan;
+                    _isAimingAtEnemy = true;
                 }
-                else if (newEnemyOutline != null && newEnemyOutline == currentOutlinedEnemy)
-                {
-                    currentOutlinedEnemy.enabled = true;
-                }
-                mainHit = bestHitInThisScan;
-                _isAimingAtEnemy = true;
             }
             else
             {
@@ -191,7 +237,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Fire()
     { 
-        if (cooldownTimer == currentCooldown)
+        if (cooldownTimer == currentCooldown && currentWeapon != Weapons.machineGun)
         {
             switch (currentWeapon)
             {
@@ -201,14 +247,15 @@ public class PlayerAttack : MonoBehaviour
                 case Weapons.railGun:
                     StartCoroutine(FireWithRailgun());
                     break;
-                case Weapons.machineGun:
-                    FireWithMachineGun();
-                    break;
                 case Weapons.rocket:
                     FireWithRocket();
                     break;
             }
-        }        
+        }  
+        if (cooldownTimer > timeBetweenShoots * 5 && currentWeapon == Weapons.machineGun)
+        {
+            firing = true;
+        }
     }
 
     private void FireWithMainTurret()
@@ -224,11 +271,11 @@ public class PlayerAttack : MonoBehaviour
             fireDirection = mainGunFirePoint.forward;
 
         GameObject bulletInstance = Instantiate(projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
-        ProjectileController bulletSim = bulletInstance.GetComponent<ProjectileController>();
+        ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
         bulletInstance.transform.SetParent(projectileContainer);
 
-        if (bulletSim != null)
-            bulletSim.Initialize(startPos, fireDirection, bulletSpeed, bulletRange, mainTurretDamage);
+        if (bulletController != null)
+            bulletController.Initialize(startPos, fireDirection, projectileSpeed, bulletRange, mainTurretDamage);
 
         cooldownTimer = 0;
     }
@@ -260,8 +307,33 @@ public class PlayerAttack : MonoBehaviour
 
     private void FireWithMachineGun()
     {
-        Debug.Log("Disparo con machineGun");
-        cooldownTimer = 0;
+        Vector3 startPos = mainGunFirePoint.position;
+        Vector3 fireDirection;
+
+        if (_isAimingAtEnemy)
+            fireDirection = (mainHit.point - startPos).normalized;
+        else
+            fireDirection = mainGunFirePoint.forward;
+
+        GameObject bulletInstance = Instantiate(bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
+        bulletInstance.transform.SetParent(projectileContainer);
+
+        if (bulletController != null)
+            bulletController.Initialize(startPos, fireDirection, bulletSpeed, bulletRange, machineGunDamage);
+        shotsFired++;
+
+        if (shotsFired >= machineGunAmmo)
+        {
+            BackToMainTurret();
+            firing = false;
+            return;
+        }
+
+        lastShoot = Time.time;
+        
+        if (cooldownTimer < currentCooldown / currentAmountOfShotsInOneRound)
+            firing = false;
     }
 
     private void FireWithRocket()
@@ -288,10 +360,15 @@ public class PlayerAttack : MonoBehaviour
             BackToMainTurret();
     }
 
+    public void StopFiring()
+    {
+        if (firing && currentWeapon == Weapons.machineGun)
+            firing = false;
+    }
 
     public void OnWeaponPowerUp()
     {
-        int random = 1;
+        int random = Random.Range(1,4);
         turretMesh.mesh = turretMeshes[random];
         currentWeapon = (Weapons)random;
         currentRange = rangeOfTurrets[random];
@@ -322,6 +399,7 @@ public class PlayerAttack : MonoBehaviour
         turretMesh.mesh = turretMeshes[0];
         currentRange = rangeOfTurrets[0];
         currentAmountOfRaycast = defaultAmountOfRaycast;
+        currentAmountOfShotsInOneRound = amountOfShotsInOneRound.x;
         if (rechargingPowerUpActive)
             currentCooldown = turretCooldowns[0].y;
         else
@@ -337,6 +415,7 @@ public class PlayerAttack : MonoBehaviour
     public void RecharchingPowerUp(float duration)
     {
         currentCooldown = turretCooldowns[(int)currentWeapon].y;
+        currentAmountOfShotsInOneRound = amountOfShotsInOneRound.y;
         rechargingPowerUpActive = true;
         if (cooldownTimer >= currentCooldown)
             cooldownTimer = currentCooldown;
@@ -346,6 +425,7 @@ public class PlayerAttack : MonoBehaviour
     private void RestoreCooldown()
     {
         currentCooldown = turretCooldowns[(int) currentWeapon].x;
+        currentAmountOfShotsInOneRound = amountOfShotsInOneRound.x;
         if (cooldownTimer > currentCooldown)
             cooldownTimer = currentCooldown;
         rechargingPowerUpActive = false;
