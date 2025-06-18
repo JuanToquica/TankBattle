@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO.Pipes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
@@ -43,6 +44,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float railgunDamage;
     [SerializeField] private float machineGunDamage;
     [SerializeField] private float rocketDamage;
+    [SerializeField] private float railgunDelay;
     public float currentCooldown;
     public float currentRange;   
     public float cooldownTimer;   
@@ -159,7 +161,7 @@ public class PlayerAttack : MonoBehaviour
                     FireWithMainTurret();
                     break;
                 case Weapons.railGun:
-                    FireWithRailgun();
+                    Invoke("FireWithRailgun", railgunDelay);
                     break;
                 case Weapons.machineGun:
                     FireWithMachineGun();
@@ -195,18 +197,40 @@ public class PlayerAttack : MonoBehaviour
 
     private void FireWithRailgun()
     {
-        Debug.Log("Disparo con railgun");
+        if (_isAimingAtEnemy)
+        {
+            EnemyHealth enemy = mainHit.transform.GetComponent<EnemyHealth>();
+            enemy.TakeDamage(railgunDamage);
+        }        
+        cooldownTimer = 0;
     }
 
     private void FireWithMachineGun()
     {
         Debug.Log("Disparo con machineGun");
+        cooldownTimer = 0;
     }
 
     private void FireWithRocket()
     {
-        Debug.Log("Disparo con rocket");
         rocketsFired++;
+        Vector3 startPos = fakeRockets[rocketsFired-1].transform.position;
+        Vector3 fireDirection;
+
+        if (_isAimingAtEnemy)
+            fireDirection = (mainHit.point - startPos).normalized;
+        else
+            fireDirection = mainGunFirePoint.forward;
+
+        fakeRockets[rocketsFired - 1].SetActive(false);
+        GameObject rocket = Instantiate(rocketPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        ProjectileController rocketController = rocket.GetComponent<ProjectileController>();
+        rocket.transform.SetParent(projectileContainer);
+
+        if (rocketController != null)
+            rocketController.Initialize(startPos, fireDirection, rocketSpeed, bulletRange, rocketDamage);
+       
+        cooldownTimer = 0;
         if (rocketsFired == 4)
             BackToMainTurret();
     }
@@ -214,7 +238,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnWeaponPowerUp()
     {
-        int random = 3;
+        int random = 1;
         turretMesh.mesh = turretMeshes[random];
         currentWeapon = (Weapons)random;
         currentRange = rangeOfTurrets[random];

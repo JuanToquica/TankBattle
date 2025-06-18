@@ -21597,7 +21597,7 @@ Transform:
   m_GameObject: {fileID: 577054742}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 1.2, z: 1.18}
+  m_LocalPosition: {x: -1.41, y: 1.2, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32807,7 +32807,7 @@ Transform:
   m_GameObject: {fileID: 785300986}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 0.6, z: 1.18}
+  m_LocalPosition: {x: -1.41, y: 0.6, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74985,7 +74985,7 @@ Transform:
   m_GameObject: {fileID: 1886066322}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 0.6, z: 1.18}
+  m_LocalPosition: {x: 1.41, y: 0.6, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87672,7 +87672,7 @@ Transform:
   m_GameObject: {fileID: 4718146261268653440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7, y: 1.2, z: 1.18}
+  m_LocalPosition: {x: 1.41, y: 1.2, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88306,7 +88306,7 @@ MonoBehaviour:
   - {fileID: 785300986}
   projectileContainer: {fileID: 2137308255}
   projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
-  rocketPrefab: {fileID: 6562628941193036308, guid: 1b267a6640a00f54283245d63920e451, type: 3}
+  rocketPrefab: {fileID: 8015292446879436259, guid: 1b267a6640a00f54283245d63920e451, type: 3}
   shotVfx: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
   cooldownImage: {fileID: 1659777210}
   turretMeshes:
@@ -88328,13 +88328,14 @@ MonoBehaviour:
   - 80
   aimAngle: 40
   amountOfRaycast: 16
-  bulletSpeed: 400
-  rocketSpeed: 0
+  bulletSpeed: 300
+  rocketSpeed: 125
   bulletRange: 200
   mainTurretDamage: 0
   railgunDamage: 0
   machineGunDamage: 0
   rocketDamage: 0
+  railgunDelay: 1
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0
