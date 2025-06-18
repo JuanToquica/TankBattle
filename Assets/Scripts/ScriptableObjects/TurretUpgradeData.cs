@@ -4,7 +4,7 @@ using UnityEngine;
 public class UpgradeLevel
 {
     public int level;
-    public float damageValue;
+    public int damageValue;
     public int cost;
 }
 

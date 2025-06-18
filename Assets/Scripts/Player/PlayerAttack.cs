@@ -40,18 +40,22 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float rocketSpeed;
     [SerializeField] private float bulletRange;
-    [SerializeField] private float mainTurretDamage;
-    [SerializeField] private float railgunDamage;
-    [SerializeField] private float machineGunDamage;
-    [SerializeField] private float rocketDamage;
+    [SerializeField] private int mainTurretDamage;
+    [SerializeField] private int railgunDamage;
+    [SerializeField] private int machineGunDamage;
+    [SerializeField] private int rocketDamage;
     [SerializeField] private float railgunDelay;
+    [SerializeField] private float railgunAmmo;
+    [SerializeField] private float machineGunAmmo;
+    [SerializeField] private float rocketAmmo;
     public float currentCooldown;
     public float currentRange;   
     public float cooldownTimer;   
     private RaycastHit mainHit;
+    private Ray mainRay;
     private bool _isAimingAtEnemy;
     public bool rechargingPowerUpActive;
-    public int rocketsFired;
+    public int shotsFired;
     
 
     private void OnEnable()
@@ -110,7 +114,8 @@ public class PlayerAttack : MonoBehaviour
                 {
                     if (hit.distance < bestHitInThisScan.distance)
                     {
-                        bestHitInThisScan = hit;                      
+                        bestHitInThisScan = hit;
+                        mainRay = new Ray(mainGunFirePoint.position, rayDirection);
                     }
                     foundEnemyInThisScan = true;
                 }
@@ -144,7 +149,8 @@ public class PlayerAttack : MonoBehaviour
                 currentOutlinedEnemy.enabled = false;
                 currentOutlinedEnemy = null;
             }
-            Physics.Raycast(mainGunFirePoint.position, mainGunFirePoint.forward, out RaycastHit hit, 200);
+            mainRay = new Ray(mainGunFirePoint.position, mainGunFirePoint.forward);
+            Physics.Raycast(mainRay, out RaycastHit hit, 200);
             mainHit = hit;
             _isAimingAtEnemy = false;
         }
@@ -161,7 +167,7 @@ public class PlayerAttack : MonoBehaviour
                     FireWithMainTurret();
                     break;
                 case Weapons.railGun:
-                    Invoke("FireWithRailgun", railgunDelay);
+                    StartCoroutine(FireWithRailgun());
                     break;
                 case Weapons.machineGun:
                     FireWithMachineGun();
@@ -195,14 +201,29 @@ public class PlayerAttack : MonoBehaviour
         cooldownTimer = 0;
     }
 
-    private void FireWithRailgun()
+    private IEnumerator FireWithRailgun()
     {
-        if (_isAimingAtEnemy)
-        {
-            EnemyHealth enemy = mainHit.transform.GetComponent<EnemyHealth>();
-            enemy.TakeDamage(railgunDamage);
-        }        
         cooldownTimer = 0;
+        yield return new WaitForSeconds(railgunDelay);
+
+        RaycastHit[] hits = Physics.RaycastAll(mainRay, currentRange);
+        if (hits.Length > 0)
+        {
+            int impactedEnemies = 0;
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.transform.CompareTag("Enemy"))
+                {
+                    impactedEnemies++;
+                    EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
+                    if (enemy != null)
+                        enemy.TakeDamage(railgunDamage / impactedEnemies);
+                }
+            }        
+        }
+        shotsFired++;
+        if (shotsFired == railgunAmmo)
+            BackToMainTurret();
     }
 
     private void FireWithMachineGun()
@@ -213,8 +234,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void FireWithRocket()
     {
-        rocketsFired++;
-        Vector3 startPos = fakeRockets[rocketsFired-1].transform.position;
+        shotsFired++;
+        Vector3 startPos = fakeRockets[shotsFired-1].transform.position;
         Vector3 fireDirection;
 
         if (_isAimingAtEnemy)
@@ -222,7 +243,7 @@ public class PlayerAttack : MonoBehaviour
         else
             fireDirection = mainGunFirePoint.forward;
 
-        fakeRockets[rocketsFired - 1].SetActive(false);
+        fakeRockets[shotsFired - 1].SetActive(false);
         GameObject rocket = Instantiate(rocketPrefab, startPos, Quaternion.LookRotation(fireDirection));
         ProjectileController rocketController = rocket.GetComponent<ProjectileController>();
         rocket.transform.SetParent(projectileContainer);
@@ -231,7 +252,7 @@ public class PlayerAttack : MonoBehaviour
             rocketController.Initialize(startPos, fireDirection, rocketSpeed, bulletRange, rocketDamage);
        
         cooldownTimer = 0;
-        if (rocketsFired == 4)
+        if (shotsFired == rocketAmmo)
             BackToMainTurret();
     }
 
@@ -248,10 +269,9 @@ public class PlayerAttack : MonoBehaviour
             currentCooldown = turretCooldowns[(int)currentWeapon].x;
         if (cooldownTimer > currentCooldown)
             cooldownTimer = currentCooldown;
-
+        shotsFired = 0;
         if (currentWeapon == Weapons.rocket)
-        {
-            rocketsFired = 0;
+        {            
             for (int i = 0; i < 4; i++)
             {
                 fakeRockets[i].SetActive(true);

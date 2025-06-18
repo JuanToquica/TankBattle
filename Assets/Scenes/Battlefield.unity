@@ -88322,8 +88322,8 @@ MonoBehaviour:
   - {x: 2, y: 1.5}
   - {x: 1, y: 0.5}
   rangeOfTurrets:
-  - 150
-  - 40
+  - 100
+  - 300
   - 50
   - 80
   aimAngle: 40
@@ -88336,11 +88336,14 @@ MonoBehaviour:
   machineGunDamage: 0
   rocketDamage: 0
   railgunDelay: 1
+  railgunAmmo: 4
+  machineGunAmmo: 100
+  rocketAmmo: 4
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0
   rechargingPowerUpActive: 0
-  rocketsFired: 0
+  shotsFired: 0
 --- !u!4 &9182347382844192842
 Transform:
   m_ObjectHideFlags: 0

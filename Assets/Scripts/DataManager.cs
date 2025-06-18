@@ -65,14 +65,14 @@ public class DataManager : MonoBehaviour
     public int GetMachineGunLevel() { return _currentPlayerData.machineGunDamageLevel; }
     public int GetRocketLevel() { return _currentPlayerData.rocketDamageLevel; }
 
-    public float GetCoinsAmount() { return _currentPlayerData.coins; }
-    public float GetArmorStrengthDamage() { return GetUpgradeDamage(armorStrengthUpgradeData, _currentPlayerData.armorStrengthLevel); }
-    public float GetMainTurretDamage() { return GetUpgradeDamage(mainGunUpgradeData, _currentPlayerData.mainGunDamageLevel); }
-    public float GetRailgunDamage() { return GetUpgradeDamage(railgunUpgradeData, _currentPlayerData.railgunDamageLevel); }
-    public float GetMachineGunDamage() { return GetUpgradeDamage(machineGunUpgradeData, _currentPlayerData.machineGunDamageLevel); }
-    public float GetRocketDamage() { return GetUpgradeDamage(rocketUpgradeData, _currentPlayerData.rocketDamageLevel); }
+    public int GetCoinsAmount() { return _currentPlayerData.coins; }
+    public int GetArmorStrengthDamage() { return GetUpgradeDamage(armorStrengthUpgradeData, _currentPlayerData.armorStrengthLevel); }
+    public int GetMainTurretDamage() { return GetUpgradeDamage(mainGunUpgradeData, _currentPlayerData.mainGunDamageLevel); }
+    public int GetRailgunDamage() { return GetUpgradeDamage(railgunUpgradeData, _currentPlayerData.railgunDamageLevel); }
+    public int GetMachineGunDamage() { return GetUpgradeDamage(machineGunUpgradeData, _currentPlayerData.machineGunDamageLevel); }
+    public int GetRocketDamage() { return GetUpgradeDamage(rocketUpgradeData, _currentPlayerData.rocketDamageLevel); }
 
-    private float GetUpgradeDamage(TurretUpgradeData upgradeData, int currentLevel)
+    private int GetUpgradeDamage(TurretUpgradeData upgradeData, int currentLevel)
     {
         return upgradeData.upgradeLevels[currentLevel].damageValue;
     }
