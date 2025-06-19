@@ -11,6 +11,7 @@ TagManager:
   - Floor
   - SlopeWall
   - Railing
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -19,10 +20,10 @@ TagManager:
   - Water
   - UI
   - Environment
-  - 
-  - 
-  - 
-  - 
+  - Flag
+  - Barrier
+  - Player
+  - Enemy
   - 
   - 
   - 

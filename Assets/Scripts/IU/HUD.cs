@@ -48,7 +48,11 @@ public class HUD : MonoBehaviour
         minutes = Mathf.FloorToInt(GameManager.instance.time / 60);
         chronometer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         if (GameManager.instance.time <= 0)
+        {
             GameManager.instance.EndGame();
+            gameObject.SetActive(false);
+        }
+            
     }
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO.Pipes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
@@ -24,6 +25,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject rocketPrefab;
     [SerializeField] private GameObject shotVfx;
+    [SerializeField] private GameObject machineGunVfx;
     [SerializeField] private Transform machineGunCannon;
     [SerializeField] private Image cooldownImage;
     [SerializeField] private Mesh[] turretMeshes;
@@ -106,13 +108,21 @@ public class PlayerAttack : MonoBehaviour
                 //if (machineGunRotation > 0.99f) machineGunRotation = 1;
 
                 if (Time.time > lastShoot + timeBetweenShoots && machineGunRotation == 1)
+                {
                     FireWithMachineGun();
+                    machineGunVfx.SetActive(true);
+                }      
             }
             else
             {
                 machineGunRotation = Mathf.Clamp(Mathf.MoveTowards(machineGunRotation, 0, (machineGunAngularSpeed / 3) * Time.deltaTime), 0, 1);
-                //if (machineGunRotation < 0.05f) machineGunRotation = 0;
+                machineGunVfx.SetActive(false);
             }
+        }
+        else
+        {
+            if (machineGunVfx.activeInHierarchy == true)
+                machineGunVfx.SetActive(false);
         }
     }
 
@@ -325,15 +335,14 @@ public class PlayerAttack : MonoBehaviour
 
         if (shotsFired >= machineGunAmmo)
         {
+            StopFiring();
             BackToMainTurret();
-            firing = false;
             return;
         }
-
         lastShoot = Time.time;
         
         if (cooldownTimer < currentCooldown / currentAmountOfShotsInOneRound)
-            firing = false;
+            StopFiring();        
     }
 
     private void FireWithRocket()
@@ -363,12 +372,16 @@ public class PlayerAttack : MonoBehaviour
     public void StopFiring()
     {
         if (firing && currentWeapon == Weapons.machineGun)
+        {
             firing = false;
+            machineGunVfx.SetActive(false);
+        }
+            
     }
 
     public void OnWeaponPowerUp()
     {
-        int random = Random.Range(1,4);
+        int random = 2; //Random.Range(1,4);
         turretMesh.mesh = turretMeshes[random];
         currentWeapon = (Weapons)random;
         currentRange = rangeOfTurrets[random];

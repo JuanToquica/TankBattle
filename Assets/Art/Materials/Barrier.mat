@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Barrier
+  m_Shader: {fileID: -6465566751694194690, guid: 481b8c3bca9c3ee40a66980921d07a4a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _USEBIGSCANLINE
+  - _USEEDGEGLOW
+  - _USEHEXAGONGLOW
+  - _USEINTERSECTION
+  - _USESCANLINES
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HexagonTexture:
+        m_Texture: {fileID: 2800000, guid: f3bfe3a0dad8dca43b8489a24a3e91e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScanlineTexture:
+        m_Texture: {fileID: 2800000, guid: 33770be89d9d4264596ccea768790799, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AspectRatio: 0.27
+    - _BigScanlineSpeed: 0.5
+    - _BigScanlineStrenght: 5
+    - _BigScanlineThickness: 0.1
+    - _EdgeGlowStrength: 30
+    - _GlowNoiseScale: 1
+    - _GlowSpeed: 1
+    - _HeightMapStrenght: 1
+    - _IntersectionStrenght: 30
+    - _IntersectionThickness: 1
+    - _Metallic: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _RippleRatio: 0.48
+    - _RippleSpeed: 1
+    - _RippleThickness: 0.1
+    - _RippleTime: 1
+    - _ScanlineStrenght: 0.5
+    - _Smoothness: 0
+    - _USEBIGSCANLINE: 1
+    - _USECOLLISIONRIPPLES: 0
+    - _USEEDGEGLOW: 1
+    - _USEHEXAGONGLOW: 1
+    - _USEINTERSECTION: 1
+    - _USESCANLINES: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EdgeGlowThickness: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0.23301852, b: 0.9716981, a: 1}
+    - _GlowStrenghtMinMax: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _RippleOrigin: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _ScrollVelocity: {r: 0.1, g: 0.1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &2240200223999446994
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 9
