@@ -12,6 +12,7 @@ TagManager:
   - SlopeWall
   - Railing
   - FxTemporaire
+  - VFX
   layers:
   - Default
   - TransparentFX

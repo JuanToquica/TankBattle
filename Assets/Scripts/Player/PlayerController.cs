@@ -23,6 +23,7 @@ public class PlayerController : TankBase
         lastDistances = new float[suspensionPoints.Length];
         springStrength = minSpringStrength;
         dampSensitivity = minDampSensitivity;
+        turret.localRotation = Quaternion.identity;
         if (rb != null)
         {
             RestoreSpeed();

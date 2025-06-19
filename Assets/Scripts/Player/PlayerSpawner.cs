@@ -4,6 +4,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] spawns;
     [SerializeField] private GameObject player;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private float timeToRespawn;
     private Transform playerTransform;
     private PlayerHealth playerHealth;
@@ -19,6 +20,15 @@ public class PlayerSpawner : MonoBehaviour
     {
         player.SetActive(false);
         Invoke("SpawnPlayer", timeToRespawn);
+        cameraController.playerAlive = false;
+
+        foreach (Transform child in player.transform) //Destruir vfx de powerups que no hayan terminado
+        {
+            if (child.CompareTag("VFX"))
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     private void SpawnPlayer()
@@ -28,5 +38,7 @@ public class PlayerSpawner : MonoBehaviour
         playerTransform.rotation = Quaternion.identity;
         player.SetActive(true);
         playerHealth.RegainHealth();
+        cameraController.playerAlive = true;
+        cameraController.OnPlayerRevived();
     }
 }

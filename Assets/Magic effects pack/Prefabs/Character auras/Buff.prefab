@@ -9697,7 +9697,7 @@ GameObject:
   - component: {fileID: 3528235069938405983}
   m_Layer: 0
   m_Name: Buff
-  m_TagString: Untagged
+  m_TagString: VFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

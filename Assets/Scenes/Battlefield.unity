@@ -52272,6 +52272,7 @@ MonoBehaviour:
   - {fileID: 999771342}
   - {fileID: 1752911886}
   player: {fileID: 3226376839974422223}
+  cameraController: {fileID: 8843277517967702287}
   timeToRespawn: 3
 --- !u!4 &1283078838
 Transform:
@@ -117755,6 +117756,7 @@ MonoBehaviour:
   horizontalRotation: 0
   distanceA: 0
   distanceB: 0
+  playerAlive: 0
 --- !u!33 &8904116645676632755
 MeshFilter:
   m_ObjectHideFlags: 0

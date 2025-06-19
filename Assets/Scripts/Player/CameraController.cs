@@ -24,6 +24,7 @@ public class CameraController : MonoBehaviour
     LayerMask combinedLayers;
     public float distanceA;
     public float distanceB;
+    public bool playerAlive;
 
     private void Start()
     {
@@ -31,21 +32,21 @@ public class CameraController : MonoBehaviour
     }
     private void Update()
     {
-        if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
+        if (playerAlive)
         {
-            Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, playerTurret.rotation.eulerAngles.y, 0);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithKeys * Time.deltaTime);
-            horizontalRotation = transform.eulerAngles.y;
-        }
-        else if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled)
-        {
-            horizontalRotation += InputManager.Instance.mouseInput * sensitivity * Time.deltaTime;
-            Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, horizontalRotation, 0);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
-        }
-
-        
-       
+            if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
+            {
+                Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, playerTurret.rotation.eulerAngles.y, 0);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithKeys * Time.deltaTime);
+                horizontalRotation = transform.eulerAngles.y;
+            }
+            else if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled)
+            {
+                horizontalRotation += InputManager.Instance.mouseInput * sensitivity * Time.deltaTime;
+                Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, horizontalRotation, 0);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
+            }
+        }       
         
         Vector3 directionToCamera = (mainCamera.position - raycastOrigin.position).normalized;
         Vector3 origin = raycastOrigin.position + directionToCamera * distanceA;
@@ -60,5 +61,11 @@ public class CameraController : MonoBehaviour
         mainCamera.localPosition = Vector3.Lerp(minOffset, maxOffset, currentT);
         mainCamera.localEulerAngles = new Vector3(Mathf.Lerp(minRotation, maxRotation, currentT), 0, 0);
         playerController.cameraPivotRotation = transform.eulerAngles.y;
+    }
+
+    public void OnPlayerRevived()
+    {
+        horizontalRotation = 0;
+        transform.rotation = Quaternion.identity;
     }
 }
