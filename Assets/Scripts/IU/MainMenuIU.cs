@@ -2,13 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class MainMenuiu : MonoBehaviour
 {
-    [SerializeField] private GameObject SettingsIU;
+    [SerializeField] private GameObject settingsIU;
+    [SerializeField] private GameObject loadPanel;
     [SerializeField] private Button playButton;
     [SerializeField] private Button garageButton;
     [SerializeField] private Button settingsButton;
+    [SerializeField] private Slider loadBar;
 
     private void Start()
     {
@@ -19,18 +22,31 @@ public class MainMenuiu : MonoBehaviour
 
     public void OnPlayButtonClicked()
     {
-        SceneManager.LoadScene("Battlefield");
+        loadPanel.SetActive(true);
+        StartCoroutine(LoadAsync("Battlefield"));
     }
 
     public void OnGarageButtonClicked()
     {
-        SceneManager.LoadScene("Garage");
+        loadPanel.SetActive(true);
+        StartCoroutine(LoadAsync("Garage"));
     }
 
     public void OnSettingsButtonClicked()
     {
-        SettingsIU.SetActive(true);
+        settingsIU.SetActive(true);
         gameObject.SetActive(false);
+    }
+
+    private IEnumerator LoadAsync(string scene)
+    {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene);
+        while (!asyncOperation.isDone)
+        {
+            Debug.Log(asyncOperation.progress);
+            loadBar.value = asyncOperation.progress / 0.9f;
+            yield return null;
+        }
     }
 
 

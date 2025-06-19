@@ -56,6 +56,7 @@ public class DataManager : MonoBehaviour
     public void AddCoins(int amount)
     {
         _currentPlayerData.coins += amount;
+        SaveCurrentPlayerData();
     }
 
     public int GetMaxLevel() { return mainGunUpgradeData.maxLevel; }

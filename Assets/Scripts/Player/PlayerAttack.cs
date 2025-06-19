@@ -381,7 +381,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnWeaponPowerUp()
     {
-        int random = 2; //Random.Range(1,4);
+        int random = 3; //Random.Range(1,4);
         turretMesh.mesh = turretMeshes[random];
         currentWeapon = (Weapons)random;
         currentRange = rangeOfTurrets[random];
