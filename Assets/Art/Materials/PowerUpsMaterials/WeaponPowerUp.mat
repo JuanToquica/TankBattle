@@ -48,15 +48,15 @@ Material:
     m_Floats:
     - _DissolveFactor: -1
     - _DissolveSpeed: 1
-    - _EdgeWidth: 0.01
+    - _EdgeWidth: 0.1
     - _Metallic: 0.36
     - _NoiseScale: 100
-    - _Oclussion: 0.228
+    - _Oclussion: 0.309
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.359
+    - _Smoothness: 0.563
     m_Colors:
-    - _EdgeColor: {r: 0.08232466, g: 0.09433961, b: 0.09433961, a: 0}
+    - _EdgeColor: {r: 0.2028302, g: 0.38742873, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Tilling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

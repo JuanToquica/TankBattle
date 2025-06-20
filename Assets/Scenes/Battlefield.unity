@@ -21807,7 +21807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &577054743
 Transform:
   m_ObjectHideFlags: 0
@@ -33017,7 +33017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &785300987
 Transform:
   m_ObjectHideFlags: 0
@@ -75366,7 +75366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1886066323
 Transform:
   m_ObjectHideFlags: 0
@@ -116063,7 +116063,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &4747917323903582247
 GameObject:
   m_ObjectHideFlags: 0
@@ -117919,6 +117919,7 @@ MonoBehaviour:
   mainCamera: {fileID: 158061943366694656}
   raycastOrigin: {fileID: 1752298588}
   playerController: {fileID: 5430145907554654897}
+  enemyManager: {fileID: 471887632}
   maxOffset: {x: 0, y: 2.1, z: -7.2}
   minOffset: {x: 0, y: 0, z: 0}
   maxRotation: 22
@@ -118044,8 +118045,8 @@ MonoBehaviour:
   rangeOfTurrets:
   - 70
   - 130
-  - 50
-  - 80
+  - 70
+  - 130
   amountOfShotsInOneRound: {x: 20, y: 30}
   aimAngle: 25
   defaultAmountOfRaycast: 16

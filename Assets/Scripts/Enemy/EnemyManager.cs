@@ -227,4 +227,20 @@ public class EnemyManager : MonoBehaviour
             chasingInArea14 = true;
         }
     }
+
+    public EnemyAI GetEnemyThatKilledThePlayer()
+    {
+        EnemyAI enemyKiller = null;
+        for (int i = 14; i >= 3; i--)
+        {
+            activeEnemiesByArea.TryGetValue(i, out EnemyAI enemy);
+            if (enemy != null)
+            {
+                enemyKiller = enemy;
+                if (enemy.knowsPlayerPosition)
+                    return enemyKiller;
+            }              
+        }
+        return enemyKiller;
+    }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
@@ -9,6 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform mainCamera;
     [SerializeField] private Transform raycastOrigin;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private EnemyManager enemyManager;
     [SerializeField] private Vector3 maxOffset;
     [SerializeField] private Vector3 minOffset;
     [SerializeField] private float maxRotation;
@@ -25,7 +28,13 @@ public class CameraController : MonoBehaviour
     public float distanceA;
     public float distanceB;
     public bool playerAlive;
+    private ParentConstraint parentConstraint;
+    private Transform enemyTurret;
 
+    private void Awake()
+    {
+        parentConstraint = GetComponent<ParentConstraint>();
+    }
     private void Start()
     {
         combinedLayers = (1 << 6) | (1 << 2);
@@ -47,6 +56,15 @@ public class CameraController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
             }
         }       
+        else
+        {
+            if (enemyTurret != null)
+            {
+                Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, enemyTurret.rotation.eulerAngles.y, 0);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithKeys * Time.deltaTime);
+                horizontalRotation = transform.eulerAngles.y;
+            }      
+        }
         
         Vector3 directionToCamera = (mainCamera.position - raycastOrigin.position).normalized;
         Vector3 origin = raycastOrigin.position + directionToCamera * distanceA;
@@ -67,5 +85,30 @@ public class CameraController : MonoBehaviour
     {
         horizontalRotation = 0;
         transform.rotation = Quaternion.identity;
+        parentConstraint.constraintActive = false;
+        parentConstraint.SetSources(new List<ConstraintSource>());
+        ConstraintSource newSource = new ConstraintSource
+        {
+            sourceTransform = player,
+            weight = 1.0f
+        };
+        parentConstraint.AddSource(newSource);
+        parentConstraint.constraintActive = true;
+    }
+
+    public void OnPlayerDead()
+    {
+        playerAlive = false;
+        parentConstraint.constraintActive = false;
+        parentConstraint.SetSources(new List<ConstraintSource>());
+        EnemyAI enemy = enemyManager.GetEnemyThatKilledThePlayer();
+        ConstraintSource newSource = new ConstraintSource
+        {
+            sourceTransform = enemy.transform,
+            weight = 1.0f
+        };
+        enemyTurret = enemy.turret;
+        parentConstraint.AddSource(newSource);
+        parentConstraint.constraintActive = true;
     }
 }

@@ -246,7 +246,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     public void Fire()
-    { 
+    {
+        if (!gameObject.activeSelf)
+            return;
         if (cooldownTimer == currentCooldown && currentWeapon != Weapons.machineGun)
         {
             switch (currentWeapon)
@@ -358,11 +360,11 @@ public class PlayerAttack : MonoBehaviour
 
         fakeRockets[shotsFired - 1].SetActive(false);
         GameObject rocket = Instantiate(rocketPrefab, startPos, Quaternion.LookRotation(fireDirection));
-        ProjectileController rocketController = rocket.GetComponent<ProjectileController>();
+        RocketController rocketController = rocket.GetComponent<RocketController>();
         rocket.transform.SetParent(projectileContainer);
 
         if (rocketController != null)
-            rocketController.Initialize(startPos, fireDirection, rocketSpeed, bulletRange, rocketDamage);
+            rocketController.Initialize(startPos, fireDirection, rocketSpeed, bulletRange, rocketDamage, gameObject);
        
         cooldownTimer = 0;
         if (shotsFired == rocketAmmo)

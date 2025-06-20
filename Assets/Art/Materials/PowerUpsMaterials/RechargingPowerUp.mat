@@ -48,7 +48,7 @@ Material:
     m_Floats:
     - _DissolveFactor: -1
     - _DissolveSpeed: 1
-    - _EdgeWidth: 0.01
+    - _EdgeWidth: 0.1
     - _Metallic: 0.36
     - _NoiseScale: 100
     - _Oclussion: 0.228

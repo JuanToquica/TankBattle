@@ -178,15 +178,23 @@ public class EnemyAI : TankBase
 
     private void SetKnowsPlayerPosition()
     {
-        if (detectingPlayer)
+        if (player.gameObject.activeSelf)
         {
-            knowsPlayerPosition = true;
-            if (timerPlayerNotDetected > 0) timerPlayerNotDetected = 0;
+            if (detectingPlayer)
+            {
+                knowsPlayerPosition = true;
+                if (timerPlayerNotDetected > 0) timerPlayerNotDetected = 0;
+            }
+            else
+            {
+                timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
+                if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
+            }
         }
         else
         {
-            timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
-            if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
+            detectingPlayer = false;
+            knowsPlayerPosition = false;
         }
     }
 

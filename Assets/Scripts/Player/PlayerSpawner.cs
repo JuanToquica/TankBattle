@@ -20,8 +20,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         player.SetActive(false);
         Invoke("SpawnPlayer", timeToRespawn);
-        cameraController.playerAlive = false;
-
+        cameraController.OnPlayerDead();
         foreach (Transform child in player.transform) //Destruir vfx de powerups que no hayan terminado
         {
             if (child.CompareTag("VFX"))

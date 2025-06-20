@@ -3935,7 +3935,7 @@
     "m_Title": "Combine Ripples And Glowing With Hexagon",
     "m_Position": {
         "x": -3605.0,
-        "y": 1145.0001220703125
+        "y": 1145.0
     }
 }
 
@@ -11377,7 +11377,7 @@
     "m_Title": "Collision Ripples",
     "m_Position": {
         "x": -6374.0,
-        "y": 1708.0001220703125
+        "y": 1708.0
     }
 }
 
@@ -11802,7 +11802,7 @@
     "m_Title": "Big Scanline",
     "m_Position": {
         "x": -3512.0,
-        "y": -656.0000610351563
+        "y": -656.0
     }
 }
 
@@ -12869,8 +12869,8 @@
     "m_ObjectId": "b559494bcf3a483fbb3fcfb5a00a0991",
     "m_Title": "ScanLines",
     "m_Position": {
-        "x": -2768.999755859375,
-        "y": 1125.0001220703125
+        "x": -2769.0,
+        "y": 1125.0
     }
 }
 
@@ -13062,7 +13062,7 @@
     "m_Title": "Intersection With Other Objects",
     "m_Position": {
         "x": -3088.0,
-        "y": 1758.0001220703125
+        "y": 1758.0
     }
 }
 
