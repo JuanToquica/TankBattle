@@ -20,6 +20,8 @@ public class WeaponPowerUp : PowerUpBase
             }
             else if (other.gameObject.CompareTag("Enemy"))
             {
+                EnemyAttack enemy = other.GetComponent<EnemyAttack>();
+                enemy.OnWeaponPowerUp();
                 GameObject vfx = Instantiate(weaponVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);

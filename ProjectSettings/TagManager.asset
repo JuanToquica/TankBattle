@@ -7,13 +7,11 @@ TagManager:
   - Enemy
   - EnemyProjectile
   - PlayerProjectile
-  - Wall
-  - Floor
-  - SlopeWall
   - Railing
   - FxTemporaire
   - VFX
   - Environment
+  - Flag
   layers:
   - Default
   - TransparentFX

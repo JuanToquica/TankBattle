@@ -45,7 +45,7 @@ public class RocketController : MonoBehaviour
     {
         float distanceThisFrame = speed * Time.deltaTime;
 
-        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame) && hit.collider.gameObject != launcher)
+        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame) && hit.collider.gameObject != launcher && !hit.transform.CompareTag("Flag"))
         {
             transform.position = hit.point;        
 

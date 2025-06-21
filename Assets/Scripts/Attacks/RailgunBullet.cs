@@ -31,7 +31,7 @@ public class RailgunBullet : MonoBehaviour
         if (isDestroying) return;
         float distanceThisFrame = speed * Time.deltaTime;
 
-        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame))
+        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame) && !hit.transform.CompareTag("Flag"))
         {
             transform.position = hit.point;
 
