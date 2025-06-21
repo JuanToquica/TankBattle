@@ -22,10 +22,12 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private GameObject[] fakeRockets;
     [SerializeField] private Transform projectileContainer;
     [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private GameObject railgunBulletPrefab;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject rocketPrefab;
     [SerializeField] private GameObject shotVfx;
     [SerializeField] private GameObject machineGunVfx;
+    [SerializeField] private GameObject railgunVfx;
     [SerializeField] private Transform machineGunCannon;
     [SerializeField] private Image cooldownImage;
     [SerializeField] private Mesh[] turretMeshes;
@@ -45,6 +47,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int defaultAmountOfRaycast;
     [SerializeField] private int railGunAmountOfRaycast;
     [SerializeField] private float projectileSpeed;
+    [SerializeField] private float railgunBulletSpeed;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float rocketSpeed;
     [SerializeField] private float bulletRange;
@@ -295,23 +298,25 @@ public class PlayerAttack : MonoBehaviour
     private IEnumerator FireWithRailgun()
     {
         cooldownTimer = 0;
+        GameObject vfx = Instantiate(railgunVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
+        vfx.transform.SetParent(mainGunFirePoint);
         yield return new WaitForSeconds(railgunDelay);
 
-        RaycastHit[] hits = Physics.RaycastAll(mainRay, currentRange);
-        if (hits.Length > 0)
-        {
-            int impactedEnemies = 0;
-            foreach (RaycastHit hit in hits)
-            {
-                if (hit.transform.CompareTag("Enemy"))
-                {
-                    impactedEnemies++;
-                    EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
-                    if (enemy != null)
-                        enemy.TakeDamage(railgunDamage / impactedEnemies);
-                }
-            }        
-        }
+        Vector3 startPos = mainGunFirePoint.position;
+        Vector3 fireDirection;
+
+        if (_isAimingAtEnemy)
+            fireDirection = (mainHit.point - startPos).normalized;
+        else
+            fireDirection = mainGunFirePoint.forward;
+        
+        GameObject bulletInstance = Instantiate(railgunBulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        RailgunBullet bulletController = bulletInstance.GetComponent<RailgunBullet>();
+        bulletInstance.transform.SetParent(projectileContainer);
+
+        if (bulletController != null)
+            bulletController.Initialize(startPos, fireDirection, railgunBulletSpeed, bulletRange, railgunDamage);
+
         shotsFired++;
         if (shotsFired == railgunAmmo)
             BackToMainTurret();
@@ -383,7 +388,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnWeaponPowerUp()
     {
-        int random = 3; //Random.Range(1,4);
+        int random = Random.Range(1,4);
         turretMesh.mesh = turretMeshes[random];
         currentWeapon = (Weapons)random;
         currentRange = rangeOfTurrets[random];
@@ -391,8 +396,8 @@ public class PlayerAttack : MonoBehaviour
             currentCooldown = turretCooldowns[(int)currentWeapon].y;
         else
             currentCooldown = turretCooldowns[(int)currentWeapon].x;
-        if (cooldownTimer > currentCooldown)
-            cooldownTimer = currentCooldown;
+        cooldownTimer = currentCooldown;
+
         shotsFired = 0;
         if (currentWeapon == Weapons.rocket)
         {            

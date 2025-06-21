@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 29260017}
   m_Layer: 6
   m_Name: Pilar8
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1134,7 +1134,7 @@ GameObject:
   - component: {fileID: 47653851}
   m_Layer: 6
   m_Name: midRamp2
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1486,7 +1486,7 @@ GameObject:
   - component: {fileID: 59783392}
   m_Layer: 6
   m_Name: Cube_3
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1836,7 +1836,7 @@ GameObject:
   - component: {fileID: 76938142}
   m_Layer: 8
   m_Name: Barrier2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3500,7 +3500,7 @@ GameObject:
   - component: {fileID: 140440909}
   m_Layer: 6
   m_Name: EnemySpawn1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -5300,7 +5300,7 @@ GameObject:
   - component: {fileID: 153779270}
   m_Layer: 8
   m_Name: Barrier1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5607,7 +5607,7 @@ GameObject:
   - component: {fileID: 183756753}
   m_Layer: 6
   m_Name: EnemySpawn2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -8708,7 +8708,7 @@ GameObject:
   - component: {fileID: 203367842}
   m_Layer: 6
   m_Name: Floor
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -12189,7 +12189,7 @@ GameObject:
   - component: {fileID: 260851512}
   m_Layer: 6
   m_Name: Environment
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -12848,7 +12848,7 @@ GameObject:
   - component: {fileID: 337900897}
   m_Layer: 6
   m_Name: Pilar5
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -14874,7 +14874,7 @@ GameObject:
   - component: {fileID: 422804592}
   m_Layer: 6
   m_Name: Pilar9
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -15331,7 +15331,7 @@ GameObject:
   - component: {fileID: 429690918}
   m_Layer: 6
   m_Name: Cube_8
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19500,7 +19500,7 @@ GameObject:
   - component: {fileID: 519412287}
   m_Layer: 6
   m_Name: PilarGrande4
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -21923,7 +21923,7 @@ GameObject:
   - component: {fileID: 583018031}
   m_Layer: 6
   m_Name: Pilar1
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -22443,7 +22443,7 @@ GameObject:
   - component: {fileID: 608402453}
   m_Layer: 6
   m_Name: Pilar2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -22795,7 +22795,7 @@ GameObject:
   - component: {fileID: 611525487}
   m_Layer: 6
   m_Name: MidPlatform
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -26124,7 +26124,7 @@ GameObject:
   - component: {fileID: 659578563}
   m_Layer: 6
   m_Name: Cube_5
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26735,7 +26735,7 @@ GameObject:
   - component: {fileID: 664573407}
   m_Layer: 6
   m_Name: Platform1
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -29944,7 +29944,7 @@ GameObject:
   - component: {fileID: 721342947}
   m_Layer: 6
   m_Name: PilarGrande3
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -31715,7 +31715,7 @@ GameObject:
   - component: {fileID: 740726967}
   m_Layer: 6
   m_Name: PlayerSpawnBarrier
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -32675,7 +32675,7 @@ GameObject:
   - component: {fileID: 747922983}
   m_Layer: 6
   m_Name: Pilares
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -36303,7 +36303,7 @@ GameObject:
   - component: {fileID: 844368395}
   m_Layer: 6
   m_Name: Pilar7
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -39068,7 +39068,7 @@ GameObject:
   - component: {fileID: 897392956}
   m_Layer: 6
   m_Name: Pilar10
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -39767,7 +39767,7 @@ GameObject:
   - component: {fileID: 914673909}
   m_Layer: 6
   m_Name: Bridge2
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -40599,7 +40599,7 @@ GameObject:
   - component: {fileID: 919755498}
   m_Layer: 6
   m_Name: Cube_2
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40951,7 +40951,7 @@ GameObject:
   - component: {fileID: 924059735}
   m_Layer: 6
   m_Name: LargeWall
-  m_TagString: Wall
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -41543,7 +41543,7 @@ GameObject:
   - component: {fileID: 932449697}
   m_Layer: 6
   m_Name: Platform2
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -43658,7 +43658,7 @@ GameObject:
   - component: {fileID: 944813196}
   m_Layer: 6
   m_Name: SpawnPlatform2
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -46728,7 +46728,7 @@ GameObject:
   - component: {fileID: 1055797647}
   m_Layer: 6
   m_Name: Platforms
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47150,7 +47150,7 @@ GameObject:
   - component: {fileID: 1116737401}
   m_Layer: 6
   m_Name: Bridge3
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -49090,7 +49090,7 @@ GameObject:
   - component: {fileID: 1154075653}
   m_Layer: 6
   m_Name: LargeBridge
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -49682,7 +49682,7 @@ GameObject:
   - component: {fileID: 1156974730}
   m_Layer: 6
   m_Name: Cube_4
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51557,7 +51557,7 @@ GameObject:
   - component: {fileID: 1251325222}
   m_Layer: 6
   m_Name: Pilar11
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -52552,7 +52552,7 @@ GameObject:
   - component: {fileID: 1291991110}
   m_Layer: 6
   m_Name: PlayerSpawnRamp
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -52904,7 +52904,7 @@ GameObject:
   - component: {fileID: 1293175883}
   m_Layer: 6
   m_Name: SpawnPlatform
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -56398,7 +56398,7 @@ GameObject:
   - component: {fileID: 1364175692}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -58767,7 +58767,7 @@ GameObject:
   - component: {fileID: 1368476417}
   m_Layer: 6
   m_Name: PlayerSpawnRamp
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -59154,7 +59154,7 @@ GameObject:
   - component: {fileID: 1380806143}
   m_Layer: 6
   m_Name: Pilar6
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -59728,7 +59728,7 @@ GameObject:
   - component: {fileID: 1437785364}
   m_Layer: 6
   m_Name: Pilar13
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -60245,7 +60245,7 @@ GameObject:
   - component: {fileID: 1445354000}
   m_Layer: 6
   m_Name: Cube_11
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61305,7 +61305,7 @@ GameObject:
   - component: {fileID: 1497546333}
   m_Layer: 6
   m_Name: Pilar14
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -64150,7 +64150,7 @@ GameObject:
   - component: {fileID: 1589308586}
   m_Layer: 6
   m_Name: Pilar3
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -65845,7 +65845,7 @@ GameObject:
   - component: {fileID: 1611696451}
   m_Layer: 6
   m_Name: PilarGrande1
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -68822,7 +68822,7 @@ GameObject:
   - component: {fileID: 1712346334}
   m_Layer: 6
   m_Name: Pilar12
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -70317,7 +70317,7 @@ GameObject:
   - component: {fileID: 1741718223}
   m_Layer: 6
   m_Name: Ramps
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -70438,7 +70438,7 @@ GameObject:
   - component: {fileID: 1748376215}
   m_Layer: 6
   m_Name: Cube
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -72560,7 +72560,7 @@ GameObject:
   - component: {fileID: 1834441151}
   m_Layer: 6
   m_Name: midRamp
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -72974,7 +72974,7 @@ GameObject:
   - component: {fileID: 1852579331}
   m_Layer: 6
   m_Name: Pilar4
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -73656,7 +73656,7 @@ GameObject:
   - component: {fileID: 1877515535}
   m_Layer: 6
   m_Name: PilarGrande2
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -75570,7 +75570,7 @@ GameObject:
   - component: {fileID: 1893117695}
   m_Layer: 6
   m_Name: PlayerSpawn
-  m_TagString: Floor
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -118024,10 +118024,12 @@ MonoBehaviour:
   - {fileID: 785300986}
   projectileContainer: {fileID: 2137308255}
   projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
+  railgunBulletPrefab: {fileID: 7571159958085733353, guid: 1ed765748a002f64abcf3d432a178729, type: 3}
   bulletPrefab: {fileID: 3392163310842244485, guid: 24ed09b8f9ece0746a574f91d1a08a96, type: 3}
   rocketPrefab: {fileID: 8015292446879436259, guid: 1b267a6640a00f54283245d63920e451, type: 3}
   shotVfx: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
   machineGunVfx: {fileID: 1641421436728243313}
+  railgunVfx: {fileID: 8145502431507700120, guid: 000832214335ffd4782827d2a4510f4a, type: 3}
   machineGunCannon: {fileID: 4117745439909488483}
   cooldownImage: {fileID: 1659777210}
   turretMeshes:
@@ -118052,6 +118054,7 @@ MonoBehaviour:
   defaultAmountOfRaycast: 16
   railGunAmountOfRaycast: 26
   projectileSpeed: 300
+  railgunBulletSpeed: 800
   bulletSpeed: 300
   rocketSpeed: 125
   bulletRange: 200

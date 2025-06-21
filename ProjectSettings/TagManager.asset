@@ -13,6 +13,7 @@ TagManager:
   - Railing
   - FxTemporaire
   - VFX
+  - Environment
   layers:
   - Default
   - TransparentFX
