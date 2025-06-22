@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4709559477418352718}
   - component: {fileID: 7041133495335263925}
   - component: {fileID: 6443650461504462983}
+  - component: {fileID: -7242188631913410330}
   m_Layer: 0
   m_Name: VfxShot
   m_TagString: Untagged
@@ -121,7 +122,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 6
   simulationSpeed: 6
-  stopAction: 2
+  stopAction: 3
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4943,6 +4944,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &-7242188631913410330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032288737545084984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dac7eb46b35a9143930b3bfecbf8b1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particles: {fileID: 19800008, guid: 1dbc518224e49f34095aab42fe05751a, type: 3}
 --- !u!1 &3900732168225356538
 GameObject:
   m_ObjectHideFlags: 0

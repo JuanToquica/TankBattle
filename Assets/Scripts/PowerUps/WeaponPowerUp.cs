@@ -11,7 +11,7 @@ public class WeaponPowerUp : PowerUpBase
             {
                 PlayerAttack player = other.GetComponent<PlayerAttack>();
                 player.OnWeaponPowerUp();
-                GameObject vfx = Instantiate(weaponVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);
                 _startTime = Time.time;
@@ -22,7 +22,7 @@ public class WeaponPowerUp : PowerUpBase
             {
                 EnemyAttack enemy = other.GetComponent<EnemyAttack>();
                 enemy.OnWeaponPowerUp();
-                GameObject vfx = Instantiate(weaponVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);
                 _startTime = Time.time;

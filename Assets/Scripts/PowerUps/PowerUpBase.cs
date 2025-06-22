@@ -17,6 +17,16 @@ public class PowerUpBase : MonoBehaviour
     protected float _startTime;
     protected float currentValue;
 
+    private void OnEnable()
+    {
+        isFalling = true;
+        vfxInstantiated = false;
+        isDissolving = false;
+        _startTime = 0;
+        currentValue = -1.2f;
+        meshRenderer.material.SetFloat("_DissolveFactor", currentValue);
+    }
+
     void Update()
     {
         if (isDissolving)
@@ -27,7 +37,7 @@ public class PowerUpBase : MonoBehaviour
 
             meshRenderer.material.SetFloat("_DissolveFactor", currentValue);
             if (currentValue >= 1)
-                Destroy(gameObject);
+                ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }
 
         if (!isFalling) return;
@@ -37,7 +47,7 @@ public class PowerUpBase : MonoBehaviour
 
         if (transform.position.y < targetPoint.position.y + vfxOffset && !vfxInstantiated)
         {
-            Instantiate(puffVFX, targetPoint.position - new Vector3(0, 0.6f, 0), targetPoint.rotation);
+            ObjectPoolManager.Instance.GetPooledObject(puffVFX, targetPoint.position - new Vector3(0, 0.6f, 0), targetPoint.rotation);
             vfxInstantiated = true;
         }
 

@@ -49,8 +49,8 @@ public class ProjectileController : MonoBehaviour
                     player.TakeDamage(damageAmount);
                 }
             }
-            Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+            ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }
         else
         {
@@ -61,7 +61,7 @@ public class ProjectileController : MonoBehaviour
 
             if (travelledDistance >= maxRange)
             {
-                Destroy(gameObject);
+                ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
             }
         }
     }

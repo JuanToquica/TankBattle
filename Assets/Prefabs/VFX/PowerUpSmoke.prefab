@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3320641740306281339}
   - component: {fileID: 1406861477063768124}
   - component: {fileID: 4093974911896241591}
+  - component: {fileID: 1360535858739137359}
   m_Layer: 0
-  m_Name: Smoke puff
+  m_Name: PowerUpSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +44,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 20
   simulationSpeed: 10
-  stopAction: 2
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4903,3 +4904,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1360535858739137359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4809171458859421548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dac7eb46b35a9143930b3bfecbf8b1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particles: {fileID: 4282671161863364272, guid: aa88d858d69f7944b8e38e98b443c60c, type: 3}

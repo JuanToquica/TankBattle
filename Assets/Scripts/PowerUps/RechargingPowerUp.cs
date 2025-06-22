@@ -15,7 +15,7 @@ public class RechargingPowerUp : PowerUpBase
                 PlayerAttack player = other.GetComponent<PlayerAttack>();
                 if (player != null)
                     player.RecharchingPowerUp(powerUpDuration);
-                GameObject vfx = Instantiate(rechargingVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(rechargingVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.recharging, index);
                 _startTime = Time.time;
@@ -27,7 +27,7 @@ public class RechargingPowerUp : PowerUpBase
                 EnemyAttack enemy = other.GetComponent<EnemyAttack>();
                 if (enemy != null)
                     enemy.RecharchingPowerUp(powerUpDuration);
-                GameObject vfx = Instantiate(rechargingVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(rechargingVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.recharging, index);
                 _startTime = Time.time;

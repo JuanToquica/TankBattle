@@ -42,7 +42,7 @@ public class RailgunBullet : MonoBehaviour
                 {
                     enemy.TakeDamage(damageAmount);
                 }
-                Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
@@ -53,13 +53,13 @@ public class RailgunBullet : MonoBehaviour
                 {
                     player.TakeDamage(damageAmount);
                 }
-                Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
             if (hit.transform.CompareTag("Environment"))
             {
-                Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
@@ -81,6 +81,6 @@ public class RailgunBullet : MonoBehaviour
 
     private void Destroy()
     {
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
     }
 }

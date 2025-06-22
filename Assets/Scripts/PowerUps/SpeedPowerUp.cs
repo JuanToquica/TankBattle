@@ -14,7 +14,7 @@ public class SpeedPowerUp : PowerUpBase
                 TankBase tank = other.GetComponent<TankBase>();
                 if (tank != null)
                     tank.SpeedPowerUp(powerUpDuration);
-                GameObject vfx = Instantiate(speedVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(speedVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.speed, index);
                 _startTime = Time.time;

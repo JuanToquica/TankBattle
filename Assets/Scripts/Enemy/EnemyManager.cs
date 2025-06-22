@@ -76,7 +76,6 @@ public class EnemyManager : MonoBehaviour
         enemyAI.waypoints = new List<Transform>(wayPointsByArea[area]);
         enemyHealth.player = player;
         enemyHealth.enemyManager = this;
-        enemyAttack.projectileContainer = projectileContainer;
         if (area == 3 || area == 6 || area == 8 || area == 11)
             enemyAI.centeringOffset = centeringOffset1;
         else if(area == 4 || area == 5 || area == 7 || area == 9 || area == 10 || area == 12)

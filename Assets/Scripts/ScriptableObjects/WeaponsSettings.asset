@@ -36,5 +36,5 @@ MonoBehaviour:
   railgunAmmo: 4
   machineGunAmmo: 50
   rocketAmmo: 4
-  timeBetweenShoots: 0.2
+  timeBetweenShoots: 0.1
   machineGunAngularSpeed: 2

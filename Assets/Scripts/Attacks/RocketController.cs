@@ -15,6 +15,7 @@ public class RocketController : MonoBehaviour
     private SmokeTrail smokeTrail;
     private GameObject launcher;
 
+
     public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, GameObject launcher)
     {
         currentPosition = startPos;
@@ -28,7 +29,7 @@ public class RocketController : MonoBehaviour
         transform.position = currentPosition;
         transform.forward = direction;
         this.launcher = launcher;
-        smokeTrail = Instantiate(smokeVFX, transform.position, transform.rotation).GetComponent<SmokeTrail>();
+        smokeTrail = ObjectPoolManager.Instance.GetPooledObject(smokeVFX, transform.position, transform.rotation).GetComponent<SmokeTrail>();
         ParentConstraint smokeTrailConstraint = smokeTrail.GetComponent<ParentConstraint>();
         ConstraintSource newSource = new ConstraintSource
         {
@@ -99,9 +100,9 @@ public class RocketController : MonoBehaviour
                     }                     
                 }
             }
-            Instantiate(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
             smokeTrail.OnRocketCollision();
-            Destroy(gameObject);
+            ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }
         else
         {
@@ -113,7 +114,7 @@ public class RocketController : MonoBehaviour
             if (travelledDistance >= maxRange)
             {
                 smokeTrail.OnRocketCollision();
-                Destroy(gameObject);
+                ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
             }
         }
     }

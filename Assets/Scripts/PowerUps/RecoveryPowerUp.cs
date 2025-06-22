@@ -13,7 +13,7 @@ public class RecoveryPowerUp : PowerUpBase
                 PlayerHealth health = other.GetComponent<PlayerHealth>();
                 if (health != null) { }
                 health.RegainHealth();
-                GameObject vfx = Instantiate(healingVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(healingVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.recovery, index);
                 _startTime = Time.time;
@@ -25,7 +25,7 @@ public class RecoveryPowerUp : PowerUpBase
                 EnemyHealth health = other.GetComponent<EnemyHealth>();
                 if (health != null) { }
                 health.RegainHealth();
-                GameObject vfx = Instantiate(healingVFX, other.transform.position, other.transform.rotation);
+                GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(healingVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.recovery, index);
                 _startTime = Time.time;

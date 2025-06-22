@@ -15,7 +15,6 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] private WeaponsSettings weaponsSettings;
     [SerializeField] protected Transform mainGunFirePoint;
     [SerializeField] protected GameObject[] fakeRockets;
-    [SerializeField] public Transform projectileContainer;
     [SerializeField] private GameObject machineGunVfx;
     [SerializeField] protected Transform machineGunCannon;
     [SerializeField] protected Mesh[] turretMeshes;
@@ -192,12 +191,11 @@ public abstract class AttackBase : MonoBehaviour
     protected void FireWithMainTurret()
     {
         mainTurretAnimator.SetBool("Fire", true);
-        Instantiate(weaponsSettings.shotVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
+        ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.shotVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
         Vector3 startPos = mainGunFirePoint.position;
 
-        GameObject bulletInstance = Instantiate(weaponsSettings.projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
+        GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
         ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
-        bulletInstance.transform.SetParent(projectileContainer);
 
         if (bulletController != null)
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.projectileSpeed, weaponsSettings.bulletRange, mainTurretDamage);
@@ -208,15 +206,14 @@ public abstract class AttackBase : MonoBehaviour
     protected IEnumerator FireWithRailgun()
     {
         cooldownTimer = 0;
-        GameObject vfx = Instantiate(weaponsSettings.railgunVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
+        GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.railgunVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
         vfx.transform.SetParent(mainGunFirePoint);
         yield return new WaitForSeconds(weaponsSettings.railgunDelay);
         Aim();
         Vector3 startPos = mainGunFirePoint.position;
 
-        GameObject bulletInstance = Instantiate(weaponsSettings.railgunBulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.railgunBulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
         RailgunBullet bulletController = bulletInstance.GetComponent<RailgunBullet>();
-        bulletInstance.transform.SetParent(projectileContainer);
 
         if (bulletController != null)
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.railgunBulletSpeed, weaponsSettings.bulletRange, railgunDamage);
@@ -230,9 +227,8 @@ public abstract class AttackBase : MonoBehaviour
     {
         Vector3 startPos = mainGunFirePoint.position;
 
-        GameObject bulletInstance = Instantiate(weaponsSettings.bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
         ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
-        bulletInstance.transform.SetParent(projectileContainer);
 
         if (bulletController != null)
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.bulletSpeed, weaponsSettings.bulletRange, machineGunDamage);
@@ -254,14 +250,18 @@ public abstract class AttackBase : MonoBehaviour
     {
         shotsFired++;
         Vector3 startPos = fakeRockets[shotsFired - 1].transform.position;
+        Vector3 direction;
+        if (fireDirection == mainGunFirePoint.forward)
+            direction = fireDirection;
+        else
+            direction = (mainHit.point - startPos).normalized;
 
         fakeRockets[shotsFired - 1].SetActive(false);
-        GameObject rocket = Instantiate(weaponsSettings.rocketPrefab, startPos, Quaternion.LookRotation(fireDirection));
+        GameObject rocket = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.rocketPrefab, startPos, Quaternion.LookRotation(direction));
         RocketController rocketController = rocket.GetComponent<RocketController>();
-        rocket.transform.SetParent(projectileContainer);
 
         if (rocketController != null)
-            rocketController.Initialize(startPos, fireDirection, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, gameObject);
+            rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, gameObject);
         
         cooldownTimer = 0;
         if (shotsFired == weaponsSettings.rocketAmmo)

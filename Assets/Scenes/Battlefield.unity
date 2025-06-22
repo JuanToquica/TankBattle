@@ -12690,6 +12690,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2381b2d2c098f9747916a765929ff17f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
+  railgunBulletPrefab: {fileID: 7571159958085733353, guid: 1ed765748a002f64abcf3d432a178729, type: 3}
+  machineGunBulletPrefab: {fileID: 3392163310842244485, guid: 24ed09b8f9ece0746a574f91d1a08a96, type: 3}
+  rocketPrefab: {fileID: 8015292446879436259, guid: 1b267a6640a00f54283245d63920e451, type: 3}
+  recoveryPowerUpPrefab: {fileID: 8885177402093234352, guid: db4749b6825c65e43ac18d0c47e3a3e9, type: 3}
+  rechargingPowerUpPrefab: {fileID: 5663318526739638120, guid: ca132d16d53a83a4cb746753f8462448, type: 3}
+  speedPowerUpPrefab: {fileID: 8400568211697887701, guid: 887de816d46d52f44ac5e87ba11b8c7c, type: 3}
+  weaponPowerUpPrefab: {fileID: 5918143113697160476, guid: 3e10e4a82327379498cfecc54cf5fae2, type: 3}
+  PowerUpSmokeVfxPrefab: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
+  recoveryPowerUpVfxPrefab: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
+  rechargingPowerUpVfxPrefab: {fileID: 7155335147208632822, guid: 065e39191648d2842bf627078f75bd81, type: 3}
+  speedPowerUpVfxPrefab: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
+  weaponPowerUpVfxPrefab: {fileID: 7131401307255788800, guid: 4d9a3b35b3bc07649b697df7fb497b6d, type: 3}
+  maingunImpactVfxPrefab: {fileID: 100006, guid: 2e7e92bc7175b744ea40878dedfa79e4, type: 3}
+  railgunImpactVfxPrefab: {fileID: 2965222256817593503, guid: a164e676dbbd6e54587237e619372c98, type: 3}
+  machineGunImpactVfxPrefab: {fileID: 1097486713018355681, guid: aa88d858d69f7944b8e38e98b443c60c, type: 3}
+  rocketImpactVfxPrefab: {fileID: 100008, guid: 1dbc518224e49f34095aab42fe05751a, type: 3}
+  rocketFireVfxPrefab: {fileID: 8265694448240753164, guid: fbbc5cf4f61eec24e86874f07b334654, type: 3}
+  rocketSmokeTrailPrefab: {fileID: 1322375213935937960, guid: d5f918cc41b4f04428d2d6f476829238, type: 3}
+  maingunShotVfxPrefab: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
+  railgunShotVfxPrefab: {fileID: 8145502431507700120, guid: 000832214335ffd4782827d2a4510f4a, type: 3}
   pauseUI: {fileID: 660529389}
   victoryPanel: {fileID: 1012025151}
   defeatPanel: {fileID: 1888326492}
@@ -14023,37 +14044,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1763784178}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &387573097
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 387573098}
-  m_Layer: 0
-  m_Name: VFXContainer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &387573098
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387573097}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &390429076
 GameObject:
@@ -17995,7 +17985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
   player: {fileID: 508778734223612319}
-  projectileContainer: {fileID: 2137308255}
+  projectileContainer: {fileID: 0}
   spawns:
   - {fileID: 1614491844}
   - {fileID: 2082347943}
@@ -25596,37 +25586,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &627703617
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 627703618}
-  m_Layer: 0
-  m_Name: ====== CONTAINERS ======
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &627703618
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 627703617}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &630554662
 Mesh:
   m_ObjectHideFlags: 0
@@ -55011,6 +54970,51 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 814441883252187405, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
   m_PrefabInstance: {fileID: 1302082302}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1306450484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306450486}
+  - component: {fileID: 1306450485}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1306450485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306450484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d72cfcd0158bea4cb7e869e4e03ef12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolParent: {fileID: 1306450486}
+--- !u!4 &1306450486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306450484}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1307789140
 Mesh:
   m_ObjectHideFlags: 0
@@ -56433,7 +56437,6 @@ MonoBehaviour:
   recoveryPowerUpPrefab: {fileID: 8885177402093234352, guid: db4749b6825c65e43ac18d0c47e3a3e9, type: 3}
   rechargingPowerUpPrefab: {fileID: 5663318526739638120, guid: ca132d16d53a83a4cb746753f8462448, type: 3}
   weaponPowerUpPrefab: {fileID: 5918143113697160476, guid: 3e10e4a82327379498cfecc54cf5fae2, type: 3}
-  powerUpsContainer: {fileID: 1839591908}
   speedPowerUpSpawnPoints:
   - {fileID: 507451496}
   - {fileID: 620947418}
@@ -73056,37 +73059,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1741718223}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
---- !u!1 &1839591907
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1839591908}
-  m_Layer: 0
-  m_Name: PowerUpsContainer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1839591908
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839591907}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1851356004
 GameObject:
   m_ObjectHideFlags: 0
@@ -84807,37 +84779,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 598893328}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2137308254
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137308255}
-  m_Layer: 0
-  m_Name: ProjectileContainer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2137308255
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137308254}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2138289009
 GameObject:
@@ -115477,7 +115418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 1283078837}
-  maxHealth: 10
+  maxHealth: 10000
   healthBar: {fileID: 1449295122119180993}
 --- !u!1 &3226376839974422223
 GameObject:
@@ -118188,7 +118129,6 @@ MonoBehaviour:
   - {fileID: 577054742}
   - {fileID: 1886066322}
   - {fileID: 785300986}
-  projectileContainer: {fileID: 2137308255}
   machineGunVfx: {fileID: 1641421436728243313}
   machineGunCannon: {fileID: 4117745439909488483}
   turretMeshes:
@@ -118264,7 +118204,4 @@ SceneRoots:
   - {fileID: 471887631}
   - {fileID: 1283078838}
   - {fileID: 1353540965}
-  - {fileID: 627703618}
-  - {fileID: 2137308255}
-  - {fileID: 1839591908}
-  - {fileID: 387573098}
+  - {fileID: 1306450486}
