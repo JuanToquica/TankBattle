@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3364c97de68d3a147af572d1c71c6455
+guid: 1138b8218a1336145923ce4ab573c50b
 labels:
 - warfx
 - particles
@@ -10,6 +10,5 @@ AssetOrigin:
   productId: 5669
   packageName: War FX
   packageVersion: 1.8.04
-  assetPath: Assets/JMO Assets/WarFX/_Effects/Explosions/WFX_ExplosiveSmokeGround
-    Big Alt.prefab
+  assetPath: Assets/WarFX/_Effects/Explosions/WFX_Explosion StarSmoke.prefab
   uploadId: 301034

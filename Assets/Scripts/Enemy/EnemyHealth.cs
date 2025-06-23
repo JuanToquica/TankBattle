@@ -6,16 +6,24 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private Image healthBar;
     [SerializeField] private Transform healthBarCanvas;
+    [SerializeField] private GameObject deathVfx;
     public EnemyManager enemyManager;
+    private BoxCollider boxCollider;
+    private EnemyAttack enemyAttack;
+    private Outline outline;
     private EnemyAI enemyAI;
     public Transform player;
-    private Transform healthBarTransform;
+    private ChangeTankPaint changeTankPaint;
     private float health;
 
     private void Start()
     {
         health = maxHealth;
         enemyAI = GetComponent<EnemyAI>();
+        changeTankPaint = GetComponent<ChangeTankPaint>();
+        boxCollider = GetComponent<BoxCollider>();
+        enemyAttack = GetComponent<EnemyAttack>();
+        outline = GetComponent<Outline>();
     }
 
     private void Update()
@@ -60,7 +68,21 @@ public class EnemyHealth : MonoBehaviour
             enemyManager.chasingInArea14 = false;
             area = enemyAI.oldArea;
         }         
-        enemyManager.DeadEnemy(area);    
+        enemyManager.DeadEnemy(area);
+        changeTankPaint.OnTankDead();
+        GameObject vfx = Instantiate(deathVfx, transform.position - new Vector3(0,0.5f,0), transform.rotation);
+        vfx.transform.parent = transform;
+        enemyAI.desiredMovement = 0;
+        enemyAI.desiredRotation = 0;
+        enemyAI.Dying = true;
+        outline.enabled = false;
+        healthBarCanvas.gameObject.SetActive(false);
+        enemyAttack.enabled = false;
+        boxCollider.enabled = false;
+    }
+
+    private void OnDisable()
+    {
         Destroy(gameObject);
     }
 }

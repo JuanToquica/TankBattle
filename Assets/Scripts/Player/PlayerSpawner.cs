@@ -25,7 +25,8 @@ public class PlayerSpawner : MonoBehaviour
         {
             if (child.CompareTag("VFX"))
             {
-                ObjectPoolManager.Instance.ReturnPooledObject(child.gameObject);
+                Destroy(child.gameObject);
+                //ObjectPoolManager.Instance.ReturnPooledObject(child.gameObject);
             }
         }
     }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e0609132424a24844b1d53ad3d704fd9
+guid: 3364c97de68d3a147af572d1c71c6455
 labels:
 - warfx
 - particles
@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 5669
   packageName: War FX
   packageVersion: 1.8.04
-  assetPath: Assets/WarFX/_Effects/Explosions/WFX_ExplosiveSmoke Big Alt.prefab
+  assetPath: Assets/WarFX/_Effects/Explosions/WFX_ExplosiveSmokeGround Big Alt.prefab
   uploadId: 301034

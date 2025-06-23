@@ -51,7 +51,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!poolDictionary.ContainsKey(prefab))
         {
-            Debug.LogWarning($"Pool para '{prefab.name}' no existe. Creando uno nuevo con tamaño mínimo.");
+            Debug.Log($"Pool para '{prefab.name}' no existe. Creando uno nuevo con tamaño mínimo.");
             CreatePool(prefab, 5);
         }
 
@@ -67,7 +67,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Pool para '{prefab.name}' vacío. Instanciando uno nuevo.");
+            Debug.Log($"Pool para '{prefab.name}' vacío. Instanciando uno nuevo.");
             objToSpawn = Instantiate(prefab, position, rotation);
             originalPrefabs.Add(objToSpawn, prefab);
         }
@@ -94,13 +94,13 @@ public class ObjectPoolManager : MonoBehaviour
             else
             {
                 // El pool para este prefab fue destruido o no existe, destruirlo
-                Debug.LogWarning($"No se encontró un pool para el prefab de '{obj.name}'. Destruyendo el objeto.");
+                Debug.Log($"No se encontró un pool para el prefab de '{obj.name}'. Destruyendo el objeto.");
                 Destroy(obj);
             }
         }
         else
         {
-            Debug.LogWarning($"Objeto '{obj.name}' no gestionado por este pool o ya retornado. Destruyendo.");
+            Debug.Log($"Objeto '{obj.name}' no gestionado por este pool o ya retornado. Destruyendo.");
             Destroy(obj);
         }
     }

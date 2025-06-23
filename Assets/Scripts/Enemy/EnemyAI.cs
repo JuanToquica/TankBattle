@@ -52,6 +52,7 @@ public class EnemyAI : TankBase
     public float angleToCorner;
     public bool dodgingAttacks;
     public int oldArea = 0;
+    public bool Dying;
 
     private void Start()
     {
@@ -115,6 +116,8 @@ public class EnemyAI : TankBase
 
     private void Update()               
     {
+        InterpolateMovementAndRotation();
+        if (Dying) return;
         UpdatePlayerInfo();
         if (_rootOfMovement != null && !isAwakening)
             _rootOfMovement.Evaluate();
@@ -131,8 +134,7 @@ public class EnemyAI : TankBase
             desiredMovement = 0;
             desiredRotation = 0;
         }
-        SetIsOnSlope();
-        InterpolateMovementAndRotation();
+        SetIsOnSlope();      
         ManipulateMovementInCollision();
         SetState();      
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
@@ -141,11 +143,11 @@ public class EnemyAI : TankBase
     }
     private void FixedUpdate()
     {
+        ApplySuspension();
         RotateTank();
         BrakeTank();
         if (isGrounded)
-            ApplyMovement();
-        ApplySuspension();
+            ApplyMovement();  
     }
 
     private void UpdatePlayerInfo()
