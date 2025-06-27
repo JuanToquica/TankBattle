@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Image healthBar;
     [SerializeField] private Transform healthBarCanvas;
     [SerializeField] private GameObject deathVfx;
+    [SerializeField] private float timeOfDeath;
     public EnemyManager enemyManager;
     private BoxCollider boxCollider;
     private EnemyAttack enemyAttack;
@@ -59,7 +60,6 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("ENEMY MUERTO");
         int area = enemyAI.enemyArea;
         if (enemyAI.enemyArea == 13)
             area = 7;
@@ -70,18 +70,27 @@ public class EnemyHealth : MonoBehaviour
         }         
         enemyManager.DeadEnemy(area);
         changeTankPaint.OnTankDead();
-        GameObject vfx = Instantiate(deathVfx, transform.position - new Vector3(0,0.5f,0), transform.rotation);
+        GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0,1.3f,0) + enemyAI.directionToPlayer, transform.rotation);
         vfx.transform.parent = transform;
         enemyAI.desiredMovement = 0;
         enemyAI.desiredRotation = 0;
         enemyAI.Dying = true;
         outline.enabled = false;
+        enemyAttack.DisbleRockets();
         healthBarCanvas.gameObject.SetActive(false);
         enemyAttack.enabled = false;
         boxCollider.enabled = false;
+        foreach (Transform child in transform) //Destruir vfx de powerups que no hayan terminado
+        {
+            if (child.CompareTag("VFX"))
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        Invoke("DestroyTank", timeOfDeath);
     }
 
-    private void OnDisable()
+    private void DestroyTank()
     {
         Destroy(gameObject);
     }

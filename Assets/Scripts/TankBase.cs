@@ -12,7 +12,7 @@ public abstract class TankBase : MonoBehaviour
     [Header("References")]
     [SerializeField] protected Transform superStructure;   
     public Transform turret;
-    protected BoxCollider tankCollider;
+    public BoxCollider tankCollider;
 
 
     [Header("Movement")]

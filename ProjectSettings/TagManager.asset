@@ -12,6 +12,7 @@ TagManager:
   - VFX
   - Environment
   - Flag
+  - Explosion
   layers:
   - Default
   - TransparentFX

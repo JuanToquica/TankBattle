@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cajas_Rayo
-    second: {fileID: 2100000, guid: 21c7775440fce6a478312aaa3f594f2d, type: 2}
+    second: {fileID: 2100000, guid: 51dd55dc515c63245af965a7e6c2a38a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

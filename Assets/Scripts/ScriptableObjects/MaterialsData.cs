@@ -5,6 +5,9 @@ using UnityEngine;
 public class Materials
 {
     public Material[] materials;
+    public Material railgunTurretMaterial;
+    public Material machineGunTurretMaterial;
+    public Material rocketTurretMaterial;
 }
 
 

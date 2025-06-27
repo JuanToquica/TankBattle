@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cajas_Armas
-    second: {fileID: 2100000, guid: 29ae0d9e360457840a4feea5b8176bb3, type: 2}
+    second: {fileID: 2100000, guid: dac40a5a062ca524bb85d149c1efa5e6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

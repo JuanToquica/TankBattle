@@ -20,7 +20,6 @@ public class PlayerAttack : AttackBase
 
     private void Start()
     {
-        mainTurretAnimator = GetComponent<Animator>();
         InputManager.Instance.RegisterPlayerAttack(this);
         fireDirection = mainGunFirePoint.forward;
     }
@@ -82,11 +81,5 @@ public class PlayerAttack : AttackBase
                 }               
             }           
         }   
-    }
-
-
-    public void EndAnimation()
-    {
-        mainTurretAnimator.SetBool("Fire", false);
     }
 }

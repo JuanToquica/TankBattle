@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cajas_Reloj
-    second: {fileID: 2100000, guid: 1ae41af694e83274c9987d5e47aae865, type: 2}
+    second: {fileID: 2100000, guid: 5d849cf0eb494ca458d0139f85b14a54, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

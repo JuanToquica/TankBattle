@@ -10,13 +10,20 @@ public class PlayerController : TankBase
     private Vector2 input;
     public float turretRotationInput;
     public float cameraPivotRotation;
+    public bool dying;
 
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
-    [SerializeField] private CameraController cameraController;
+    public CameraController cameraController;
+
+    private void Awake()
+    {
+        tankCollider = GetComponent<BoxCollider>();
+    }
 
     private void OnEnable()
-    {        
+    {
+        dying = false;
         currentRotationSpeed = tankRotationSpeed;
         movement = 0;
         rotation = 0;
@@ -24,6 +31,7 @@ public class PlayerController : TankBase
         springStrength = minSpringStrength;
         dampSensitivity = minDampSensitivity;
         turret.localRotation = Quaternion.identity;
+        tankCollider.enabled = true;
         if (rb != null)
         {
             RestoreSpeed();
@@ -36,8 +44,7 @@ public class PlayerController : TankBase
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        wheelAnimations = GetComponent<WheelAnimations>();
-        tankCollider = GetComponent<BoxCollider>();
+        wheelAnimations = GetComponent<WheelAnimations>();   
         InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
         InputManager.Instance.playerInput.actions["Shoot1"].Disable();
         InputManager.Instance.RegisterPlayerController(this);
@@ -53,7 +60,8 @@ public class PlayerController : TankBase
     private void Update()
     {
         SetIsOnSlope();
-        ReadAndInterpolateInputs();       
+        if (!dying)
+            ReadAndInterpolateInputs();       
         ManipulateMovementInCollision();
         SetState();
         DrawRays();       
