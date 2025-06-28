@@ -52,7 +52,6 @@ public class EnemyAI : TankBase
     public float angleToCorner;
     public bool dodgingAttacks;
     public int oldArea = 0;
-    public bool Dying;
 
     private void Start()
     {
@@ -117,7 +116,7 @@ public class EnemyAI : TankBase
     private void Update()               
     {
         InterpolateMovementAndRotation();
-        if (Dying) return;
+        if (dying) return;
         UpdatePlayerInfo();
         if (_rootOfMovement != null && !isAwakening)
             _rootOfMovement.Evaluate();

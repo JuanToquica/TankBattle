@@ -46,6 +46,7 @@ public abstract class TankBase : MonoBehaviour
     protected float movementRef;
     protected float rotationRef;
     protected Vector3 normalGround;
+    protected bool dying;
 
     [Header("Suspension")]
     [SerializeField] protected Transform[] suspensionPoints;
@@ -310,6 +311,12 @@ public abstract class TankBase : MonoBehaviour
         rb.inertiaTensor = minInertiaTensor;
         springStrength = minSpringStrength;
         dampSensitivity = minDampSensitivity;
+    }
+
+    public void OnTankDead()
+    {
+        tankCollider.enabled = false;
+        dying = true;
     }
 
     void OnDrawGizmos()

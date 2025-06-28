@@ -7,13 +7,12 @@ public class EnemyAttack : AttackBase
     private void OnEnable()
     {
         LoadTurretDamage();
-        BackToMainTurret();
+        BackToMainTurret(0);
         aimPhase = 1;
     }
 
     private void Start()
     {
-        mainTurretAnimator = GetComponent<Animator>();
         enemy = GetComponent<EnemyAI>();
         fireDirection = mainGunFirePoint.forward;
     }
@@ -52,11 +51,5 @@ public class EnemyAttack : AttackBase
     public bool CanShoot()
     {
         return cooldownTimer == currentCooldown;
-    }
-
-
-    public void EndAnimation()
-    {
-        mainTurretAnimator.SetBool("Fire", false);
     }
 }

@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 75369739862893346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.12, z: 2.2}
+  m_LocalPosition: {x: 0, y: 0.6, z: 1.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -221,13 +221,15 @@ GameObject:
   - component: {fileID: 7283236577673844948}
   - component: {fileID: 431151748048084022}
   - component: {fileID: 9067195847015249603}
+  - component: {fileID: 8174636134493720398}
+  - component: {fileID: 5416851426398549504}
   m_Layer: 9
   m_Name: Rocket
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7283236577673844948
 Transform:
   m_ObjectHideFlags: 0
@@ -298,6 +300,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &8174636134493720398
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389674124443011953}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1a4daf130c7ce84448493f20b0c9ae66, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5416851426398549504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389674124443011953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3660f97c73701424f9745b02be5e8d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 8174636134493720398}
 --- !u!1 &407120360795739067
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &282793331736858997
 Transform:
   m_ObjectHideFlags: 0
@@ -5745,7 +5782,6 @@ GameObject:
   - component: {fileID: 1630222598177420725}
   - component: {fileID: 8145954925125271705}
   - component: {fileID: 1129721750030344175}
-  - component: {fileID: 2737446934553717269}
   - component: {fileID: 6800237893827168342}
   - component: {fileID: -1403795728453670711}
   - component: {fileID: 2225202212155526804}
@@ -5827,28 +5863,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.5, y: 2.4338925, z: 3.663959}
   m_Center: {x: 0, y: 0.36058673, z: 0.07197959}
---- !u!95 &2737446934553717269
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983249391379277366}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a45fa1fd3626bd54d8527ce49ad97907, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6800237893827168342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5938,7 +5952,6 @@ MonoBehaviour:
   angleToCorner: 0
   dodgingAttacks: 0
   oldArea: 0
-  Dying: 0
   corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
@@ -5962,6 +5975,7 @@ MonoBehaviour:
   - {fileID: 5151762764571594499}
   - {fileID: 4199271774150831977}
   machineGunVfx: {fileID: 6914583851115375496}
+  backToMainTurretVfx: {fileID: 7131401307255788800, guid: e9b07eb5fdc3bf24b806c1b3c9063cb8, type: 3}
   machineGunCannon: {fileID: 5788799920887175958}
   turrets:
   - {fileID: 574987978731175058}
@@ -5970,7 +5984,7 @@ MonoBehaviour:
   - {fileID: 389674124443011953}
   mainTurretAnimator: {fileID: 7184261861901262625}
   railgunAnimator: {fileID: 8754108349960501897}
-  rocketAnimator: {fileID: 0}
+  rocketAnimator: {fileID: 8174636134493720398}
   currentWeapon: 0
   targetTag: Player
   turretCooldowns:
@@ -5978,6 +5992,7 @@ MonoBehaviour:
   - {x: 3.5, y: 2.5}
   - {x: 2.5, y: 2}
   - {x: 1.5, y: 1}
+  turretChangeDelay: 0.35
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0
@@ -6005,11 +6020,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   healthBar: {fileID: 9055663720333651912}
-  healthBarCanvas: {fileID: 8831676335023892345}
   deathVfx: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
+  healthBarCanvas: {fileID: 8831676335023892345}
   timeOfDeath: 3
   enemyManager: {fileID: 0}
-  player: {fileID: 0}
 --- !u!120 &8565006817356517853
 LineRenderer:
   serializedVersion: 2
@@ -13087,6 +13101,29 @@ MonoBehaviour:
     - {x: 0.5773503, y: -0.4536214, z: 0.6788919}
     - {x: -0.5773503, y: -0.45362145, z: 0.6788919}
     - {x: -0.57735026, y: -0.6788919, z: -0.4536215}
+  customRenderers:
+  - {fileID: 5473055921858432687}
+  - {fileID: 949311498547192413}
+  - {fileID: 1291629974383024156}
+  - {fileID: 5574862081958796292}
+  - {fileID: 3285009588374947083}
+  - {fileID: 478120233789335224}
+  - {fileID: 9067195847015249603}
+  - {fileID: 1901788604971841547}
+  - {fileID: 3087059086298728413}
+  - {fileID: 2066886597648428932}
+  - {fileID: 6146726460762643638}
+  - {fileID: 5427268390916899450}
+  - {fileID: 6214672036763015604}
+  - {fileID: 2622083147944551447}
+  - {fileID: 264543678755323537}
+  - {fileID: 6397923103428626204}
+  - {fileID: 1725606964380449573}
+  - {fileID: 252453110214252208}
+  - {fileID: 2969824485612273391}
+  - {fileID: 8667114577186582837}
+  - {fileID: 7868740434334189186}
+  - {fileID: 8626920155626732068}
 --- !u!114 &6544691097031355528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13109,7 +13146,7 @@ MonoBehaviour:
   railgunCannonMeshRenderer: {fileID: 5574862081958796292}
   machineGunCannonMeshRenderer: {fileID: 478120233789335224}
   rocketCannon1MeshRenderer: {fileID: 1901788604971841547}
-  rocketCannon2MeshRenderer: {fileID: 1901788604971841547}
+  rocketCannon2MeshRenderer: {fileID: 3087059086298728413}
   tankMeshRenderer: {fileID: 2622083147944551447}
   SmallWheelsRightMeshRenderer: {fileID: 264543678755323537}
   WheelFrontRightMeshRenderer: {fileID: 6397923103428626204}
@@ -19636,7 +19673,7 @@ Transform:
   m_GameObject: {fileID: 3993117946175218279}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.504, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36151,7 +36188,7 @@ Transform:
   m_GameObject: {fileID: 7856447879016471635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.54, z: 3.5}
+  m_LocalPosition: {x: 0, y: 0.54, z: 1.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

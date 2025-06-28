@@ -7,4 +7,10 @@ public class EndAnimations : MonoBehaviour
     {
         animator.SetBool("Fire", false);
     }
+
+    public void EndRocketAnimation()
+    {
+        animator.SetBool("FireWithLeft", false);
+        animator.SetBool("FireWithRight", false);
+    }
 }

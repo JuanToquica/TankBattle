@@ -14,7 +14,7 @@ public class PlayerAttack : AttackBase
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
         LoadTurretDamage();
-        BackToMainTurret();
+        BackToMainTurret(0);
         aimPhase = 1;
     }
 

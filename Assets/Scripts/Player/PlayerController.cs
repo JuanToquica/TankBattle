@@ -10,7 +10,6 @@ public class PlayerController : TankBase
     private Vector2 input;
     public float turretRotationInput;
     public float cameraPivotRotation;
-    public bool dying;
 
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;

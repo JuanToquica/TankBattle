@@ -74,7 +74,6 @@ public class EnemyManager : MonoBehaviour
         enemyAI.enemyManager = this;
         enemyAI.enemyArea = area;
         enemyAI.waypoints = new List<Transform>(wayPointsByArea[area]);
-        enemyHealth.player = player;
         enemyHealth.enemyManager = this;
         if (area == 3 || area == 6 || area == 8 || area == 11)
             enemyAI.centeringOffset = centeringOffset1;

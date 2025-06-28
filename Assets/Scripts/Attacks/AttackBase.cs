@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 
 public enum Weapons
@@ -19,6 +20,7 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected Transform machineGunFirePoint;
     [SerializeField] protected GameObject[] fakeRockets;
     [SerializeField] private GameObject machineGunVfx;
+    [SerializeField] private GameObject backToMainTurretVfx;
     [SerializeField] protected Transform machineGunCannon;
     [SerializeField] protected GameObject[] turrets;
     [SerializeField] protected Animator mainTurretAnimator;
@@ -28,7 +30,8 @@ public abstract class AttackBase : MonoBehaviour
 
     [Header("Fire Specifications")]
     [SerializeField] protected string targetTag;
-    [SerializeField] protected Vector2[] turretCooldowns;  
+    [SerializeField] protected Vector2[] turretCooldowns;
+    [SerializeField] private float turretChangeDelay;
     public float currentCooldown;
     public float currentRange;
     public float cooldownTimer;
@@ -48,7 +51,9 @@ public abstract class AttackBase : MonoBehaviour
     protected float lastShoot;
     protected bool foundTankInThisScan;
     protected Vector3 fireDirection;
-    public Coroutine railgunCoroutine;
+    protected Coroutine railgunCoroutine;
+    protected Coroutine weaponPowerUpCoroutine;
+    protected Coroutine backToMainTurretCoroutine;
 
 
     protected abstract void LoadTurretDamage();
@@ -177,6 +182,7 @@ public abstract class AttackBase : MonoBehaviour
                     FireWithMainTurret();
                     break;
                 case Weapons.railGun:
+                    if (shotsFired == weaponsSettings.railgunAmmo) return;
                     railgunCoroutine = StartCoroutine(FireWithRailgun());
                     break;
                 case Weapons.rocket:
@@ -206,9 +212,9 @@ public abstract class AttackBase : MonoBehaviour
     }
 
     protected IEnumerator FireWithRailgun()
-    {
+    {        
         cooldownTimer = 0;
-        GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.railgunVfx, railgunFirePoint.position, railgunFirePoint.rotation);
+        GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.railgunVfx, railgunFirePoint.position + railgunFirePoint.forward * 1.6f, railgunFirePoint.rotation);
         vfx.transform.SetParent(railgunFirePoint);
         yield return new WaitForSeconds(weaponsSettings.railgunDelay);
         Aim();
@@ -223,11 +229,12 @@ public abstract class AttackBase : MonoBehaviour
 
         shotsFired++;
         if (shotsFired == weaponsSettings.railgunAmmo)
-            BackToMainTurret();
+            BackToMainTurret(turretChangeDelay);
     }
 
     protected void FireWithMachineGun()
     {
+        if (shotsFired >= weaponsSettings.machineGunAmmo) return;
         Vector3 startPos = machineGunFirePoint.position;
 
         GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
@@ -240,7 +247,7 @@ public abstract class AttackBase : MonoBehaviour
         if (shotsFired >= weaponsSettings.machineGunAmmo)
         {
             StopFiring();
-            BackToMainTurret();
+            BackToMainTurret(turretChangeDelay);
             return;
         }
         lastShoot = Time.time;
@@ -251,7 +258,14 @@ public abstract class AttackBase : MonoBehaviour
 
     protected void FireWithRocket()
     {
-        shotsFired++;
+        if (shotsFired == weaponsSettings.rocketAmmo) return;
+            shotsFired++;
+
+        if (shotsFired - 1 == 0 || shotsFired - 1 == 2)
+            rocketAnimator.SetBool("FireWithRight", true);
+        else
+            rocketAnimator.SetBool("FireWithLeft", true);
+
         Vector3 startPos = fakeRockets[shotsFired - 1].transform.position;
         Vector3 direction;
         if (fireDirection == mainGunFirePoint.forward)
@@ -268,7 +282,7 @@ public abstract class AttackBase : MonoBehaviour
         
         cooldownTimer = 0;
         if (shotsFired == weaponsSettings.rocketAmmo)
-            BackToMainTurret();
+            BackToMainTurret(turretChangeDelay);
     }
 
     public void StopFiring()
@@ -283,6 +297,12 @@ public abstract class AttackBase : MonoBehaviour
 
     public void OnWeaponPowerUp()
     {
+        weaponPowerUpCoroutine = StartCoroutine(OnWeaponPowerUpCoroutine());
+    }
+
+    protected IEnumerator OnWeaponPowerUpCoroutine()
+    {
+        yield return new WaitForSeconds(turretChangeDelay);
         int random = Random.Range(1, 4);
         ChangeTurret(random);
         currentWeapon = (Weapons)random;
@@ -303,7 +323,7 @@ public abstract class AttackBase : MonoBehaviour
         }
         else
         {
-            DisbleRockets();
+            DisableRockets();
         }
         if (currentWeapon == Weapons.railGun)
         {
@@ -311,8 +331,20 @@ public abstract class AttackBase : MonoBehaviour
         }
     }
 
-    protected void BackToMainTurret()
+    protected void BackToMainTurret(float delay)
     {
+        backToMainTurretCoroutine = StartCoroutine(BackToMainTurretCoroutine(delay));
+    }
+
+    protected IEnumerator BackToMainTurretCoroutine(float delay)
+    {
+        if (currentWeapon != Weapons.mainTurret)
+        {
+            GameObject vfx = Instantiate(backToMainTurretVfx, transform.position, transform.rotation);
+            vfx.transform.parent = transform;
+        }
+            
+        yield return new WaitForSeconds(delay);
         currentWeapon = Weapons.mainTurret;
         ChangeTurret(0);
         currentRange = weaponsSettings.rangeOfTurrets[0];
@@ -324,7 +356,7 @@ public abstract class AttackBase : MonoBehaviour
             currentCooldown = turretCooldowns[0].x;
         if (cooldownTimer > currentCooldown)
             cooldownTimer = currentCooldown;
-        DisbleRockets();
+        DisableRockets();
     }
 
     protected void ChangeTurret(int index)
@@ -340,12 +372,24 @@ public abstract class AttackBase : MonoBehaviour
         }
     }
 
-    public void DisbleRockets()
+    public void DisableRockets()
     {
         for (int i = 0; i < 4; i++)
         {
             fakeRockets[i].SetActive(false);
         }
+    }
+
+    public void OnTankDead()
+    {
+        DisableRockets();
+        machineGunVfx.SetActive(false);
+        if (railgunCoroutine != null)
+            StopCoroutine(railgunCoroutine);
+        if (weaponPowerUpCoroutine != null)
+            StopCoroutine(weaponPowerUpCoroutine);
+        if (backToMainTurretCoroutine != null)
+            StopCoroutine(backToMainTurretCoroutine);
     }
 
     public void RecharchingPowerUp(float duration)
