@@ -14,14 +14,14 @@ public class EnemyHealth : MonoBehaviour
     private Outline outline;
     private EnemyAI enemyAI;
     public Transform player;
-    private ChangeTankPaint changeTankPaint;
+    private TankMaterialHandlerBase changeTankPaint;
     private float health;
 
     private void Start()
     {
         health = maxHealth;
         enemyAI = GetComponent<EnemyAI>();
-        changeTankPaint = GetComponent<ChangeTankPaint>();
+        changeTankPaint = GetComponent<TankMaterialHandlerBase>();
         boxCollider = GetComponent<BoxCollider>();
         enemyAttack = GetComponent<EnemyAttack>();
         outline = GetComponent<Outline>();

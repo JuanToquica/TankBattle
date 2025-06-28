@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject deathVfx;
-    private ChangeTankPaint changeTankPaint;
+    private PlayerMaterialHandler playerMaterialHandler;
     private PlayerController playerController;
     private PlayerAttack playerAttack;
     private float health;
@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         health = maxHealth;
-        changeTankPaint = GetComponent<ChangeTankPaint>();
+        playerMaterialHandler = GetComponent<PlayerMaterialHandler>();
         playerController = GetComponent<PlayerController>();
         playerAttack = GetComponent<PlayerAttack>();
     }
@@ -50,7 +50,7 @@ public class PlayerHealth : MonoBehaviour
         {
             GameManager.instance.OnPlayerDeathWithFlag();
         }
-        changeTankPaint.OnTankDead();
+        playerMaterialHandler.OnTankDead();
         spawner.OnPlayerDead();
         Vector3 directionToCamera = (playerController.cameraController.transform.position - playerController.transform.position).normalized;
         GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0, 1.3f, 0) + directionToCamera, transform.rotation);

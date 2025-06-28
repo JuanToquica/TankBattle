@@ -18,6 +18,13 @@ public class MainMenuiu : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButtonClicked);
         garageButton.onClick.AddListener(OnGarageButtonClicked);
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        StartCoroutine(Deselect());
+    }
+
+    IEnumerator Deselect()
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnPlayButtonClicked()
@@ -48,10 +55,8 @@ public class MainMenuiu : MonoBehaviour
             yield return null;
         }
     }
-
-
     public void OnEnable()
     {
-        EventSystem.current.firstSelectedGameObject = playButton.gameObject;
+        EventSystem.current.firstSelectedGameObject = playButton.gameObject;        
     }
 }

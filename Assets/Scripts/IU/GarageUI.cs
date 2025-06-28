@@ -43,7 +43,7 @@ public class GarageUI : MonoBehaviour
     [SerializeField] private Image rocketBar;
     
     [Header ("Other Referernces")]
-    [SerializeField] private ChangeTankPaint tank;
+    [SerializeField] private GarageTankMaterialHandler tank;
     [SerializeField] private MaterialsData materialsData;
     public int currentColorSelected;
 

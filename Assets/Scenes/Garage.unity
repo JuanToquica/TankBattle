@@ -10568,12 +10568,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6541809430137998564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6623720748091154dbeca3e777cd37b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f37d276b2b68fa4bbbd1ec5fedf7b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   materialsData: {fileID: 11400000, guid: ff08802e5848cc743a1e42e80b546079, type: 2}
-  turretMeshRenderer: {fileID: 4552667796877128871}
-  cannonMeshRenderer: {fileID: 4899805132466883611}
+  mainTurretMeshRenderer: {fileID: 4552667796877128871}
+  mainCannonMeshRenderer: {fileID: 4899805132466883611}
   tankMeshRenderer: {fileID: 3790577396918369362}
   SmallWheelsRightMeshRenderer: {fileID: 4255014500580743332}
   WheelFrontRightMeshRenderer: {fileID: 6994981913747845735}
@@ -10581,8 +10581,8 @@ MonoBehaviour:
   SmallWheelsLeftMeshRenderer: {fileID: 2281448855892672676}
   WheelFrontLeftMeshRenderer: {fileID: 8394352858648386983}
   WheelBackLeftMeshRenderer: {fileID: 5015743794534156357}
-  TrackRightMeshRenderer: {fileID: 8076953205608197879}
-  TrackLeftMeshRenderer: {fileID: 11792251262334408}
+  TrackRightMeshRenderer: {fileID: 11792251262334408}
+  TrackLeftMeshRenderer: {fileID: 8076953205608197879}
 --- !u!1 &8192726854382786368
 GameObject:
   m_ObjectHideFlags: 0
