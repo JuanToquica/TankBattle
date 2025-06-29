@@ -8,6 +8,7 @@ public class MainMenuiu : MonoBehaviour
 {
     [SerializeField] private GameObject settingsIU;
     [SerializeField] private GameObject loadPanel;
+    [SerializeField] private SettingsIU settings;
     [SerializeField] private Button playButton;
     [SerializeField] private Button garageButton;
     [SerializeField] private Button settingsButton;
@@ -18,6 +19,20 @@ public class MainMenuiu : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButtonClicked);
         garageButton.onClick.AddListener(OnGarageButtonClicked);
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+
+        if (!PlayerPrefs.HasKey("MasterVolume") || !PlayerPrefs.HasKey("MusicVolume") || !PlayerPrefs.HasKey("SFXVolume"))
+        {
+            settingsIU.SetActive(true);
+            settings.OnResetVolumeClicked();
+            settingsIU.SetActive(false);
+        }
+        if (!PlayerPrefs.HasKey("Sensitivity"))
+        {
+            settingsIU.SetActive(true);
+            settings.OnResetControlsClicked();
+            settingsIU.SetActive(false);
+        }
+
         StartCoroutine(Deselect());
     }
 
@@ -57,6 +72,6 @@ public class MainMenuiu : MonoBehaviour
     }
     public void OnEnable()
     {
-        EventSystem.current.firstSelectedGameObject = playButton.gameObject;        
+        EventSystem.current.firstSelectedGameObject = playButton.gameObject;             
     }
 }

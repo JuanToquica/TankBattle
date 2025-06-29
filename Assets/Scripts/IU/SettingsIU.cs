@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SettingsIU : MonoBehaviour
 {
+    [SerializeField] private SettingsData settingsData;
     [SerializeField] private GameObject mainMenuUI;
     [SerializeField] private Button backButton;
     [SerializeField] private Slider masterVolume;
@@ -58,20 +59,16 @@ public class SettingsIU : MonoBehaviour
 
     public void OnResetVolumeClicked()
     {
-        if (PlayerPrefs.HasKey("MasterVolume"))
-            PlayerPrefs.DeleteKey("MasterVolume");
-        if (PlayerPrefs.HasKey("MusicVolume"))
-            PlayerPrefs.DeleteKey("MusicVolume");
-        if (PlayerPrefs.HasKey("SFXVolume"))
-            PlayerPrefs.DeleteKey("SFXVolume");
+        PlayerPrefs.SetFloat("MasterVolume", settingsData.defaultMasterVolume);
+        PlayerPrefs.SetFloat("MusicVolume", settingsData.defaultMusicVolume);
+        PlayerPrefs.SetFloat("SFXVolume", settingsData.defaultSFXVolume);
         LoadSliderSettins();
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnResetControlsClicked()
     {
-        if (PlayerPrefs.HasKey("Sensitivity"))
-            PlayerPrefs.DeleteKey("Sensitivity");
+        PlayerPrefs.SetFloat("Sensitivity", settingsData.defaultSensitivity);
         LoadSliderSettins();
         InputManager.Instance.ResetActionMaps();
         EventSystem.current.SetSelectedGameObject(null);

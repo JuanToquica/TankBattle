@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
             }
             else if (InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].enabled)
             {
-                horizontalRotation += InputManager.Instance.mouseInput * sensitivity * Time.deltaTime;
+                horizontalRotation += InputManager.Instance.mouseInput * (sensitivity * 10) * Time.deltaTime;
                 Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, horizontalRotation, 0);
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothingWithMouse * Time.deltaTime);
             }

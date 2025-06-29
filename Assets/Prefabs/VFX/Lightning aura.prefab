@@ -14598,7 +14598,7 @@ GameObject:
   - component: {fileID: 3477376012895716369}
   m_Layer: 0
   m_Name: Lightning aura
-  m_TagString: Untagged
+  m_TagString: VFX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

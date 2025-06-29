@@ -17678,6 +17678,7 @@ MonoBehaviour:
   mainMenuButton: {fileID: 1452918654}
   flag1: {fileID: 855864194}
   flag2: {fileID: 678474653}
+  cameraController: {fileID: 8843277517967702287}
   coinsPerEnemy: 10
   coinsPerPoint: 20
   coinsPerGameWon: 50
@@ -65089,6 +65090,10 @@ PrefabInstance:
       propertyPath: mainMenuUI
       value: 
       objectReference: {fileID: 660529389}
+    - target: {fileID: 7727023649138811622, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
+      propertyPath: settingsData
+      value: 
+      objectReference: {fileID: 11400000, guid: b1a428fa287029040976456c975722cc, type: 2}
     - target: {fileID: 7729898419341241432, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

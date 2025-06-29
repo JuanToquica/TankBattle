@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [Header ("Gameplay")]
     [SerializeField] private GameObject flag1;
     [SerializeField] private GameObject flag2;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private int coinsPerEnemy;
     [SerializeField] private int coinsPerPoint;
     [SerializeField] private int coinsPerGameWon;
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
         playerScore = 0;
         enemyScore = 0;
         coinsEarned = 5;
+        cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
 
         ObjectPoolManager.Instance.CreatePool(projectilePrefab, 10);
         ObjectPoolManager.Instance.CreatePool(railgunBulletPrefab, 10);
@@ -138,6 +140,7 @@ public class GameManager : MonoBehaviour
             InputManager.Instance.playerInput.actions["SelectButton"].Disable();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
         }
         else
         {
