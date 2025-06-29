@@ -48,7 +48,7 @@ public class RailgunBullet : MonoBehaviour
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
-            if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
+            else if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
             {
                 PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
                 if (player != null)
@@ -59,7 +59,7 @@ public class RailgunBullet : MonoBehaviour
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
-            if (hit.transform.CompareTag("Environment"))
+            else
             {
                 ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
                 isDestroying = true;

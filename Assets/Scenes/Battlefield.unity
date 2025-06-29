@@ -28027,7 +28027,7 @@ GameObject:
   - component: {fileID: 611525487}
   m_Layer: 6
   m_Name: MidPlatform
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -31936,7 +31936,7 @@ GameObject:
   - component: {fileID: 664573407}
   m_Layer: 6
   m_Name: Platform1
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -44951,7 +44951,7 @@ GameObject:
   - component: {fileID: 914673909}
   m_Layer: 6
   m_Name: Bridge2
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -46727,7 +46727,7 @@ GameObject:
   - component: {fileID: 932449697}
   m_Layer: 6
   m_Name: Platform2
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -57476,7 +57476,7 @@ GameObject:
   - component: {fileID: 1116737401}
   m_Layer: 6
   m_Name: Bridge3
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -59502,7 +59502,7 @@ GameObject:
   - component: {fileID: 1154075653}
   m_Layer: 6
   m_Name: LargeBridge
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -95802,7 +95802,7 @@ GameObject:
   - component: {fileID: 1893117695}
   m_Layer: 6
   m_Name: PlayerSpawn
-  m_TagString: Environment
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -118786,14 +118786,13 @@ MonoBehaviour:
   minOffset: {x: 0, y: 0, z: 0}
   maxRotation: 22
   minRotation: 8.18
-  smoothingInCollision: 10
+  smoothingInCollision: 7
   rotationSmoothingWithKeys: 4
   rotationSmoothingWithMouse: 10
   originOffset: 0.1
   sensitivity: 3
   horizontalRotation: 0
-  distanceA: 0
-  distanceB: 0
+  additionalDistance: 3
   playerAlive: 0
 --- !u!33 &8904116645676632755
 MeshFilter:
@@ -118906,6 +118905,7 @@ MonoBehaviour:
   - {x: 2, y: 1.5}
   - {x: 1, y: 0.5}
   turretChangeDelay: 0.35
+  projectileTag: 
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0

@@ -25,8 +25,7 @@ public class CameraController : MonoBehaviour
     public float horizontalRotation;
     private float rotationRef;
     LayerMask combinedLayers;
-    public float distanceA;
-    public float distanceB;
+    public float additionalDistance;
     public bool playerAlive;
     private ParentConstraint parentConstraint;
     private Transform enemyTurret;
@@ -67,13 +66,30 @@ public class CameraController : MonoBehaviour
         }
         
         Vector3 directionToCamera = (mainCamera.position - raycastOrigin.position).normalized;
-        Vector3 origin = raycastOrigin.position + directionToCamera * distanceA;
-        float distance = Mathf.Abs(maxOffset.z) + distanceB;
-
+        Vector3 origin = raycastOrigin.position + directionToCamera;
+        float distance = Mathf.Abs(maxOffset.z) + additionalDistance;
+        float targetT;
         Debug.DrawRay(origin, directionToCamera * distance);
 
-        float targetT = Physics.Raycast(origin, directionToCamera, out RaycastHit hit, distance, combinedLayers) ?
-            Mathf.Clamp01((hit.distance / distance) - originOffset) : 1;
+        if (Physics.Raycast(origin, directionToCamera, out RaycastHit hit, distance, combinedLayers) && !hit.transform.CompareTag("Railing"))
+        {
+            if (Mathf.Abs(Vector3.Dot(hit.normal, Vector3.up)) > 0.98f)
+            {
+                targetT = 1;                   
+            }
+            else if (hit.transform.CompareTag("Floor") && hit.distance > (distance - additionalDistance))
+            {
+                targetT = 1;
+            }
+            else
+            {
+                targetT = Mathf.Clamp01((hit.distance / distance) - originOffset);
+            }
+        }
+        else
+        {
+            targetT = 1;
+        }      
 
         currentT = Mathf.Lerp(currentT, targetT, Time.deltaTime * smoothingInCollision);
         mainCamera.localPosition = Vector3.Lerp(minOffset, maxOffset, currentT);

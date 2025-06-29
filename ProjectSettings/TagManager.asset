@@ -13,6 +13,7 @@ TagManager:
   - Environment
   - Flag
   - Explosion
+  - Floor
   layers:
   - Default
   - TransparentFX
