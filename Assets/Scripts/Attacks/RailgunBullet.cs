@@ -11,8 +11,9 @@ public class RailgunBullet : MonoBehaviour
     private Vector3 direction;
     private float travelledDistance;
     private bool isDestroying;
+    private string launcherTag;
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, string tag)
     {
         currentPosition = startPos;
         direction = dir;
@@ -20,6 +21,7 @@ public class RailgunBullet : MonoBehaviour
         maxRange = range;
         damageAmount = damage;
 
+        launcherTag = tag;
         travelledDistance = 0f;
         isDestroying = false;
         transform.position = currentPosition;
@@ -35,7 +37,7 @@ public class RailgunBullet : MonoBehaviour
         {
             transform.position = hit.point;
 
-            if (hit.transform.CompareTag("Enemy"))
+            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
                 EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
                 if (enemy != null)
@@ -46,7 +48,7 @@ public class RailgunBullet : MonoBehaviour
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);
             }
-            if (hit.transform.CompareTag("Player"))
+            if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
             {
                 PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
                 if (player != null)

@@ -32,6 +32,7 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected string targetTag;
     [SerializeField] protected Vector2[] turretCooldowns;
     [SerializeField] private float turretChangeDelay;
+    [SerializeField] private string projectileTag;
     public float currentCooldown;
     public float currentRange;
     public float cooldownTimer;
@@ -206,7 +207,7 @@ public abstract class AttackBase : MonoBehaviour
         ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
 
         if (bulletController != null)
-            bulletController.Initialize(startPos, fireDirection, weaponsSettings.projectileSpeed, weaponsSettings.bulletRange, mainTurretDamage);
+            bulletController.Initialize(startPos, fireDirection, weaponsSettings.projectileSpeed, weaponsSettings.bulletRange, mainTurretDamage, projectileTag);
 
         cooldownTimer = 0;
     }
@@ -225,7 +226,7 @@ public abstract class AttackBase : MonoBehaviour
         RailgunBullet bulletController = bulletInstance.GetComponent<RailgunBullet>();
 
         if (bulletController != null)
-            bulletController.Initialize(startPos, fireDirection, weaponsSettings.railgunBulletSpeed, weaponsSettings.bulletRange, railgunDamage);
+            bulletController.Initialize(startPos, fireDirection, weaponsSettings.railgunBulletSpeed, weaponsSettings.bulletRange, railgunDamage, projectileTag);
 
         shotsFired++;
         if (shotsFired == weaponsSettings.railgunAmmo)
@@ -241,7 +242,7 @@ public abstract class AttackBase : MonoBehaviour
         ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
 
         if (bulletController != null)
-            bulletController.Initialize(startPos, fireDirection, weaponsSettings.bulletSpeed, weaponsSettings.bulletRange, machineGunDamage);
+            bulletController.Initialize(startPos, fireDirection, weaponsSettings.bulletSpeed, weaponsSettings.bulletRange, machineGunDamage, projectileTag);
         shotsFired++;
 
         if (shotsFired >= weaponsSettings.machineGunAmmo)
@@ -278,7 +279,7 @@ public abstract class AttackBase : MonoBehaviour
         RocketController rocketController = rocket.GetComponent<RocketController>();
 
         if (rocketController != null)
-            rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, gameObject);
+            rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, gameObject, projectileTag);
         
         cooldownTimer = 0;
         if (shotsFired == weaponsSettings.rocketAmmo)
@@ -357,6 +358,13 @@ public abstract class AttackBase : MonoBehaviour
         if (cooldownTimer > currentCooldown)
             cooldownTimer = currentCooldown;
         DisableRockets();
+        foreach (Transform child in railgunFirePoint.transform)
+        {
+            if (child.CompareTag("VFX"))
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     protected void ChangeTurret(int index)

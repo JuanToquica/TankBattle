@@ -14,9 +14,10 @@ public class RocketController : MonoBehaviour
     private float travelledDistance;
     private SmokeTrail smokeTrail;
     private GameObject launcher;
+    private string launcherTag;
 
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, GameObject launcher)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, GameObject launcher, string tag)
     {
         currentPosition = startPos;
         direction = dir;
@@ -29,6 +30,7 @@ public class RocketController : MonoBehaviour
         transform.position = currentPosition;
         transform.forward = direction;
         this.launcher = launcher;
+        this.launcherTag = tag;
         smokeTrail = ObjectPoolManager.Instance.GetPooledObject(smokeVFX, transform.position, transform.rotation).GetComponent<SmokeTrail>();
         ParentConstraint smokeTrailConstraint = smokeTrail.GetComponent<ParentConstraint>();
         ConstraintSource newSource = new ConstraintSource
@@ -50,7 +52,7 @@ public class RocketController : MonoBehaviour
         {
             transform.position = hit.point;        
 
-            if (hit.transform.CompareTag("Enemy"))
+            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
                 EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
                 if (enemy != null)
@@ -58,7 +60,7 @@ public class RocketController : MonoBehaviour
                     enemy.TakeDamage(damageAmount);
                 }
             }
-            else if (hit.transform.CompareTag("Player"))
+            else if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
             {
                 PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
                 if (player != null)

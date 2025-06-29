@@ -11,6 +11,7 @@ public class PlayerAttack : AttackBase
 
     private void OnEnable()
     {
+        currentCooldown = turretCooldowns[0].x;
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
         LoadTurretDamage();

@@ -40,7 +40,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         foreach (Transform child in player.transform)
         {
-            if (child.CompareTag("Explosion"))
+            if (child.CompareTag("Explosion") || child.CompareTag("VFX"))
             {
                 Destroy(child.gameObject);
             }

@@ -10,8 +10,9 @@ public class ProjectileController : MonoBehaviour
     private Vector3 currentPosition;
     private Vector3 direction;
     private float travelledDistance = 0f;
+    private string launcherTag;
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, string tag)
     {
         currentPosition = startPos;
         direction = dir;
@@ -19,6 +20,7 @@ public class ProjectileController : MonoBehaviour
         maxRange = range;
         damageAmount = damage;
 
+        launcherTag = tag;
         travelledDistance = 0f;
 
         transform.position = currentPosition;
@@ -33,7 +35,7 @@ public class ProjectileController : MonoBehaviour
         {
             transform.position = hit.point;
 
-            if (hit.transform.CompareTag("Enemy"))
+            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
                 EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
                 if (enemy != null)
@@ -41,7 +43,7 @@ public class ProjectileController : MonoBehaviour
                     enemy.TakeDamage(damageAmount);
                 }
             }
-            if (hit.transform.CompareTag("Player"))
+            if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
             {
                 PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
                 if (player != null)

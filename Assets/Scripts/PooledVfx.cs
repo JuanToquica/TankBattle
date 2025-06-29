@@ -17,9 +17,4 @@ public class PoolledVfx : MonoBehaviour
             _particles.Play();
         }
     }
-
-    private void OnDisable()
-    {
-        ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
-    }
 }
