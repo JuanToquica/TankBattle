@@ -256,7 +256,7 @@ public abstract class TankBase : MonoBehaviour
 
         if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
         {
-            currentRotationSpeed = 0;
+            //currentRotationSpeed = 0;
             if (directionOrInput == 0)
                 movement = 0;
             return;
@@ -265,22 +265,22 @@ public abstract class TankBase : MonoBehaviour
             currentRotationSpeed = 0;
         else
             currentRotationSpeed = tankRotationSpeed;
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            Vector3 contactDirection = contact.point - transform.position;
-            float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
+        //foreach (ContactPoint contact in collision.contacts)
+        //{
+        //    Vector3 contactDirection = contact.point - transform.position;
+        //    float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
 
-            if (dot > 0.5f)
-            {
-                currentRotationSpeed = 20;
-                frontalCollisionWithCorner = true;
-            }
-            if (dot < -0.5f)
-            {
-                currentRotationSpeed = 20;
-                backCollisionWithCorner = true;
-            }
-        }
+        //    if (dot > 0.5f)
+        //    {
+        //        currentRotationSpeed = 20;
+        //        frontalCollisionWithCorner = true;
+        //    }
+        //    if (dot < -0.5f)
+        //    {
+        //        currentRotationSpeed = 20;
+        //        backCollisionWithCorner = true;
+        //    }
+        //}
     }
 
     public void OnCollisionExit(Collision collision)
