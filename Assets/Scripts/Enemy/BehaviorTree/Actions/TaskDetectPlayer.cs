@@ -11,7 +11,7 @@ public class TaskDetectPlayer : Node
     }
     public override NodeState Evaluate()
     {                   
-        if ((Mathf.Abs(enemy.angleToPlayer) <= 90 && enemy.distanceToPlayer < 30) || enemy.distanceToPlayer < enemy.distanceToDetectPlayer)
+        if ((Mathf.Abs(enemy.angleToPlayer) <= 90 && enemy.distanceToPlayer < 30) || enemy.distanceToPlayer < enemy.distanceToDetectPlayer || enemy.knowsPlayerPosition)
         {
             RaycastHit hit;
             bool ray = Physics.Raycast(enemy.turret.position + enemy.turret.up * 0.4f, enemy.directionToPlayer, out hit, enemy.distanceToPlayer); //Detecta obstaculos entre el enemigo y el player

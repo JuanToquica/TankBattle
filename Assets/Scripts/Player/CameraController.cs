@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothingInCollision;
     [SerializeField] private float rotationSmoothingWithKeys;
     [SerializeField] private float rotationSmoothingWithMouse;
-    public float originOffset;
     public float sensitivity;
     private float currentT = 1;
     public float horizontalRotation;
@@ -83,7 +82,7 @@ public class CameraController : MonoBehaviour
             }
             else
             {
-                targetT = Mathf.Clamp01((hit.distance / distance) - originOffset);
+                targetT = Mathf.Clamp01(hit.distance / distance);
             }
         }
         else

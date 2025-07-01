@@ -39,11 +39,13 @@ public class RailgunBullet : MonoBehaviour
 
             if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
-                EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(damageAmount);
-                }
+                EnemyHealth enemyHealth = hit.transform.GetComponent<EnemyHealth>();
+                EnemyAI enemyAI = hit.transform.GetComponent<EnemyAI>();
+                if (enemyHealth != null)
+                    enemyHealth.TakeDamage(damageAmount);
+                if (enemyAI != null)
+                    enemyAI.knowsPlayerPosition = true;
+                
                 ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
                 isDestroying = true;
                 Invoke("Destroy", destroyTime);

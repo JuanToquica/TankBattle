@@ -37,11 +37,12 @@ public class ProjectileController : MonoBehaviour
 
             if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
-                EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
-                if (enemy != null)
-                {
-                    enemy.TakeDamage(damageAmount);
-                }
+                EnemyHealth enemyHealth = hit.transform.GetComponent<EnemyHealth>();
+                EnemyAI enemyAI = hit.transform.GetComponent<EnemyAI>();
+                if (enemyHealth != null)
+                    enemyHealth.TakeDamage(damageAmount);
+                if (enemyAI != null)
+                    enemyAI.knowsPlayerPosition = true;
             }
             if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
             {

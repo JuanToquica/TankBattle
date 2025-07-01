@@ -119994,10 +119994,9 @@ MonoBehaviour:
   smoothingInCollision: 7
   rotationSmoothingWithKeys: 4
   rotationSmoothingWithMouse: 10
-  originOffset: 0.03
   sensitivity: 3
   horizontalRotation: 0
-  additionalDistance: 3
+  additionalDistance: 3.5
   playerAlive: 0
 --- !u!33 &8904116645676632755
 MeshFilter:
