@@ -18,6 +18,12 @@ public class TaskPatrol : Node
 
     public override NodeState Evaluate()
     {
+        if (enemy.enemyArea == 13 || (enemy.enemyManager.chasingInArea14 && enemy.enemyArea == 14))
+        {
+            if (enemy.EvaluateBackToOriginalArea())
+                return NodeState.SUCCESS;
+        }
+            
         if (enemy.path.status == NavMeshPathStatus.PathComplete)
         {
             if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 3)

@@ -17,15 +17,11 @@ public class ConditionIsPlayerFar : Node
     {
         if (enemy.distanceToPlayer > enemy.farDistance)
         {
-            if (enemy.enemyArea == 7 && NavMesh.SamplePosition(enemy.player.position, out NavMeshHit hit2, 2f, 1 << 13))
-            {
-                enemyManager.ChangeAreaToChase(enemy.enemyArea);
-            }
-            else if (!enemyManager.chasingInArea14 && (enemy.enemyArea == 5 || enemy.enemyArea == 10) && NavMesh.SamplePosition(enemy.player.position, out NavMeshHit hit, 2f, 1 << 14))
-            {
-                enemyManager.ChangeAreaToChase(enemy.enemyArea);
-            }
-            
+            if (enemy.enemyArea == 7 || (!enemyManager.chasingInArea14 && (enemy.enemyArea == 5 || enemy.enemyArea == 10)))
+                enemy.EvaluateAreaChange();
+            if (enemy.enemyArea == 13 || (enemyManager.chasingInArea14 && enemy.enemyArea == 14))
+                enemy.EvaluateBackToOriginalArea();
+
             return NodeState.SUCCESS;
         }
             

@@ -226,6 +226,25 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public void BackToOriginalArea(int area, int oldArea)
+    {
+        if (area == 13 && activeEnemiesByArea.TryGetValue(oldArea, out EnemyAI enemy) && enemy != null)
+        {
+            enemy.enemyArea = 7;
+            enemy.waypoints.Clear();
+            enemy.waypoints = new List<Transform>(wayPointsByArea[7]);
+            enemy.ChangeArea();
+        }
+        else if (area ==14 && activeEnemiesByArea.TryGetValue(oldArea, out EnemyAI enemy2) && enemy2 != null)
+        {
+            enemy2.enemyArea = oldArea;
+            enemy2.waypoints.Clear();
+            enemy2.waypoints = new List<Transform>(wayPointsByArea[oldArea]);
+            enemy2.ChangeArea();
+            chasingInArea14 = false;
+        }
+    }
+
     public EnemyAI GetEnemyThatKilledThePlayer()
     {
         EnemyAI enemyKiller = null;
