@@ -292,9 +292,10 @@ public class EnemyAI : TankBase
         base.RotateTank();
     }
 
-    public override void RotateTurret()
+
+    public void RotateTurret(float speed)
     {
-        turret.Rotate(0, turretRotationSpeed * Mathf.Sign(angleToPlayer) * Time.deltaTime, 0);
+        turret.Rotate(0, speed * Mathf.Sign(angleToPlayer) * Time.deltaTime, 0);
     }
 
     public void RotatoTurretToWatch(float angle)

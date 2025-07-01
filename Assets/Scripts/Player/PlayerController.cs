@@ -108,7 +108,7 @@ public class PlayerController : TankBase
         if (Mathf.Abs(movement) < 0.01f)
             movement = 0;
     }
-    public override void RotateTurret()
+    public void RotateTurret()
     {
         if (InputManager.Instance.playerInput.actions["MoveTurretWithKeys"].enabled)
         {

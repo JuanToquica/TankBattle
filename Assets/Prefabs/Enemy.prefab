@@ -5993,6 +5993,7 @@ MonoBehaviour:
   - {x: 2.5, y: 2}
   - {x: 1.5, y: 1}
   turretChangeDelay: 0.35
+  projectileTag: PlayerProjectile
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0

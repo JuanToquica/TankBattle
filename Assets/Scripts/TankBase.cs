@@ -40,7 +40,7 @@ public abstract class TankBase : MonoBehaviour
     public bool isOnSlope;
     protected float speed;
     protected float tankRotationSpeed;
-    protected float turretRotationSpeed;
+    public float turretRotationSpeed;
     protected float directionOrInput;
     protected float brakingTime;
     protected float movementRef;
@@ -95,9 +95,6 @@ public abstract class TankBase : MonoBehaviour
             currentState = State.quiet;
     }
 
-    
-
-    public abstract void RotateTurret();
     protected virtual void RotateTank()
     {
         float targetAngularVelocityY = rotation * currentRotationSpeed * Mathf.Deg2Rad;

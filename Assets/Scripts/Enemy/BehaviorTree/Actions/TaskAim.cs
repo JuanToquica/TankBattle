@@ -10,27 +10,29 @@ public class TaskAim : Node
     {
         this.enemy = enemyScript;      
     }
-
-    private float CalculateTolerance()
-    {
-        if (enemy.distanceToPlayer > 25)
-            return 1f;
-            
-        float tolerance = -0.28f * enemy.distanceToPlayer + enemy.maxAimingTolerance; // -0.28 es la pendiente de la interpolacion
-        return tolerance;
-    }
        
     public override NodeState Evaluate()
     {
         if (Mathf.Abs(enemy.angleToPlayer) < enemy.maxAimingTolerance)
-        {
-            if (Mathf.Abs(enemy.angleToPlayer) > CalculateTolerance())
-                enemy.RotateTurret();
+        {   
+            if (Mathf.Abs(enemy.angleToPlayer) > 2)
+            {
+                if (enemy.distanceToPlayer > 30)
+                {
+                    enemy.RotateTurret(enemy.turretRotationSpeed);
+                }
+                else
+                {
+                    float t = Mathf.InverseLerp(0f, 30, enemy.distanceToPlayer);
+                    float calculatedRotationSpeed = Mathf.Lerp(20, enemy.turretRotationSpeed, t);
+                    enemy.RotateTurret(calculatedRotationSpeed);
+                }
+            }
             return NodeState.SUCCESS;
         }           
         else
         {
-            enemy.RotateTurret();
+            enemy.RotateTurret(enemy.turretRotationSpeed);
             return NodeState.RUNNING;
         }           
     }
