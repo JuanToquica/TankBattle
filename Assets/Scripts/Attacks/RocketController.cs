@@ -103,7 +103,7 @@ public class RocketController : MonoBehaviour
                     }                     
                 }
             }
-            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.5f, Quaternion.LookRotation(hit.normal));
             smokeTrail.OnRocketCollision();
             ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }

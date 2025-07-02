@@ -5899,6 +5899,7 @@ MonoBehaviour:
   frontalCollisionWithCorner: 0
   backCollisionWithCorner: 0
   isOnSlope: 0
+  turretRotationSpeed: 0
   suspensionPoints:
   - {fileID: 7215780715767357904}
   - {fileID: 4672399264601286731}
@@ -5993,7 +5994,7 @@ MonoBehaviour:
   - {x: 2.5, y: 2}
   - {x: 1.5, y: 1}
   turretChangeDelay: 0.35
-  projectileTag: PlayerProjectile
+  projectileTag: EnemyProjectile
   currentCooldown: 0
   currentRange: 0
   cooldownTimer: 0

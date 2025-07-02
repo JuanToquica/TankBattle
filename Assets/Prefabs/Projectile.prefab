@@ -99,4 +99,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95081bad566208d43a8937f4cc9045fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactVfx: {fileID: 100006, guid: 2e7e92bc7175b744ea40878dedfa79e4, type: 3}
+  impactVfx: {fileID: 7732721867969047930, guid: 2e7e92bc7175b744ea40878dedfa79e4, type: 3}

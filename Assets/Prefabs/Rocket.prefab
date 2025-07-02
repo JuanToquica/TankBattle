@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da7d6731caef4943b6f03c7315a8554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactVfx: {fileID: 100008, guid: 1dbc518224e49f34095aab42fe05751a, type: 3}
+  impactVfx: {fileID: 4349124554401223581, guid: 1dbc518224e49f34095aab42fe05751a, type: 3}
   smokeVFX: {fileID: 1322375213935937960, guid: d5f918cc41b4f04428d2d6f476829238, type: 3}
   explosionRadius: 5
 --- !u!1001 &5035673376335984981

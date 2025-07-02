@@ -52,7 +52,7 @@ public class ProjectileController : MonoBehaviour
                     player.TakeDamage(damageAmount);
                 }
             }
-            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.4f, Quaternion.LookRotation(hit.normal));
             ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }
         else

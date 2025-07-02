@@ -43,11 +43,6 @@ public class EnemyAttack : AttackBase
         Fire();     
     }
 
-    protected override void Aim()
-    {
-        base.Aim();
-    }
-
     public bool CanShoot()
     {
         return cooldownTimer == currentCooldown;
