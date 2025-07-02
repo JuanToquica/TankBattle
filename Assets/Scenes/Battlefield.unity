@@ -38520,7 +38520,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 3, z: 1}
+  m_Size: {x: 5, y: 3, z: 5}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!23 &752247394
 MeshRenderer:
@@ -38584,7 +38584,7 @@ Transform:
   m_GameObject: {fileID: 752247392}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.000000037252903, z: 70}
+  m_LocalPosition: {x: 0, y: -0.1, z: 70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -38603,6 +38603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67d1c38964cd9914c954d6e30f172d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vfx: {fileID: 7761031033666763820, guid: 1eb833340b41fb444b576c4dced8d4dc, type: 3}
 --- !u!43 &782973834
 Mesh:
   m_ObjectHideFlags: 0
@@ -89723,7 +89724,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1664306152}
-  - component: {fileID: 1664306153}
   - component: {fileID: 1664306154}
   m_Layer: 0
   m_Name: DetectionCollider
@@ -89747,27 +89747,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 752247396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1664306153
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664306151}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!64 &1664306154
 MeshCollider:
   m_ObjectHideFlags: 0
