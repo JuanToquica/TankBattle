@@ -330,6 +330,8 @@ public abstract class AttackBase : MonoBehaviour
         {
             currentAmountOfRaycast = weaponsSettings.railGunAmountOfRaycast;
         }
+        StopFiring();
+        DestroyVfx();
     }
 
     protected void BackToMainTurret(float delay)
@@ -358,6 +360,11 @@ public abstract class AttackBase : MonoBehaviour
         if (cooldownTimer > currentCooldown)
             cooldownTimer = currentCooldown;
         DisableRockets();
+        DestroyVfx();
+    }
+
+    protected void DestroyVfx()
+    {
         foreach (Transform child in railgunFirePoint.transform)
         {
             if (child.CompareTag("VFX"))
