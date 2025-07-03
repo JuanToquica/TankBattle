@@ -383,11 +383,11 @@ public class EnemyAI : TankBase
 
     public void EvaluateAreaChange()
     {
-        if (enemyArea == 7 && (NavMesh.SamplePosition(player.position, out NavMeshHit hit, 2f, 1 << 13) || player.position.z < -35))
+        if (enemyArea == 7 && (NavMesh.SamplePosition(player.position, out NavMeshHit hit, 2f, 1 << 13) || player.position.z < -45))
         {
             enemyManager.ChangeAreaToChase(enemyArea);
         }
-        else if (!enemyManager.chasingInArea14 && (enemyArea == 5 || enemyArea == 10) && (NavMesh.SamplePosition(player.position, out NavMeshHit hit2, 2f, 1 << 14) || player.position.z < -35))
+        else if (!enemyManager.chasingInArea14 && (enemyArea == 5 || enemyArea == 10) && (NavMesh.SamplePosition(player.position, out NavMeshHit hit2, 2f, 1 << 14) || player.position.z < -45))
         {
             enemyManager.ChangeAreaToChase(enemyArea);
         }       
@@ -398,7 +398,7 @@ public class EnemyAI : TankBase
         if (enemyArea == 13)
         {
             int allAreasExcept13 = ~(1 << 13);
-            if (NavMesh.SamplePosition(player.position, out NavMeshHit hit3, 2f, allAreasExcept13) && (player.position.z > -35 || !knowsPlayerPosition))
+            if (NavMesh.SamplePosition(player.position, out NavMeshHit hit3, 2f, allAreasExcept13) && (player.position.z > -25 || !knowsPlayerPosition))
             {
                 enemyManager.BackToOriginalArea(enemyArea, oldArea);
                 return true;
@@ -408,7 +408,7 @@ public class EnemyAI : TankBase
         else if (enemyManager.chasingInArea14 && enemyArea == 14)
         {
             int allAreasExcept14 = ~(1 << 14);
-            if (NavMesh.SamplePosition(player.position, out NavMeshHit hit3, 2f, allAreasExcept14) && (player.position.z > -35 || !knowsPlayerPosition))
+            if (NavMesh.SamplePosition(player.position, out NavMeshHit hit3, 2f, allAreasExcept14) && (player.position.z > -25 || !knowsPlayerPosition))
             {
                 enemyManager.BackToOriginalArea(enemyArea, oldArea);
                 return true;

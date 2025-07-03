@@ -19,10 +19,10 @@ MonoBehaviour:
   shotVfx: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
   railgunVfx: {fileID: 8145502431507700120, guid: 000832214335ffd4782827d2a4510f4a, type: 3}
   rangeOfTurrets:
-  - 70
-  - 130
-  - 70
-  - 130
+  - 80
+  - 145
+  - 80
+  - 145
   amountOfShotsInOneRound: {x: 25, y: 35}
   aimAngle: 25
   defaultAmountOfRaycast: 16

@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7283236577673844948
 Transform:
   m_ObjectHideFlags: 0
@@ -5929,10 +5929,10 @@ MonoBehaviour:
   desiredMovement: 0
   desiredRotation: 0
   timeToLeaveSpawn: 1
-  timeToForgetPlayer: 5
-  distanceToDetectPlayer: 15
-  farDistance: 20
-  nearDistance: 15
+  timeToForgetPlayer: 10
+  distanceToDetectPlayer: 20
+  farDistance: 25
+  nearDistance: 17
   maxAimingTolerance: 15
   detectingPlayer: 0
   knowsPlayerPosition: 0

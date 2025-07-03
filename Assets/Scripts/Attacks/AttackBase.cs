@@ -221,6 +221,8 @@ public abstract class AttackBase : MonoBehaviour
         vfx.transform.SetParent(railgunFirePoint);
         yield return new WaitForSeconds(weaponsSettings.railgunDelay);
         Aim();
+        yield return null;
+        Aim();
         railgunAnimator.SetBool("Fire", true);
         Vector3 startPos = railgunFirePoint.position;
 
