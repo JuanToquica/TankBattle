@@ -26,6 +26,8 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected Animator mainTurretAnimator;
     [SerializeField] protected Animator railgunAnimator;
     [SerializeField] protected Animator rocketAnimator;
+    [SerializeField] protected ParticleSystem rocketShotVfxRight;
+    [SerializeField] protected ParticleSystem rocketShotVfxLeft;
     public Weapons currentWeapon;
 
     [Header("Fire Specifications")]
@@ -263,9 +265,16 @@ public abstract class AttackBase : MonoBehaviour
             shotsFired++;
 
         if (shotsFired - 1 == 0 || shotsFired - 1 == 2)
+        {
             rocketAnimator.SetBool("FireWithRight", true);
+            rocketShotVfxRight.Play();
+        }
         else
+        {
             rocketAnimator.SetBool("FireWithLeft", true);
+            rocketShotVfxLeft.Play();
+        }
+            
 
         Vector3 startPos = fakeRockets[shotsFired - 1].transform.position;
         Vector3 direction;
