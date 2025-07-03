@@ -10,7 +10,8 @@ public abstract class TankBase : MonoBehaviour
     public State _currentState;    
 
     [Header("References")]
-    [SerializeField] protected Transform superStructure;   
+    [SerializeField] protected Transform superStructure;
+    [SerializeField] protected ParticleSystem smokeVfx;
     public Transform turret;
     public BoxCollider tankCollider;
 
@@ -73,6 +74,8 @@ public abstract class TankBase : MonoBehaviour
             if (_currentState != value)
             {
                 _currentState = value;
+                if (_currentState == State.accelerating)
+                    smokeVfx.Play();
                 if (_currentState == State.braking || _currentState == State.accelerating)
                     ApplySuspensionAnimation();
             }
@@ -253,7 +256,6 @@ public abstract class TankBase : MonoBehaviour
 
         if ((rightFrontalCollision && leftFrontalCollision) || (rightBackCollision && leftBackCollision))
         {
-            //currentRotationSpeed = 0;
             if (directionOrInput == 0)
                 movement = 0;
             return;
@@ -262,22 +264,6 @@ public abstract class TankBase : MonoBehaviour
             currentRotationSpeed = 0;
         else
             currentRotationSpeed = tankRotationSpeed;
-        //foreach (ContactPoint contact in collision.contacts)
-        //{
-        //    Vector3 contactDirection = contact.point - transform.position;
-        //    float dot = Vector3.Dot(contactDirection.normalized, transform.forward);
-
-        //    if (dot > 0.5f)
-        //    {
-        //        currentRotationSpeed = 20;
-        //        frontalCollisionWithCorner = true;
-        //    }
-        //    if (dot < -0.5f)
-        //    {
-        //        currentRotationSpeed = 20;
-        //        backCollisionWithCorner = true;
-        //    }
-        //}
     }
 
     public void OnCollisionExit(Collision collision)
@@ -291,6 +277,7 @@ public abstract class TankBase : MonoBehaviour
 
     public void SpeedPowerUp(float duration)
     {
+        smokeVfx.Play();
         speed = speedMinMax.y;
         tankRotationSpeed = tankRotationSpeedMinMax.y;
         turretRotationSpeed = turretRotationSpeedMinMax.y;
@@ -313,6 +300,7 @@ public abstract class TankBase : MonoBehaviour
     public void OnTankDead()
     {
         tankCollider.enabled = false;
+        smokeVfx.Stop();
         dying = true;
     }
 

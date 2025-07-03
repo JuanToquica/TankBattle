@@ -4873,7 +4873,7 @@ ParticleSystemRenderer:
   m_MaxParticleSize: 32
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
-  m_LengthScale: 6
+  m_LengthScale: 10
   m_SortingFudge: 5
   m_NormalDirection: 1
   m_ShadowBias: 0

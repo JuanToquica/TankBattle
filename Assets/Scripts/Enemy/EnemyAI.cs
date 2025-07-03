@@ -153,7 +153,10 @@ public class EnemyAI : TankBase
     {
         directionToPlayer = (player.position - turret.position).normalized;
         distanceToPlayer = (player.position - turret.position).magnitude;
-        angleToPlayer = Vector3.SignedAngle(turret.forward, directionToPlayer, Vector3.up);
+
+        Vector3 flatTurretForward = turret.forward;
+        flatTurretForward.y = 0;
+        angleToPlayer = Vector3.SignedAngle(flatTurretForward, directionToPlayer, Vector3.up);
     }
     private void InterpolateMovementAndRotation()
     {

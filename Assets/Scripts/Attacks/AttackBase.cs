@@ -200,7 +200,7 @@ public abstract class AttackBase : MonoBehaviour
     protected void FireWithMainTurret()
     {
         mainTurretAnimator.SetBool("Fire", true);
-        ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.shotVfx, mainGunFirePoint.position, mainGunFirePoint.rotation);
+        ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.shotVfx, mainGunFirePoint.position + mainGunFirePoint.forward * 0.5f, mainGunFirePoint.rotation);
         Vector3 startPos = mainGunFirePoint.position;
 
         GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.projectilePrefab, startPos, Quaternion.LookRotation(fireDirection));
