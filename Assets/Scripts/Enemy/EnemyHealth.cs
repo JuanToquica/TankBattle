@@ -1,9 +1,11 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyHealth : HealthBase
 {
-    [SerializeField] private Transform healthBarCanvas;
+    [SerializeField] private GameObject damageText;
     [SerializeField] private float timeOfDeath;
     public EnemyManager enemyManager;
     private EnemyAttack enemyAttack;
@@ -20,22 +22,17 @@ public class EnemyHealth : HealthBase
         outline = GetComponent<Outline>();
     }
 
-    protected override void Update()
+    public override void TakeDamage(int damage)
     {
-        base.Update();
-        LookAtThePlayer();
-    }
-
-    private void LookAtThePlayer()
-    {
-        healthBarCanvas.transform.forward = -Camera.main.transform.forward;
+        base.TakeDamage(damage);
+        DamageText text = Instantiate(damageText, transform.position + transform.up * 2 + transform.right * Random.Range(-2f, 2f), transform.rotation).GetComponent<DamageText>();
+        text.Initialize(damage);
     }
 
     protected override void Die()
     {
         base.Die(); 
         changeTankPaint.OnTankDead();
-        healthBarCanvas.gameObject.SetActive(false);
 
         GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0,1.3f,0) + enemyAI.directionToPlayer, transform.rotation);
         vfx.transform.parent = transform;

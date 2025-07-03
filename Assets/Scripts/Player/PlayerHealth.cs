@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlayerHealth : HealthBase
 {
     [SerializeField] private PlayerSpawner spawner;
+    [SerializeField] private Image healthBar;
     private PlayerMaterialHandler playerMaterialHandler;
     private PlayerController playerController;
     private PlayerAttack playerAttack;
@@ -15,7 +16,11 @@ public class PlayerHealth : HealthBase
         playerController = GetComponent<PlayerController>();
         playerAttack = GetComponent<PlayerAttack>();
     }
- 
+
+    private void Update()
+    {
+        healthBar.fillAmount = health / maxHealth;
+    }
 
     protected override void Die()
     {

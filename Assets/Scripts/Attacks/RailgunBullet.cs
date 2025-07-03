@@ -6,14 +6,14 @@ public class RailgunBullet : MonoBehaviour
     [SerializeField] private float destroyTime;
     private float speed;
     private float maxRange;
-    private float damageAmount;
+    private int damageAmount;
     private Vector3 currentPosition;
     private Vector3 direction;
     private float travelledDistance;
     private bool isDestroying;
     private string launcherTag;
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, string tag)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
     {
         currentPosition = startPos;
         direction = dir;

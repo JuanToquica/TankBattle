@@ -4,16 +4,10 @@ using UnityEngine.UI;
 public class HealthBase : MonoBehaviour
 {
     [SerializeField] protected float maxHealth;
-    [SerializeField] protected Image healthBar;
     [SerializeField] protected GameObject deathVfx;
     protected float health;
 
-    protected virtual void Update()
-    {
-        healthBar.fillAmount = health / maxHealth;
-    }
-
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(int damage)
     {
         if (health > 0)
         {

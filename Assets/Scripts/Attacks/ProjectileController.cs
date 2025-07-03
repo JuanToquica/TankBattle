@@ -6,13 +6,13 @@ public class ProjectileController : MonoBehaviour
     [SerializeField] private GameObject impactVfx;
     private float speed;
     private float maxRange;
-    private float damageAmount = 3;
+    private int damageAmount = 3;
     private Vector3 currentPosition;
     private Vector3 direction;
     private float travelledDistance = 0f;
     private string launcherTag;
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, string tag)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
     {
         currentPosition = startPos;
         direction = dir;

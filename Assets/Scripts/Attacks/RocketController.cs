@@ -8,7 +8,7 @@ public class RocketController : MonoBehaviour
     [SerializeField] private float explosionRadius;
     private float speed;
     private float maxRange;
-    private float damageAmount;
+    private int damageAmount;
     private Vector3 currentPosition;
     private Vector3 direction;
     private float travelledDistance;
@@ -17,7 +17,7 @@ public class RocketController : MonoBehaviour
     private string launcherTag;
 
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, float damage, GameObject launcher, string tag)
+    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, GameObject launcher, string tag)
     {
         currentPosition = startPos;
         direction = dir;
@@ -86,7 +86,7 @@ public class RocketController : MonoBehaviour
                             float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
                             Debug.Log(Vector3.Distance(transform.position, hitCollider.bounds.center));
                             Debug.Log("daño final" + finalDamage);
-                            enemy.TakeDamage(finalDamage);
+                            enemy.TakeDamage((int)finalDamage);
                         }
                     }
                     else if (hitCollider.transform.CompareTag("Player"))
@@ -98,7 +98,7 @@ public class RocketController : MonoBehaviour
                             float t = Mathf.Clamp01(distanceFromCenter / explosionRadius);
                             float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
                             Debug.Log(Vector3.Distance(transform.position, hitCollider.bounds.center));
-                            player.TakeDamage(finalDamage);
+                            player.TakeDamage((int)finalDamage);
                         }
                     }                     
                 }
