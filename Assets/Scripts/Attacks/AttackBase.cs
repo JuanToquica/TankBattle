@@ -290,7 +290,7 @@ public abstract class AttackBase : MonoBehaviour
         RocketController rocketController = rocket.GetComponent<RocketController>();
 
         if (rocketController != null)
-            rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, gameObject, projectileTag);
+            rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, projectileTag);
         
         cooldownTimer = 0;
         if (shotsFired == weaponsSettings.rocketAmmo)

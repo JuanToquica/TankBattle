@@ -1,36 +1,16 @@
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class RocketController : MonoBehaviour
+public class RocketController : ProjectileBase
 {
-    [SerializeField] private GameObject impactVfx;
     [SerializeField] private GameObject smokeVFX;
-    [SerializeField] private float explosionRadius;
-    private float speed;
-    private float maxRange;
-    private int damageAmount;
-    private Vector3 currentPosition;
-    private Vector3 direction;
-    private float travelledDistance;
+    [SerializeField] private float explosionRadius;    
     private SmokeTrail smokeTrail;
-    private GameObject launcher;
-    private string launcherTag;
 
-
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, GameObject launcher, string tag)
+    public override void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
     {
-        currentPosition = startPos;
-        direction = dir;
-        speed = bulletSpeed;
-        maxRange = range;
-        damageAmount = damage;
+        base.Initialize(startPos, dir, bulletSpeed, range, damage, tag);
 
-        travelledDistance = 0f;
-
-        transform.position = currentPosition;
-        transform.forward = direction;
-        this.launcher = launcher;
-        this.launcherTag = tag;
         smokeTrail = ObjectPoolManager.Instance.GetPooledObject(smokeVFX, transform.position, transform.rotation).GetComponent<SmokeTrail>();
         ParentConstraint smokeTrailConstraint = smokeTrail.GetComponent<ParentConstraint>();
         ConstraintSource newSource = new ConstraintSource
@@ -44,49 +24,24 @@ public class RocketController : MonoBehaviour
         smokeTrailConstraint.constraintActive = true;
     }
 
-    void Update()
+
+    private void Update()
     {
-        float distanceThisFrame = speed * Time.deltaTime;
-
-        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame) && hit.collider.gameObject != launcher && !hit.transform.CompareTag("Flag"))
+        distanceThisFrame = speed * Time.deltaTime;
+        RaycastHit hit = LaunchRaycast();
+        if (hit.collider != null && !hit.transform.CompareTag(launcherTag))
         {
-            transform.position = hit.point;        
-
-            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
+            if (!OnRaycastImpact(hit))
             {
-                EnemyHealth enemyHealth = hit.transform.GetComponent<EnemyHealth>();
-                EnemyAI enemyAI = hit.transform.GetComponent<EnemyAI>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damageAmount);
-                if (enemyAI != null)
-                    enemyAI.knowsPlayerPosition = true;
-            }
-            else if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
-            {
-                PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
-                if (player != null)
-                {
-                    player.TakeDamage(damageAmount);
-                }
-            }
-            else
-            {
-                Debug.Log("generando esphera");
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
                 foreach (var hitCollider in hitColliders)
                 {
                     if (hitCollider.transform.CompareTag("Enemy"))
                     {
-                        Debug.Log("detectando enemigo con esphera");
                         EnemyHealth enemy = hitCollider.transform.GetComponent<EnemyHealth>();
                         if (enemy != null)
                         {
-                            float distanceFromCenter = Vector3.Distance(transform.position, hitCollider.bounds.center);
-                            float t = Mathf.Clamp01(distanceFromCenter/ explosionRadius);
-                            float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
-                            Debug.Log(Vector3.Distance(transform.position, hitCollider.bounds.center));
-                            Debug.Log("daño final" + finalDamage);
-                            enemy.TakeDamage((int)finalDamage);
+                            enemy.TakeDamage((int)CalculateDamage(hitCollider));
                         }
                     }
                     else if (hitCollider.transform.CompareTag("Player"))
@@ -94,31 +49,37 @@ public class RocketController : MonoBehaviour
                         PlayerHealth player = hitCollider.transform.GetComponent<PlayerHealth>();
                         if (player != null)
                         {
-                            float distanceFromCenter = Vector3.Distance(transform.position, hitCollider.bounds.center);
-                            float t = Mathf.Clamp01(distanceFromCenter / explosionRadius);
-                            float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
-                            Debug.Log(Vector3.Distance(transform.position, hitCollider.bounds.center));
-                            player.TakeDamage((int)finalDamage);
+                            player.TakeDamage((int)CalculateDamage(hitCollider));
                         }
-                    }                     
+                    }
                 }
             }
-            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.7f, Quaternion.LookRotation(hit.normal));
-            smokeTrail.OnRocketCollision();
-            ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
+            InstantiateImpactVfx(hit);           
         }
         else
         {
-            currentPosition += direction * distanceThisFrame;
-            travelledDistance += distanceThisFrame;
-
-            transform.position = currentPosition;
-
-            if (travelledDistance >= maxRange)
-            {
-                smokeTrail.OnRocketCollision();
-                ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
-            }
+            ContinueLaunch();
         }
+    }
+
+    private float CalculateDamage(Collider hitCollider)
+    {
+        float distanceFromCenter = Vector3.Distance(transform.position, hitCollider.bounds.center);
+        float t = Mathf.Clamp01(distanceFromCenter / explosionRadius);
+        float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
+        return finalDamage;
+    }
+
+    protected override void InstantiateImpactVfx(RaycastHit hit)
+    {
+        ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.7f, Quaternion.LookRotation(hit.normal));
+        smokeTrail.OnRocketCollision();
+        ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
+    }
+
+    protected override void DestroyBullet()
+    {
+        smokeTrail.OnRocketCollision();
+        ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
     }
 }

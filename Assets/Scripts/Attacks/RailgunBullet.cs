@@ -1,86 +1,44 @@
 using UnityEngine;
 
-public class RailgunBullet : MonoBehaviour
-{
-    [SerializeField] private GameObject impactVfx;
-    [SerializeField] private float destroyTime;
-    private float speed;
-    private float maxRange;
-    private int damageAmount;
-    private Vector3 currentPosition;
-    private Vector3 direction;
-    private float travelledDistance;
+public class RailgunBullet : ProjectileBase
+{   
+    [SerializeField] private float destroyTime;    
     private bool isDestroying;
-    private string launcherTag;
 
-    public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
+    public override void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
     {
-        currentPosition = startPos;
-        direction = dir;
-        speed = bulletSpeed;
-        maxRange = range;
-        damageAmount = damage;
-
-        launcherTag = tag;
-        travelledDistance = 0f;
+        base.Initialize(startPos, dir, bulletSpeed, range, damage, tag);
         isDestroying = false;
-        transform.position = currentPosition;
-        transform.forward = direction;
     }
 
-    void Update()
+    private void Update()
     {
         if (isDestroying) return;
-        float distanceThisFrame = speed * Time.deltaTime;
-
-        if (Physics.Raycast(currentPosition, direction, out RaycastHit hit, distanceThisFrame) && !hit.transform.CompareTag("Flag"))
+        distanceThisFrame = speed * Time.deltaTime;
+        RaycastHit hit = LaunchRaycast();
+        if (hit.collider != null)
         {
-            transform.position = hit.point;
-
-            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
-            {
-                EnemyHealth enemyHealth = hit.transform.GetComponent<EnemyHealth>();
-                EnemyAI enemyAI = hit.transform.GetComponent<EnemyAI>();
-                if (enemyHealth != null)
-                    enemyHealth.TakeDamage(damageAmount);
-                if (enemyAI != null)
-                    enemyAI.knowsPlayerPosition = true;
-                
-                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
-                isDestroying = true;
-                Invoke("Destroy", destroyTime);
-            }
-            else if (hit.transform.CompareTag("Player") && launcherTag != "PlayerProjectile")
-            {
-                PlayerHealth player = hit.transform.GetComponent<PlayerHealth>();
-                if (player != null)
-                {
-                    player.TakeDamage(damageAmount);
-                }
-                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
-                isDestroying = true;
-                Invoke("Destroy", destroyTime);
-            }
-            else
-            {
-                ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
-                isDestroying = true;
-                Invoke("Destroy", destroyTime);
-            }
+            OnRaycastImpact(hit);
+            InstantiateImpactVfx(hit);
         }
         else
         {
-            currentPosition += direction * distanceThisFrame;
-            travelledDistance += distanceThisFrame;
-
-            transform.position = currentPosition;
-
-            if (travelledDistance >= maxRange)
-            {
-                isDestroying = true;
-                Invoke("Destroy", destroyTime);
-            }
+            ContinueLaunch();
         }
+    }
+
+
+    protected override void InstantiateImpactVfx(RaycastHit hit)
+    {
+        ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.1f, Quaternion.LookRotation(hit.normal));
+        isDestroying = true;
+        Invoke("Destroy", destroyTime);
+    }
+
+    protected override void DestroyBullet()
+    {
+        isDestroying = true;
+        Invoke("Destroy", destroyTime);
     }
 
     private void Destroy()

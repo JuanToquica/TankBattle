@@ -84,7 +84,6 @@ public class TankMaterialHandlerBase : MonoBehaviour
 
         while (materials[0].GetFloat("_DissolveAmount") < 1)
         {
-            Debug.Log("disolviendo");
             if (TrackRightMeshRenderer.materials.Length > 1)
                 TrackRightMeshRenderer.materials = new Material[] { TrackRightMeshRenderer.materials[0] };
             if (TrackLeftMeshRenderer.materials.Length > 1)
