@@ -25,7 +25,8 @@ public class EnemyHealth : HealthBase
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        DamageText text = Instantiate(damageText, transform.position + transform.up * 2 + transform.right * Random.Range(-2f, 2f), transform.rotation).GetComponent<DamageText>();
+        DamageText text = ObjectPoolManager.Instance.GetPooledObject(damageText, transform.position + transform.up * 2 + transform.right * Random.Range(-2f, 2f), transform.rotation)
+            .GetComponent<DamageText>();
         text.Initialize(damage);
     }
 
@@ -34,7 +35,7 @@ public class EnemyHealth : HealthBase
         base.Die(); 
         changeTankPaint.OnTankDead();
 
-        GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0,1.3f,0) + enemyAI.directionToPlayer, transform.rotation);
+        GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(deathVfx, transform.position + new Vector3(0,1.3f,0) + enemyAI.directionToPlayer, transform.rotation);
         vfx.transform.parent = transform;
 
         enemyAI.desiredMovement = 0;

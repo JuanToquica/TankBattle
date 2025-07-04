@@ -354,7 +354,7 @@ public abstract class AttackBase : MonoBehaviour
     {
         if (currentWeapon != Weapons.mainTurret)
         {
-            GameObject vfx = Instantiate(backToMainTurretVfx, transform.position, transform.rotation);
+            GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(backToMainTurretVfx, transform.position, transform.rotation);
             vfx.transform.parent = transform;
         }
             

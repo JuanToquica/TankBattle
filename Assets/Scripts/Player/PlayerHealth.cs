@@ -28,7 +28,7 @@ public class PlayerHealth : HealthBase
         playerMaterialHandler.OnTankDead();       
 
         Vector3 directionToCamera = (Camera.main.transform.position - playerController.transform.position).normalized;
-        GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0, 1.3f, 0) + directionToCamera, transform.rotation);
+        GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(deathVfx, transform.position + new Vector3(0, 1.3f, 0) + directionToCamera, transform.rotation);
         vfx.transform.parent = transform;
 
         playerController.movement = 0;

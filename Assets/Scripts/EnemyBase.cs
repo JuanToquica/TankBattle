@@ -8,7 +8,7 @@ public class EnemyBase : MonoBehaviour
         if (other.transform.CompareTag("Player") && GameManager.instance.playerHasTheFlag)
         {
             GameManager.instance.OnFlagDelivered();
-            Instantiate(vfx, transform.position + transform.up, transform.rotation);
+            ObjectPoolManager.Instance.GetPooledObject(vfx, transform.position + transform.up, transform.rotation);
         }
     }
 }

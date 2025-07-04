@@ -18173,6 +18173,10 @@ MonoBehaviour:
   rocketSmokeTrailPrefab: {fileID: 1322375213935937960, guid: d5f918cc41b4f04428d2d6f476829238, type: 3}
   maingunShotVfxPrefab: {fileID: 1032288737545084984, guid: 85c11f987e037b14d8cf57ed651a0728, type: 3}
   railgunShotVfxPrefab: {fileID: 8145502431507700120, guid: 000832214335ffd4782827d2a4510f4a, type: 3}
+  backToMainTurretVfxPrefab: {fileID: 7131401307255788800, guid: e9b07eb5fdc3bf24b806c1b3c9063cb8, type: 3}
+  DeathVfxPrefab: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
+  FlagVfxPrefab: {fileID: 7761031033666763820, guid: 1eb833340b41fb444b576c4dced8d4dc, type: 3}
+  DamageTextPrefab: {fileID: 6381656372122098035, guid: c775a50e75ae0954caa5c13c73ef227c, type: 3}
   pauseUI: {fileID: 660529389}
   victoryPanel: {fileID: 1012025151}
   defeatPanel: {fileID: 1888326492}

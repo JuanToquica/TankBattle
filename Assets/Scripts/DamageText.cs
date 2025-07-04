@@ -57,6 +57,6 @@ public class DamageText : MonoBehaviour
             yield return null;
         }
         canvas.alpha = 0;
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
     }
 }

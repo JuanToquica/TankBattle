@@ -39,7 +39,7 @@ public class ObjectPoolManager : MonoBehaviour
         {
             GameObject obj = Instantiate(prefab);
             obj.SetActive(false);
-            obj.transform.parent = prefabPoolParent.transform;
+            obj.transform.SetParent(prefabPoolParent.transform);
             newPool.Enqueue(obj);
             originalPrefabs.Add(obj, prefab);
         }
@@ -84,7 +84,7 @@ public class ObjectPoolManager : MonoBehaviour
             if (poolDictionary.TryGetValue(prefab, out Queue<GameObject> pool))
             {
                 obj.SetActive(false);
-                obj.transform.parent = poolParent.Find(prefab.name + " Pool");
+                obj.transform.SetParent(poolParent.Find(prefab.name + " Pool"));
                 if (obj.transform.parent == null)
                 {
                     obj.transform.parent = poolParent;

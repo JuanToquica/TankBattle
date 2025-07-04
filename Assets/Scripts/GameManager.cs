@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     public GameObject rocketSmokeTrailPrefab;
     public GameObject maingunShotVfxPrefab;
     public GameObject railgunShotVfxPrefab;
+    public GameObject backToMainTurretVfxPrefab;
+    public GameObject DeathVfxPrefab;
+    public GameObject FlagVfxPrefab;
+    public GameObject DamageTextPrefab;
 
     [Header ("UI")]
     [SerializeField] private GameObject pauseUI;
@@ -74,10 +78,10 @@ public class GameManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(railgunBulletPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(machineGunBulletPrefab, 30);
         ObjectPoolManager.Instance.CreatePool(rocketPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(recoveryPowerUpPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(rechargingPowerUpPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(speedPowerUpPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(weaponPowerUpPrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(recoveryPowerUpPrefab, 7);
+        ObjectPoolManager.Instance.CreatePool(rechargingPowerUpPrefab, 7);
+        ObjectPoolManager.Instance.CreatePool(speedPowerUpPrefab, 7);
+        ObjectPoolManager.Instance.CreatePool(weaponPowerUpPrefab, 7);
         ObjectPoolManager.Instance.CreatePool(PowerUpSmokeVfxPrefab, 15);
         ObjectPoolManager.Instance.CreatePool(recoveryPowerUpVfxPrefab, 4);
         ObjectPoolManager.Instance.CreatePool(rechargingPowerUpVfxPrefab, 4);
@@ -90,7 +94,11 @@ public class GameManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(rocketSmokeTrailPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(maingunShotVfxPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(railgunShotVfxPrefab, 10);
-}
+        ObjectPoolManager.Instance.CreatePool(backToMainTurretVfxPrefab, 7);
+        ObjectPoolManager.Instance.CreatePool(DeathVfxPrefab, 7);
+        ObjectPoolManager.Instance.CreatePool(DamageTextPrefab, 15);
+        ObjectPoolManager.Instance.CreatePool(FlagVfxPrefab, 2);
+    }
 
     public void OnFlagPickedUp()
     {
