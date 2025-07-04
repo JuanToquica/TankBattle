@@ -37,8 +37,7 @@ public class DamageText : MonoBehaviour
     }
 
     private IEnumerator AnimationCoroutine()
-    {
-        
+    {      
         float timer = 0;
 
         while (timer < duration)

@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
     public GameObject FlagVfxPrefab;
     public GameObject DamageTextPrefab;
 
-    [Header ("UI")]
+    [Header("UI")]
+    [SerializeField] private HUD hud;
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(DeathVfxPrefab, 7);
         ObjectPoolManager.Instance.CreatePool(DamageTextPrefab, 15);
         ObjectPoolManager.Instance.CreatePool(FlagVfxPrefab, 2);
+        hud.ShowMessage(1);
     }
 
     public void OnFlagPickedUp()
@@ -116,16 +118,20 @@ public class GameManager : MonoBehaviour
         coinsEarned += coinsPerPoint;
         if (playerScore >= playerMaxScore)
             EndGame();
+        else
+            hud.ShowMessage(2);
     }
 
     public void OnPlayerDeathWithFlag()
     {
         playerHasTheFlag = false;
-        enemyScore++;
+        enemyScore++;    
         flag1.SetActive(true);
         flag2.SetActive(true);
         if (enemyScore >= enemyMaxScore)
             EndGame();
+        else
+            hud.ShowMessage(3);
     }
 
     public int GetCoinsEarned()

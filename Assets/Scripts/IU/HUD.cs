@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections; 
 
 public class HUD : MonoBehaviour
 {    
@@ -9,6 +10,11 @@ public class HUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI enemyScoreText;
     [SerializeField] private Image playerScoreBar;
     [SerializeField] private Image enemyScoreBar;
+    [SerializeField] private CanvasGroup objectiveMessagePanel;
+    [SerializeField] private CanvasGroup playerScoresMessagePanel;
+    [SerializeField] private CanvasGroup enemyScoresMessagePanel;
+    [SerializeField] private float messageDuration;
+    [SerializeField] private float panelDisolveSpeed;
     private int minutes, seconds;
 
     private void Start()
@@ -51,9 +57,31 @@ public class HUD : MonoBehaviour
         {
             GameManager.instance.EndGame();
             gameObject.SetActive(false);
-        }
-            
+        }     
     }
 
+    public void ShowMessage(int message)
+    {
+        if (message == 1)
+            StartCoroutine(ShowMessageCoroutine(objectiveMessagePanel));
+        if (message == 2)
+            StartCoroutine(ShowMessageCoroutine(playerScoresMessagePanel));
+        if (message == 3)
+            StartCoroutine(ShowMessageCoroutine(enemyScoresMessagePanel));
+    }
 
+    private IEnumerator ShowMessageCoroutine(CanvasGroup panel)
+    {
+        panel.gameObject.SetActive(true);
+        panel.alpha = 1;
+        yield return new WaitForSeconds(messageDuration);
+
+        while (panel.alpha > 0)
+        {           
+            panel.alpha -= Time.deltaTime * panelDisolveSpeed;
+            yield return null;
+        }
+        panel.alpha = 0;
+        panel.gameObject.SetActive(false);
+    }
 }
