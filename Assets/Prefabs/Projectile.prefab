@@ -100,3 +100,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   impactVfx: {fileID: 7732721867969047930, guid: 2e7e92bc7175b744ea40878dedfa79e4, type: 3}
+  bounceVfx: {fileID: 1097486713018355681, guid: aa88d858d69f7944b8e38e98b443c60c, type: 3}
+  BounceAngle: 70

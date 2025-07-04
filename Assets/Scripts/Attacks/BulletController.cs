@@ -1,11 +1,8 @@
 using UnityEngine;
-using UnityEngine.SearchService;
 
-public class ProjectileController : MonoBehaviour
+public class BulletController : MonoBehaviour
 {
     [SerializeField] private GameObject impactVfx;
-    [SerializeField] private GameObject bounceVfx;
-    [SerializeField] private float BounceAngle;
     private float speed;
     private float maxRange;
     private int damageAmount = 3;
@@ -13,7 +10,6 @@ public class ProjectileController : MonoBehaviour
     private Vector3 direction;
     private float travelledDistance = 0f;
     private string launcherTag;
-    private int Bounces;
 
     public void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
     {
@@ -22,7 +18,6 @@ public class ProjectileController : MonoBehaviour
         speed = bulletSpeed;
         maxRange = range;
         damageAmount = damage;
-        Bounces = 0;
 
         launcherTag = tag;
         travelledDistance = 0f;
@@ -39,19 +34,7 @@ public class ProjectileController : MonoBehaviour
         {
             transform.position = hit.point;
 
-            if (hit.transform.CompareTag("Environment") || hit.transform.CompareTag("Floor") && Bounces < 1)
-            {
-                Debug.Log(Vector3.Angle(transform.forward, -hit.normal));
-                if (Vector3.Angle(transform.forward, -hit.normal) > BounceAngle)
-                {
-                    ObjectPoolManager.Instance.GetPooledObject(bounceVfx, hit.point + hit.normal * 0.3f, Quaternion.LookRotation(hit.normal));
-                    direction = Vector3.Reflect(direction, hit.normal);
-                    transform.forward = direction;
-                    Bounces++;
-                    return;
-                }               
-            }
-            else if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
+            if (hit.transform.CompareTag("Enemy") && launcherTag != "EnemyProjectile")
             {
                 EnemyHealth enemyHealth = hit.transform.GetComponent<EnemyHealth>();
                 EnemyAI enemyAI = hit.transform.GetComponent<EnemyAI>();
@@ -68,7 +51,7 @@ public class ProjectileController : MonoBehaviour
                     player.TakeDamage(damageAmount);
                 }
             }
-            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.4f, Quaternion.LookRotation(hit.normal));
+            ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.3f, Quaternion.LookRotation(hit.normal));
             ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
         }
         else

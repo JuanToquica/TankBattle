@@ -243,7 +243,7 @@ public abstract class AttackBase : MonoBehaviour
         Vector3 startPos = machineGunFirePoint.position;
 
         GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
-        ProjectileController bulletController = bulletInstance.GetComponent<ProjectileController>();
+        BulletController bulletController = bulletInstance.GetComponent<BulletController>();
 
         if (bulletController != null)
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.bulletSpeed, weaponsSettings.bulletRange, machineGunDamage, projectileTag);
