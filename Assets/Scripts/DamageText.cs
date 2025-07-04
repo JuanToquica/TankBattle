@@ -31,7 +31,7 @@ public class DamageText : MonoBehaviour
             text.color = MaxDamageColor;
         else
             text.color = NormalColor;
-
+        canvas.alpha = 1;
         text.text = damage.ToString();
         StartCoroutine(AnimationCoroutine());
     }

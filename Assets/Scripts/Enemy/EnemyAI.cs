@@ -139,7 +139,7 @@ public class EnemyAI : TankBase
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
         DrawPath(path);
         DrawRays();
-        if (Vector3.Dot(transform.up, Vector3.up) < 0.3f && OnTankOverturnedCoroutine == null)
+        if (Vector3.Dot(transform.up, Vector3.up) < 0.4f && OnTankOverturnedCoroutine == null)
             OnTankOverturnedCoroutine = StartCoroutine(OnTankOverturned());
     }
     private void FixedUpdate()
@@ -339,10 +339,10 @@ public class EnemyAI : TankBase
                         randomOffset = Random.Range(offset - 1, offset + 2);
                         centeredCorners[i] += displacementDir * randomOffset;                       
                     }
-                    else if (changingArea && i == 1) // Mover el primer punto luego de spawnear hacia adelante
+                    else if (changingArea && i == 1) // Mover el primer punto luego de spawnear hacia adelante, para evitar colisiones
                     {
                         if (enemyArea == 6 || enemyArea == 7 || enemyArea == 11 || enemyArea == 12)
-                            centeredCorners[i] += prevDir * offset * 3;
+                            centeredCorners[i] += prevDir * offset * 6;
                         else
                             centeredCorners[i] += prevDir * offset;
                     }

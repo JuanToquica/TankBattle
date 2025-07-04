@@ -110,7 +110,7 @@ public class EnemyManager : MonoBehaviour
             spawnQueue_Spawn0.Enqueue(deadEnemyArea);
             if (spawn0Available)
             {
-                StartCoroutine(ProcessSpawnQueue(0, spawnQueue_Spawn0, spawns[0]));
+                StartCoroutine(ProcessSpawnQueue(0, spawnQueue_Spawn0));
             }
         }
         else if (deadEnemyArea >= 8 && deadEnemyArea <= 12)
@@ -118,14 +118,13 @@ public class EnemyManager : MonoBehaviour
             spawnQueue_Spawn1.Enqueue(deadEnemyArea);
             if (spawn1Available)
             {
-                StartCoroutine(ProcessSpawnQueue(1, spawnQueue_Spawn1, spawns[1]));
+                StartCoroutine(ProcessSpawnQueue(1, spawnQueue_Spawn1));
             }
         }
     }
 
-    private IEnumerator ProcessSpawnQueue(int spawnIndex, Queue<int> queue, Transform spawnPoint)
+    private IEnumerator ProcessSpawnQueue(int spawnIndex, Queue<int> queue)
     {
-        Debug.Log("inicio corutina");
         if (spawnIndex == 0) spawn0Available = false;
         else if (spawnIndex == 1) spawn1Available = false;
 
@@ -171,7 +170,7 @@ public class EnemyManager : MonoBehaviour
             if (newSpawnArea != 0) //Spawnear enemigo en el area vacia
             {
                 yield return new WaitForSeconds(timeToRespawn / 2);
-                SpawnEnemy(spawnPoint, newSpawnArea);
+                SpawnEnemy(spawns[spawnIndex], newSpawnArea);
             }
         }
 
@@ -188,18 +187,19 @@ public class EnemyManager : MonoBehaviour
             int sourceArea = i + 1;
             if (areaOrder[targetArea] <= deadArea)
             {
-                if (activeEnemiesByArea.TryGetValue(areaOrder[sourceArea], out EnemyAI enemyToMove) && enemyToMove != null)
+                if (activeEnemiesByArea.TryGetValue(areaOrder[sourceArea], out EnemyAI enemyToMove) && enemyToMove != null && !enemyToMove.dying)
                 {
                     Debug.Log($"Moving enemy from area {areaOrder[sourceArea]} to {areaOrder[targetArea]}");
-                    enemyToMove.enemyArea = areaOrder[targetArea];
-                    enemyToMove.waypoints.Clear();
-                    enemyToMove.waypoints = new List<Transform>(wayPointsByArea[areaOrder[targetArea]]);
-                    enemyToMove.ChangeArea();
+                    ChangeEnemyArea(enemyToMove, areaOrder[targetArea]);                    
                     activeEnemiesByArea.Remove(areaOrder[sourceArea]);
                     activeEnemiesByArea[areaOrder[targetArea]] = enemyToMove;
                     newSpawnArea = areaOrder[sourceArea];
                     targetArea++;
                 }
+            }
+            else
+            {
+                targetArea++;
             }
         }
         return newSpawnArea;
@@ -208,20 +208,14 @@ public class EnemyManager : MonoBehaviour
     public void ChangeAreaToChase(int area)
     {
         if (area == 7 && activeEnemiesByArea.TryGetValue(area, out EnemyAI enemy) && enemy != null)
-        {
+        {           
             enemy.oldArea = area;
-            enemy.enemyArea = 13;
-            enemy.waypoints.Clear();
-            enemy.waypoints = new List<Transform>(wayPointsByArea[13]);
-            enemy.ChangeArea();
+            ChangeEnemyArea(enemy, 13);
         }
         else if ((area == 5 || area == 10) && activeEnemiesByArea.TryGetValue(area, out EnemyAI enemy2) && enemy2 != null)
         {
             enemy2.oldArea = area;
-            enemy2.enemyArea = 14;
-            enemy2.waypoints.Clear();
-            enemy2.waypoints = new List<Transform>(wayPointsByArea[14]);
-            enemy2.ChangeArea();
+            ChangeEnemyArea(enemy2, 14);            
             chasingInArea14 = true;
         }
     }
@@ -230,19 +224,21 @@ public class EnemyManager : MonoBehaviour
     {
         if (area == 13 && activeEnemiesByArea.TryGetValue(oldArea, out EnemyAI enemy) && enemy != null)
         {
-            enemy.enemyArea = 7;
-            enemy.waypoints.Clear();
-            enemy.waypoints = new List<Transform>(wayPointsByArea[7]);
-            enemy.ChangeArea();
+            ChangeEnemyArea(enemy, 7);            
         }
         else if (area ==14 && activeEnemiesByArea.TryGetValue(oldArea, out EnemyAI enemy2) && enemy2 != null)
         {
-            enemy2.enemyArea = oldArea;
-            enemy2.waypoints.Clear();
-            enemy2.waypoints = new List<Transform>(wayPointsByArea[oldArea]);
-            enemy2.ChangeArea();
+            ChangeEnemyArea(enemy2, oldArea);           
             chasingInArea14 = false;
         }
+    }
+
+    private void ChangeEnemyArea(EnemyAI enemy, int newArea)
+    {
+        enemy.enemyArea = newArea;
+        enemy.waypoints.Clear();
+        enemy.waypoints = new List<Transform>(wayPointsByArea[newArea]);
+        enemy.ChangeArea();
     }
 
     public EnemyAI GetEnemyThatKilledThePlayer()

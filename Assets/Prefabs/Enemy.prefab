@@ -5724,6 +5724,7 @@ MonoBehaviour:
   backCollisionWithCorner: 0
   isOnSlope: 0
   turretRotationSpeed: 0
+  dying: 0
   suspensionPoints:
   - {fileID: 7215780715767357904}
   - {fileID: 4672399264601286731}
@@ -5847,7 +5848,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
-  healthBar: {fileID: 0}
   deathVfx: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
   damageText: {fileID: 6381656372122098035, guid: c775a50e75ae0954caa5c13c73ef227c, type: 3}
   timeOfDeath: 3
@@ -5860,7 +5860,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983249391379277366}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

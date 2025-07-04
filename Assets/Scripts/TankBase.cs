@@ -48,7 +48,7 @@ public abstract class TankBase : MonoBehaviour
     protected float movementRef;
     protected float rotationRef;
     protected Vector3 normalGround;
-    protected bool dying;
+    public bool dying;
 
     [Header("Suspension")]
     [SerializeField] protected Transform[] suspensionPoints;
@@ -283,7 +283,7 @@ public abstract class TankBase : MonoBehaviour
         rotation = 0;
         yield return new WaitForSeconds(1);
 
-        if (Vector3.Dot(transform.up, Vector3.up) > 0.3f)
+        if (Vector3.Dot(transform.up, Vector3.up) > 0.4f)
         {
             OnTankOverturnedCoroutine = null;
             yield break;
@@ -294,7 +294,7 @@ public abstract class TankBase : MonoBehaviour
         {          
             rb.centerOfMass = new Vector3(0, -0.8f, 0);
             yield return new WaitForSeconds(1.5f);
-            if (Vector3.Dot(transform.up, Vector3.up) > 0.3f)
+            if (Vector3.Dot(transform.up, Vector3.up) > 0.4f)
             {
                 movement = 0;
                 rotation = 0;
