@@ -410,6 +410,7 @@ public abstract class AttackBase : MonoBehaviour
     {
         DisableRockets();
         machineGunVfx.SetActive(false);
+        currentWeapon = Weapons.mainTurret;
         if (railgunCoroutine != null)
             StopCoroutine(railgunCoroutine);
         if (weaponPowerUpCoroutine != null)

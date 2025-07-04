@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum State { accelerating, braking, quiet, constantSpeed }
@@ -64,7 +65,8 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected float suspensionRotation;
     [SerializeField] protected float balanceDuration;
     [SerializeField] protected float regainDuration;
-    protected Sequence suspensionRotationSequence; 
+    protected Sequence suspensionRotationSequence;
+    protected Coroutine OnTankOverturnedCoroutine;
 
     public State currentState
     {
@@ -275,6 +277,46 @@ public abstract class TankBase : MonoBehaviour
         currentRotationSpeed = tankRotationSpeed;
     }
 
+    protected IEnumerator OnTankOverturned()
+    {
+        movement = 0;
+        rotation = 0;
+        yield return new WaitForSeconds(1);
+
+        if (Vector3.Dot(transform.up, Vector3.up) > 0.3f)
+        {
+            OnTankOverturnedCoroutine = null;
+            yield break;
+        }          
+        Vector3 oldCenterOfMass = rb.centerOfMass;
+
+        if (!frontalCollision && !backCollision)
+        {          
+            rb.centerOfMass = new Vector3(0, -0.8f, 0);
+            yield return new WaitForSeconds(1.5f);
+            if (Vector3.Dot(transform.up, Vector3.up) > 0.3f)
+            {
+                movement = 0;
+                rotation = 0;
+                rb.centerOfMass = oldCenterOfMass;
+                OnTankOverturnedCoroutine = null;
+                yield break;
+            }                              
+        }
+        rb.centerOfMass = oldCenterOfMass;     
+        if (transform.CompareTag("Player"))
+        {
+            PlayerHealth health = GetComponent<PlayerHealth>();
+            health.TakeDamage(500);
+        }
+        else if (transform.CompareTag("Enemy"))
+        {
+            EnemyHealth health = GetComponent<EnemyHealth>();
+            health.TakeDamage(500);
+        }
+        rb.useGravity = false;
+    }
+
     public void SpeedPowerUp(float duration)
     {
         smokeVfx.Play();
@@ -299,8 +341,10 @@ public abstract class TankBase : MonoBehaviour
 
     public void OnTankDead()
     {
-        tankCollider.enabled = false;
+        tankCollider.enabled = false;        
         smokeVfx.Stop();
+        if (OnTankOverturnedCoroutine != null)
+            StopCoroutine(OnTankOverturnedCoroutine);
         dying = true;
     }
 

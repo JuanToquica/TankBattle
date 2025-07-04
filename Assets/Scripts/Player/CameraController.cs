@@ -23,7 +23,6 @@ public class CameraController : MonoBehaviour
     private float currentT = 1;
     public float horizontalRotation;
     private float rotationRef;
-    LayerMask combinedLayers;
     public float additionalDistance;
     public bool playerAlive;
     private ParentConstraint parentConstraint;
@@ -33,10 +32,7 @@ public class CameraController : MonoBehaviour
     {
         parentConstraint = GetComponent<ParentConstraint>();
     }
-    private void Start()
-    {
-        combinedLayers = (1 << 6) | (1 << 2);
-    }
+
     private void Update()
     {
         if (playerAlive)
@@ -70,13 +66,9 @@ public class CameraController : MonoBehaviour
         float targetT;
         Debug.DrawRay(origin, directionToCamera * distance);
 
-        if (Physics.Raycast(origin, directionToCamera, out RaycastHit hit, distance, combinedLayers) && !hit.transform.CompareTag("Railing"))
+        if (Physics.Raycast(origin, directionToCamera, out RaycastHit hit, distance, 1 << 6))
         {
-            if (Mathf.Abs(Vector3.Dot(hit.normal, Vector3.up)) > 0.98f)
-            {
-                targetT = 1;                   
-            }
-            else if (hit.transform.CompareTag("Floor") && hit.distance > (distance - additionalDistance))
+            if (hit.transform.CompareTag("Floor") && hit.distance > (distance - additionalDistance))
             {
                 targetT = 1;
             }

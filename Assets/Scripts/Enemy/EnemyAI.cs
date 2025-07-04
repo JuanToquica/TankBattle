@@ -139,6 +139,8 @@ public class EnemyAI : TankBase
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
         DrawPath(path);
         DrawRays();
+        if (Vector3.Dot(transform.up, Vector3.up) < 0.3f && OnTankOverturnedCoroutine == null)
+            OnTankOverturnedCoroutine = StartCoroutine(OnTankOverturned());
     }
     private void FixedUpdate()
     {

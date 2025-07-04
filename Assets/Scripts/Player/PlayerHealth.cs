@@ -27,7 +27,7 @@ public class PlayerHealth : HealthBase
         base.Die();      
         playerMaterialHandler.OnTankDead();       
 
-        Vector3 directionToCamera = (playerController.cameraController.transform.position - playerController.transform.position).normalized;
+        Vector3 directionToCamera = (Camera.main.transform.position - playerController.transform.position).normalized;
         GameObject vfx = Instantiate(deathVfx, transform.position + new Vector3(0, 1.3f, 0) + directionToCamera, transform.rotation);
         vfx.transform.parent = transform;
 
@@ -35,6 +35,7 @@ public class PlayerHealth : HealthBase
         playerController.rotation = 0;
         playerController.OnTankDead();
 
+        playerAttack.OnTankDead();
         playerAttack.enabled = false;
 
         if (GameManager.instance.playerHasTheFlag)

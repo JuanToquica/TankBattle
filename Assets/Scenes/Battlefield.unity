@@ -118217,10 +118217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8efa4fdca11ff44589b82278314240e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10000
-  healthBar: {fileID: 1449295122119180993}
+  maxHealth: 500
   deathVfx: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
   spawner: {fileID: 1283078837}
+  healthBar: {fileID: 1449295122119180993}
 --- !u!1 &3226376839974422223
 GameObject:
   m_ObjectHideFlags: 0
@@ -119453,7 +119453,6 @@ MonoBehaviour:
   turretRotationInput: 0
   cameraPivotRotation: 0
   cameraPivot: {fileID: 426590842757399879}
-  cameraController: {fileID: 8843277517967702287}
 --- !u!4 &5472533408111941144
 Transform:
   m_ObjectHideFlags: 0

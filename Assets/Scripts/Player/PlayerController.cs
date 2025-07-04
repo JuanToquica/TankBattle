@@ -13,7 +13,6 @@ public class PlayerController : TankBase
 
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
-    public CameraController cameraController;
 
     private void Awake()
     {
@@ -23,6 +22,9 @@ public class PlayerController : TankBase
     private void OnEnable()
     {
         dying = false;
+        if (rb != null && rb.useGravity == false)
+            rb.useGravity = true;
+        OnTankOverturnedCoroutine = null;
         currentRotationSpeed = tankRotationSpeed;
         movement = 0;
         rotation = 0;
@@ -65,6 +67,11 @@ public class PlayerController : TankBase
         SetState();
         DrawRays();       
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
+        if (Vector3.Dot(transform.up, Vector3.up) < 0.3f && OnTankOverturnedCoroutine == null)
+        {
+            OnTankOverturnedCoroutine = StartCoroutine(OnTankOverturned());
+        }
+            
     }
     private void FixedUpdate()
     {
