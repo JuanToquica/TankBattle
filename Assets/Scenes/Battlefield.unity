@@ -18690,6 +18690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0.05
+  timer: 0
 --- !u!108 &337386114
 Light:
   m_ObjectHideFlags: 0
