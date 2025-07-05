@@ -5778,6 +5778,7 @@ MonoBehaviour:
   angleToCorner: 0
   dodgingAttacks: 0
   oldArea: 0
+  firstTimeChangingArea: 0
   corners: []
 --- !u!114 &-1403795728453670711
 MonoBehaviour:
@@ -5860,7 +5861,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983249391379277366}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
