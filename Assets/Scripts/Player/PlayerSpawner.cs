@@ -17,7 +17,7 @@ public class PlayerSpawner : MonoBehaviour
         playerTransform = player.GetComponent<Transform>();
         playerHealth = player.GetComponent<PlayerHealth>();
         playerAttack = player.GetComponent<PlayerAttack>();
-        SpawnPlayer();
+        SpawnPlayer(1);
     }
 
     public void OnPlayerDead()
@@ -28,15 +28,16 @@ public class PlayerSpawner : MonoBehaviour
 
     private IEnumerator OnPlayerDeadCorutine()
     {       
-        Invoke("SpawnPlayer", timeToRespawn);
         yield return new WaitForSeconds(timeOfDeath);
         Debug.Log("Desactivando");
         player.SetActive(false);
         cameraController.OnPlayerDead();
+        yield return new WaitForSeconds(timeToRespawn - timeOfDeath);
+        SpawnPlayer(Random.Range(0, spawns.Length));
     }
 
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(int randomSpawn)
     {
         foreach (Transform child in player.transform)
         {
@@ -45,7 +46,6 @@ public class PlayerSpawner : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-        int randomSpawn = Random.Range(0, spawns.Length);
         playerTransform.position = spawns[randomSpawn].position;
         playerTransform.rotation = Quaternion.identity;
         player.SetActive(true);

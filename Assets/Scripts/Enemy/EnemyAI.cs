@@ -160,7 +160,9 @@ public class EnemyAI : TankBase
 
         Vector3 flatTurretForward = turret.forward;
         flatTurretForward.y = 0;
-        angleToPlayer = Vector3.SignedAngle(flatTurretForward, directionToPlayer, Vector3.up);
+        Vector3 flatDirection = directionToPlayer;
+        flatDirection.y = 0;
+        angleToPlayer = Vector3.SignedAngle(flatTurretForward, flatDirection, Vector3.up);
     }
     private void InterpolateMovementAndRotation()
     {
@@ -343,9 +345,9 @@ public class EnemyAI : TankBase
                     else if (changingArea && i == 1 && firstTimeChangingArea) // Mover el primer punto luego de spawnear hacia adelante, para evitar colisiones
                     {
                         if (enemyArea == 6 || enemyArea == 7 || enemyArea == 11 || enemyArea == 12)
-                            centeredCorners[i] += prevDir * offset * 6;
+                            centeredCorners[i] += transform.forward * offset * 5;
                         else
-                            centeredCorners[i] += prevDir * offset;                        
+                            centeredCorners[i] += transform.forward * offset;                        
                     }
                     else
                     {
