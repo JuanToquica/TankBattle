@@ -52,6 +52,7 @@ public class EnemyAI : TankBase
     public float angleToCorner;
     public bool dodgingAttacks;
     public int oldArea = 0;
+    public bool firstTimeChangingArea;
 
     private void Start()
     {
@@ -72,6 +73,7 @@ public class EnemyAI : TankBase
         SetUpTrees();
         changingArea = true;
         StartCoroutine(InitialDelay());
+        firstTimeChangingArea = true;
     }
 
     IEnumerator InitialDelay()
@@ -225,7 +227,6 @@ public class EnemyAI : TankBase
         }
         else if (enemyArea == 14)
         {
-            Debug.Log(oldArea);
             if (oldArea == 10)
             {
                 if ((player.position - waypoints[1].position).magnitude < (player.position - waypoints[3].position).magnitude)
@@ -339,12 +340,12 @@ public class EnemyAI : TankBase
                         randomOffset = Random.Range(offset - 1, offset + 2);
                         centeredCorners[i] += displacementDir * randomOffset;                       
                     }
-                    else if (changingArea && i == 1) // Mover el primer punto luego de spawnear hacia adelante, para evitar colisiones
+                    else if (changingArea && i == 1 && firstTimeChangingArea) // Mover el primer punto luego de spawnear hacia adelante, para evitar colisiones
                     {
                         if (enemyArea == 6 || enemyArea == 7 || enemyArea == 11 || enemyArea == 12)
                             centeredCorners[i] += prevDir * offset * 6;
                         else
-                            centeredCorners[i] += prevDir * offset;
+                            centeredCorners[i] += prevDir * offset;                        
                     }
                     else
                     {
@@ -364,6 +365,7 @@ public class EnemyAI : TankBase
                     {
                         centeredCorners[i] = currentPoint;
                     }
+                    firstTimeChangingArea = false;
                 }              
             }
             followingPath = true;

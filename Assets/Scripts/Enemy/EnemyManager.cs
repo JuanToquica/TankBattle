@@ -25,6 +25,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform[] chaseArea2Waypoints;
 
     [Header("Time and Offset")]
+    [SerializeField] private float timeToChangeAreasBeforeRespawn;
     [SerializeField] private float timeToRespawn;
     [SerializeField] private float timeBetweenSpawns;
     [SerializeField] private int centeringOffset1;
@@ -134,7 +135,7 @@ public class EnemyManager : MonoBehaviour
 
             if (activeEnemiesByArea.ContainsKey(deadEnemyArea))
                 activeEnemiesByArea.Remove(deadEnemyArea);
-            yield return new WaitForSeconds(timeToRespawn / 2);
+            yield return new WaitForSeconds(timeToChangeAreasBeforeRespawn);
                 
             int newSpawnArea = 0;
 
@@ -169,7 +170,7 @@ public class EnemyManager : MonoBehaviour
 
             if (newSpawnArea != 0) //Spawnear enemigo en el area vacia
             {
-                yield return new WaitForSeconds(timeToRespawn / 2);
+                yield return new WaitForSeconds(timeToRespawn);
                 SpawnEnemy(spawns[spawnIndex], newSpawnArea);
             }
         }

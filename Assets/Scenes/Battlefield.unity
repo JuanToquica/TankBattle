@@ -24295,7 +24295,8 @@ MonoBehaviour:
   - {fileID: 1705176639}
   - {fileID: 2104961135}
   - {fileID: 686945870}
-  timeToRespawn: 5
+  timeToChangeAreasBeforeRespawn: 1
+  timeToRespawn: 4
   timeBetweenSpawns: 3
   centeringOffset1: 2
   centeringOffset2: 4
@@ -64915,7 +64916,7 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.4
-  m_MinRegionArea: 2
+  m_MinRegionArea: 10
   m_NavMeshData: {fileID: 23800000, guid: 5e4e7552f487d2b4f8c02bfe67d5177e, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1274756966
