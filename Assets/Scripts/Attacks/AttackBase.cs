@@ -14,7 +14,7 @@ public enum Weapons
 public abstract class AttackBase : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private WeaponsSettings weaponsSettings;
+    public WeaponsSettings weaponsSettings;
     [SerializeField] protected Transform mainGunFirePoint;
     [SerializeField] protected Transform railgunFirePoint;
     [SerializeField] protected Transform machineGunFirePoint;
@@ -419,7 +419,7 @@ public abstract class AttackBase : MonoBehaviour
             StopCoroutine(backToMainTurretCoroutine);
     }
 
-    public void RecharchingPowerUp(float duration)
+    public virtual void RecharchingPowerUp(float duration)
     {
         currentCooldown = turretCooldowns[(int)currentWeapon].y;
         currentAmountOfShotsInOneRound = weaponsSettings.amountOfShotsInOneRound.y;
@@ -430,7 +430,7 @@ public abstract class AttackBase : MonoBehaviour
     }
 
 
-    protected void RestoreCooldown()
+    protected virtual void RestoreCooldown()
     {
         currentCooldown = turretCooldowns[(int)currentWeapon].x;
         currentAmountOfShotsInOneRound = weaponsSettings.amountOfShotsInOneRound.x;

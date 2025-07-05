@@ -317,7 +317,7 @@ public abstract class TankBase : MonoBehaviour
         rb.useGravity = false;
     }
 
-    public void SpeedPowerUp(float duration)
+    public virtual void SpeedPowerUp(float duration)
     {
         smokeVfx.Play();
         speed = speedMinMax.y;
@@ -329,7 +329,7 @@ public abstract class TankBase : MonoBehaviour
         Invoke("RestoreSpeed", duration);
     }
 
-    protected void RestoreSpeed()
+    protected virtual void RestoreSpeed()
     {
         speed = speedMinMax.x;
         tankRotationSpeed = tankRotationSpeedMinMax.x;

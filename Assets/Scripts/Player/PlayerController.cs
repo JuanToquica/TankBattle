@@ -3,13 +3,15 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 
 public class PlayerController : TankBase
 {
     private WheelAnimations wheelAnimations;   
     private Vector2 input;
-    public float turretRotationInput;
-    public float cameraPivotRotation;
+    [HideInInspector] public float turretRotationInput;
+    [HideInInspector] public float cameraPivotRotation;
+    [SerializeField] private HUD hud;
 
     [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
@@ -182,6 +184,18 @@ public class PlayerController : TankBase
         Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);
         Debug.DrawRay(origin3, -flatForward * raycastDistance, Color.red);
         Debug.DrawRay(origin4, -flatForward * raycastDistance, Color.red);
+    }
+
+    public override void SpeedPowerUp(float duration)
+    {
+        base.SpeedPowerUp(duration);
+        hud.OnSpeedPowerUp(duration);
+    }
+
+    protected override void RestoreSpeed()
+    {
+        base.RestoreSpeed();
+        hud.OnSpeedPowerUpDeactivated();
     }
 
     void OnDrawGizmos()

@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class PlayerAttack : AttackBase
 {
-    [Header ("Player")]
+    [Header("Player")]
     [SerializeField] private Image cooldownImage;
+    [SerializeField] private HUD hud;
     private Outline currentOutlinedEnemy;    
     private bool _isAimingAtEnemy;    
 
@@ -82,5 +83,17 @@ public class PlayerAttack : AttackBase
                 }               
             }           
         }   
+    }
+
+    public override void RecharchingPowerUp(float duration)
+    {
+        base.RecharchingPowerUp(duration);
+        hud.OnRechargingPowerUp(duration);
+    }
+
+    protected override void RestoreCooldown()
+    {
+        base.RestoreCooldown();
+        hud.OnRechargingPowerUpDeactivated();
     }
 }
