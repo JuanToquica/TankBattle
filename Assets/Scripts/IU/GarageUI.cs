@@ -22,6 +22,10 @@ public class GarageUI : MonoBehaviour
     [SerializeField] private Button upgradeMachinegunDamageButton;
     [SerializeField] private Button upgradeRocketDamageButton;
     [SerializeField] private Button okButton;
+    [SerializeField] private Button mainTurretButton;
+    [SerializeField] private Button railgunTurretButton;
+    [SerializeField] private Button machineGunTurretButton;
+    [SerializeField] private Button rocketsButton;
 
     [Header ("Text References")]  
     [SerializeField] private TextMeshProUGUI coinsAmount;
@@ -58,6 +62,10 @@ public class GarageUI : MonoBehaviour
         buyButton.onClick.AddListener(OnBuyButton);
         equipButton.onClick.AddListener(OnEquipButton);
         okButton.onClick.AddListener(OnOkButton);
+        mainTurretButton.onClick.AddListener(OnMainTurretButton);
+        railgunTurretButton.onClick.AddListener(OnRailgunButton);
+        machineGunTurretButton.onClick.AddListener(OnMachineGunButton);
+        rocketsButton.onClick.AddListener(OnRocketsButton);
 
         upgradeArmorButton.onClick.AddListener(OnUpgradeArmorButton);
         upgradeMainGunDamageButton.onClick.AddListener(OnUpgradeMainGunDamageButton);
@@ -247,6 +255,26 @@ public class GarageUI : MonoBehaviour
     {
         notEnoughCoinsImage.SetActive(false);
         HideColorButtons();
+    }
+
+    public void OnMainTurretButton()
+    {
+        tank.ChangeTurret(0);
+    }
+
+    public void OnRailgunButton()
+    {
+        tank.ChangeTurret(1);
+    }
+
+    public void OnMachineGunButton()
+    {
+        tank.ChangeTurret(2);
+    }
+
+    public void OnRocketsButton()
+    {
+        tank.ChangeTurret(3);
     }
 
     private void OnEnable()

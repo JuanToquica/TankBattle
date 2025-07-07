@@ -33,6 +33,9 @@ public class HUD : MonoBehaviour
     {
         playerScoreBar.fillAmount = 0;
         enemyScoreBar.fillAmount = 0;
+        OnSpeedPowerUpDeactivated();
+        OnRechargingPowerUpDeactivated();
+        weaponPowerUpImage.gameObject.SetActive(false);
     }
 
     private void Update()
