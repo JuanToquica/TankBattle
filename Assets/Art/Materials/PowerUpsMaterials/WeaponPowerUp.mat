@@ -49,12 +49,12 @@ Material:
     - _DissolveFactor: -1
     - _DissolveSpeed: 1
     - _EdgeWidth: 0.1
-    - _Metallic: 0.4
+    - _Metallic: 0.475
     - _NoiseScale: 100
-    - _Oclussion: 0.125
+    - _Oclussion: 0.453
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0.454
     m_Colors:
     - _EdgeColor: {r: 0.28773582, g: 0.45264426, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}

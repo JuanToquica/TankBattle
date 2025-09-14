@@ -41,11 +41,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Track-Left
-      takeName: Ruedas_Izq|Oruga_Izq
+      name: Ruedas_Der|Oruga_Der
+      takeName: Ruedas_Der|Oruga_Der
       internalID: 8919493413492435138
       firstFrame: 0
-      lastFrame: 89
+      lastFrame: 88
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -70,11 +70,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Track-Right
-      takeName: Ruedas_Der|Oruga_Der
+      name: Ruedas_Izq|Oruga_Izq
+      takeName: Ruedas_Izq|Oruga_Izq
       internalID: -4824125141014606449
       firstFrame: 0
-      lastFrame: 89
+      lastFrame: 88
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

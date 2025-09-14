@@ -5848,7 +5848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f53e739227a1de4687b8ca9d832d0e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 100
   deathVfx: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
   damageText: {fileID: 6381656372122098035, guid: c775a50e75ae0954caa5c13c73ef227c, type: 3}
   timeOfDeath: 3

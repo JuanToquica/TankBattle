@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: MainGunData
   m_EditorClassIdentifier: 
   upgradeLevels:
-  - level: 0
-    damageValue: 10
+  - level: 1
+    damageValue: 30
     cost: 0
   - level: 1
     damageValue: 11
     cost: 0
   - level: 2
-    damageValue: 12
+    damageValue: 32
     cost: 0
   - level: 3
-    damageValue: 13
+    damageValue: 34
     cost: 0
   - level: 4
-    damageValue: 14
+    damageValue: 36
     cost: 0
