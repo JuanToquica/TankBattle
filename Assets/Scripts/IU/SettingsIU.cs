@@ -33,6 +33,7 @@ public class SettingsIU : MonoBehaviour
     public void OnBackButtonClicked()
     {
         mainMenuUI.SetActive(true);
+        InputManager.Instance.playerInput.actions["Pause"].Enable();
         gameObject.SetActive(false);
     }
 

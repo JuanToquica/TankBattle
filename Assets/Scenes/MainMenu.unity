@@ -1662,7 +1662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3425136126439327355, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_Value
-      value: 0.873
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3526369254188890402, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1670,11 +1670,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3526369254188890402, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.9204425
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3526369254188890402, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5468793
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3556146568129162758, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1984,6 +1984,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5112150489933452256, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
+      propertyPath: m_fontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150489933452256, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5268932015816192262, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2234,7 +2242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7988156554657555332, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 138.43
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8013207231085579180, guid: 4c0f076fe4a44fd4c9f5510bbe606ce0, type: 3}
       propertyPath: m_AnchorMax.y

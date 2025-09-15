@@ -38,6 +38,7 @@ public class HUD : MonoBehaviour
         weaponPowerUpParent = weaponPowerUpImage.transform.parent.gameObject;
         rechargingPowerUpParent = rechargingPowerUpImage.transform.parent.gameObject;
         speedPowerUpParent = speedPowerUpImage.transform.parent.gameObject;
+        messagePanel.gameObject.SetActive(false);
         OnSpeedPowerUpDeactivated();
         OnRechargingPowerUpDeactivated();
         weaponPowerUpImage.transform.parent.gameObject.SetActive(false);

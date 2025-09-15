@@ -5,6 +5,8 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public static event System.Action OnStartGame;
+
     [Header("Prefabs")]
     public GameObject projectilePrefab;
     public GameObject railgunBulletPrefab;
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject flag1;
     [SerializeField] private GameObject flag2;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private float timeToStartGame;
     [SerializeField] private int coinsPerEnemy;
     [SerializeField] private int coinsPerPoint;
     [SerializeField] private int coinsPerGameWon;
@@ -73,7 +76,10 @@ public class GameManager : MonoBehaviour
         playerScore = 0;
         enemyScore = 0;
         coinsEarned = 5;
+        flag1.SetActive(false);
+        flag2.SetActive(false);
         cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
+        InputManager.Instance.playerInput.actions["Pause"].Enable();
 
         ObjectPoolManager.Instance.CreatePool(projectilePrefab, 10);
         ObjectPoolManager.Instance.CreatePool(railgunBulletPrefab, 10);
@@ -99,7 +105,15 @@ public class GameManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(DeathVfxPrefab, 7);
         ObjectPoolManager.Instance.CreatePool(DamageTextPrefab, 15);
         ObjectPoolManager.Instance.CreatePool(FlagVfxPrefab, 2);
+        Invoke("StartGame", timeToStartGame);
+    }
+
+    private void StartGame()
+    {
         hud.ShowMessage(1);
+        OnStartGame?.Invoke();
+        flag1.SetActive(true);
+        flag2.SetActive(true);
     }
 
     public void OnFlagPickedUp()

@@ -39,6 +39,16 @@ public class EnemyManager : MonoBehaviour
     public bool chasingInArea14;
     private Dictionary<int, Transform[]> wayPointsByArea;
 
+    private void OnEnable()
+    {
+        GameManager.OnStartGame += StartGame;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnStartGame -= StartGame;
+    }
+
     private void Awake()
     {
         wayPointsByArea = new Dictionary<int, Transform[]>();
@@ -58,7 +68,7 @@ public class EnemyManager : MonoBehaviour
         activeEnemiesByArea = new Dictionary<int, EnemyAI>();
     }
 
-    private void Start()
+    private void StartGame()
     {
         StartCoroutine(SpawnAllEnemies());
         spawn0Available = true;

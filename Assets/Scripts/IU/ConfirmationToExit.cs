@@ -20,6 +20,7 @@ public class ConfirmationToExit : MonoBehaviour
     public void OnCancelButtonClicked()
     {
         pauseIU.SetActive(true);
+        InputManager.Instance.playerInput.actions["Pause"].Enable();
         gameObject.SetActive(false);
     }
 

@@ -25,11 +25,13 @@ public class PauseIU : MonoBehaviour
 
     public void OnSettingsButtonClicked()
     {
+        InputManager.Instance.playerInput.actions["Pause"].Disable();
         SettingsIU.SetActive(true);
     }
 
     public void OnExitButtonClicked()
     {
+        InputManager.Instance.playerInput.actions["Pause"].Disable();
         ConfirmationIU.SetActive(true);
         gameObject.SetActive(false);
     }
