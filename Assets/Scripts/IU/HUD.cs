@@ -59,13 +59,13 @@ public class HUD : MonoBehaviour
     private void SetSpeedPowerUpFill()
     {
         speedPowerUpImage.fillAmount = 1 - (speedPowerUpTimer / speedPowerUpDuration);
-        speedPowerUpTimer += Time.deltaTime;
+        speedPowerUpTimer -= Time.deltaTime;
     }
 
     private void SetRechargingPowerUpFill()
     {
         rechargingPowerUpImage.fillAmount = 1 - (rechargingPowerUpTimer / rechargingPowerUpDuration);
-        rechargingPowerUpTimer += Time.deltaTime;
+        rechargingPowerUpTimer -= Time.deltaTime;
     }
 
     private void SetWeaponPowerUpFill()
@@ -97,11 +97,11 @@ public class HUD : MonoBehaviour
 
     private void Chronometer()
     {
-        GameManager.instance.time = Mathf.Clamp(GameManager.instance.time - Time.deltaTime, 0, 600);
-        seconds = Mathf.FloorToInt(GameManager.instance.time % 60);
-        minutes = Mathf.FloorToInt(GameManager.instance.time / 60);
+        GameManager.instance.gameTime = Mathf.Clamp(GameManager.instance.gameTime - Time.deltaTime, 0, 600);
+        seconds = Mathf.FloorToInt(GameManager.instance.gameTime % 60);
+        minutes = Mathf.FloorToInt(GameManager.instance.gameTime / 60);
         chronometer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        if (GameManager.instance.time <= 0)
+        if (GameManager.instance.gameTime <= 0)
         {
             GameManager.instance.EndGame();
             gameObject.SetActive(false);
@@ -135,7 +135,7 @@ public class HUD : MonoBehaviour
 
     public void OnRechargingPowerUp(float duration)
     {
-        rechargingPowerUpTimer = 0;
+        rechargingPowerUpTimer = rechargingPowerUpDuration;
         rechargingPowerUpActive = true;
         rechargingPowerUpDuration = duration;
         rechargingPowerUpImage.gameObject.SetActive(true);
@@ -149,7 +149,7 @@ public class HUD : MonoBehaviour
 
     public void OnSpeedPowerUp(float duration)
     {
-        speedPowerUpTimer = 0;
+        speedPowerUpTimer = speedPowerUpDuration;
         speedPowerUpActive = true;
         speedPowerUpDuration = duration;
         speedPowerUpImage.gameObject.SetActive(true);

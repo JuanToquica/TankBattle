@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int coinsPerGameWon;
     public int playerMaxScore;
     public int enemyMaxScore;
-    public float time;
+    public float gameTime;
     public bool isTheGamePaused;    
     public int playerScore, enemyScore;
     public bool playerHasTheFlag;
