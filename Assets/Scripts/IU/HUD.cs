@@ -14,28 +14,33 @@ public class HUD : MonoBehaviour
     [SerializeField] private Image speedPowerUpImage;
     [SerializeField] private Image rechargingPowerUpImage;
     [SerializeField] private Image weaponPowerUpImage;
-    [SerializeField] private CanvasGroup objectiveMessagePanel;
-    [SerializeField] private CanvasGroup playerScoresMessagePanel;
-    [SerializeField] private CanvasGroup enemyScoresMessagePanel;
+    [SerializeField] private CanvasGroup messagePanel;
+    [SerializeField] private GameObject[] messageGameobjects;
     [SerializeField] private float messageDuration;
     [SerializeField] private float panelDisolveSpeed;
     [SerializeField] private PlayerAttack playerAttack;
     private int minutes, seconds;
-    private bool speedPowerUpActive;
-    private bool rechargingPowerUpActive;
-    private float speedPowerUpTimer;
-    private float rechargingPowerUpTimer;
+    public bool speedPowerUpActive;
+    public bool rechargingPowerUpActive;
+    public float speedPowerUpTimer;
+    public float rechargingPowerUpTimer;
     private float rechargingPowerUpDuration;
     private float speedPowerUpDuration;
+    private GameObject weaponPowerUpParent;
+    private GameObject rechargingPowerUpParent;
+    private GameObject speedPowerUpParent;
 
 
     private void Start()
     {
         playerScoreBar.fillAmount = 0;
         enemyScoreBar.fillAmount = 0;
+        weaponPowerUpParent = weaponPowerUpImage.transform.parent.gameObject;
+        rechargingPowerUpParent = rechargingPowerUpImage.transform.parent.gameObject;
+        speedPowerUpParent = speedPowerUpImage.transform.parent.gameObject;
         OnSpeedPowerUpDeactivated();
         OnRechargingPowerUpDeactivated();
-        weaponPowerUpImage.gameObject.SetActive(false);
+        weaponPowerUpImage.transform.parent.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -48,35 +53,12 @@ public class HUD : MonoBehaviour
         if (playerAttack.currentWeapon != Weapons.mainTurret)
             SetWeaponPowerUpFill();
         else
-            if (weaponPowerUpImage.gameObject.activeSelf) weaponPowerUpImage.gameObject.SetActive(false);
+            if (weaponPowerUpParent.activeSelf) weaponPowerUpParent.SetActive(false);
 
         if (rechargingPowerUpActive)
             SetRechargingPowerUpFill();
         if (speedPowerUpActive)
             SetSpeedPowerUpFill();
-    }
-
-    private void SetSpeedPowerUpFill()
-    {
-        speedPowerUpImage.fillAmount = 1 - (speedPowerUpTimer / speedPowerUpDuration);
-        speedPowerUpTimer -= Time.deltaTime;
-    }
-
-    private void SetRechargingPowerUpFill()
-    {
-        rechargingPowerUpImage.fillAmount = 1 - (rechargingPowerUpTimer / rechargingPowerUpDuration);
-        rechargingPowerUpTimer -= Time.deltaTime;
-    }
-
-    private void SetWeaponPowerUpFill()
-    {
-        if (!weaponPowerUpImage.gameObject.activeSelf) weaponPowerUpImage.gameObject.SetActive(true);
-        if (playerAttack.currentWeapon == Weapons.railGun)
-            weaponPowerUpImage.fillAmount = 1 - (playerAttack.shotsFired / playerAttack.weaponsSettings.railgunAmmo);
-        if (playerAttack.currentWeapon == Weapons.machineGun)
-            weaponPowerUpImage.fillAmount = 1 - (playerAttack.shotsFired / playerAttack.weaponsSettings.machineGunAmmo);
-        if (playerAttack.currentWeapon == Weapons.rocket)
-            weaponPowerUpImage.fillAmount = 1 - (playerAttack.shotsFired / playerAttack.weaponsSettings.rocketAmmo);
     }
 
     private void SetScoreBars()
@@ -111,53 +93,86 @@ public class HUD : MonoBehaviour
     public void ShowMessage(int message)
     {
         if (message == 1)
-            StartCoroutine(ShowMessageCoroutine(objectiveMessagePanel));
+            StartCoroutine(ShowMessageCoroutine(message));
         if (message == 2)
-            StartCoroutine(ShowMessageCoroutine(playerScoresMessagePanel));
+            StartCoroutine(ShowMessageCoroutine(message));
         if (message == 3)
-            StartCoroutine(ShowMessageCoroutine(enemyScoresMessagePanel));
+            StartCoroutine(ShowMessageCoroutine(message));
     }
 
-    private IEnumerator ShowMessageCoroutine(CanvasGroup panel)
+    private IEnumerator ShowMessageCoroutine(int message)
     {
-        panel.gameObject.SetActive(true);
-        panel.alpha = 1;
+        messagePanel.gameObject.SetActive(true);
+        for (int i = 0; i<3; i++) //Activar solo el mensaje necesitado
+        {
+            if (i == message - 1)
+            {
+                messageGameobjects[i].SetActive(true);
+                continue;
+            }             
+            messageGameobjects[i].SetActive(false);
+
+        }
+        messagePanel.alpha = 1;
         yield return new WaitForSeconds(messageDuration);
 
-        while (panel.alpha > 0)
-        {           
-            panel.alpha -= Time.deltaTime * panelDisolveSpeed;
+        while (messagePanel.alpha > 0)
+        {
+            messagePanel.alpha -= Time.deltaTime * panelDisolveSpeed;
             yield return null;
         }
-        panel.alpha = 0;
-        panel.gameObject.SetActive(false);
+        messagePanel.alpha = 0;
+        messagePanel.gameObject.SetActive(false);
+    }
+
+    private void SetSpeedPowerUpFill()
+    {
+        speedPowerUpImage.fillAmount = 1 - (speedPowerUpTimer / speedPowerUpDuration);
+        speedPowerUpTimer -= Time.deltaTime;
+    }
+
+    private void SetRechargingPowerUpFill()
+    {
+        rechargingPowerUpImage.fillAmount = 1 - (rechargingPowerUpTimer / rechargingPowerUpDuration);
+        rechargingPowerUpTimer -= Time.deltaTime;
+    }
+
+    private void SetWeaponPowerUpFill()
+    {
+        if (!weaponPowerUpParent.activeSelf) weaponPowerUpParent.SetActive(true);
+        if (playerAttack.currentWeapon == Weapons.railGun)
+            weaponPowerUpImage.fillAmount = (playerAttack.shotsFired / playerAttack.weaponsSettings.railgunAmmo);
+        if (playerAttack.currentWeapon == Weapons.machineGun)
+            weaponPowerUpImage.fillAmount = (playerAttack.shotsFired / playerAttack.weaponsSettings.machineGunAmmo);
+        if (playerAttack.currentWeapon == Weapons.rocket)
+            weaponPowerUpImage.fillAmount = (playerAttack.shotsFired / playerAttack.weaponsSettings.rocketAmmo);
     }
 
     public void OnRechargingPowerUp(float duration)
-    {
-        rechargingPowerUpTimer = rechargingPowerUpDuration;
+    {      
         rechargingPowerUpActive = true;
         rechargingPowerUpDuration = duration;
-        rechargingPowerUpImage.gameObject.SetActive(true);
+        rechargingPowerUpTimer = rechargingPowerUpDuration;
+        rechargingPowerUpParent.SetActive(true);
+    }   
+
+    public void OnSpeedPowerUp(float duration)
+    {       
+        speedPowerUpActive = true;
+        speedPowerUpDuration = duration;
+        speedPowerUpTimer = speedPowerUpDuration;
+        speedPowerUpParent.SetActive(true);
     }
 
     public void OnRechargingPowerUpDeactivated()
     {
         rechargingPowerUpActive = false;
-        rechargingPowerUpImage.gameObject.SetActive(false);
-    }
-
-    public void OnSpeedPowerUp(float duration)
-    {
-        speedPowerUpTimer = speedPowerUpDuration;
-        speedPowerUpActive = true;
-        speedPowerUpDuration = duration;
-        speedPowerUpImage.gameObject.SetActive(true);
+        rechargingPowerUpParent.SetActive(false);
     }
 
     public void OnSpeedPowerUpDeactivated()
     {
         speedPowerUpActive = false;
-        speedPowerUpImage.gameObject.SetActive(false);
+        speedPowerUpParent.SetActive(false);
     }
 }
