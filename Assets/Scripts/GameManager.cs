@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject drawPanel;
     [SerializeField] private GameObject coins;
     [SerializeField] private GameObject mainMenuButton;
+    [SerializeField] private GameObject flagImage;
 
     [Header ("Gameplay")]
     [SerializeField] private GameObject flag1;
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour
         coinsEarned = 5;
         flag1.SetActive(false);
         flag2.SetActive(false);
+        flagImage.SetActive(false);
         cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
         InputManager.Instance.playerInput.actions["Pause"].Enable();
 
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
     public void OnFlagPickedUp()
     {
         playerHasTheFlag = true;
+        flagImage.SetActive(true);
         flag1.SetActive(false);
         flag2.SetActive(false);
     }
@@ -127,6 +130,7 @@ public class GameManager : MonoBehaviour
     {
         playerHasTheFlag = false;
         playerScore ++;
+        flagImage.SetActive(false);
         flag1.SetActive(true);
         flag2.SetActive(true);
         coinsEarned += coinsPerPoint;
@@ -139,7 +143,8 @@ public class GameManager : MonoBehaviour
     public void OnPlayerDeathWithFlag()
     {
         playerHasTheFlag = false;
-        enemyScore++;    
+        enemyScore++;
+        flagImage.SetActive(false);
         flag1.SetActive(true);
         flag2.SetActive(true);
         if (enemyScore >= enemyMaxScore)

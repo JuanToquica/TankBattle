@@ -42,6 +42,9 @@ public class PlayerController : TankBase
         }
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerController(this);
+        engineSource = GetComponent<AudioSource>();
+        engineSource.Play();
+        engineSource.pitch = pitchIdleLow;
     }
 
     private void Start()
@@ -67,6 +70,7 @@ public class PlayerController : TankBase
             ReadAndInterpolateInputs();       
         ManipulateMovementInCollision();
         SetState();
+        SetPitch();
         DrawRays();       
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
         if (Vector3.Dot(transform.up, Vector3.up) < 0.4f && OnTankOverturnedCoroutine == null)

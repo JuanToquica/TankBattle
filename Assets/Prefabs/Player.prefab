@@ -2305,7 +2305,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentState: 0
   superStructure: {fileID: 341341103871839860}
+  smokeVfx: {fileID: 0}
   turret: {fileID: 4043235599059741379}
+  tankCollider: {fileID: 0}
   speedMinMax: {x: 9, y: 11}
   tankRotationSpeedMinMax: {x: 110, y: 130}
   turretRotationSpeedMinMax: {x: 80, y: 100}
@@ -2314,6 +2316,8 @@ MonoBehaviour:
   angularDampingInGround: 8
   angularDampingOutGround: 2.1
   raycastDistance: 0.22
+  minInertiaTensor: {x: 0, y: 0, z: 0}
+  maxInertiaTensor: {x: 0, y: 0, z: 0}
   movement: 0
   rotation: 0
   currentRotationSpeed: 0
@@ -2324,6 +2328,8 @@ MonoBehaviour:
   frontalCollisionWithCorner: 0
   backCollisionWithCorner: 0
   isOnSlope: 0
+  turretRotationSpeed: 0
+  dying: 0
   suspensionPoints:
   - {fileID: 3506778814512453719}
   - {fileID: 8102012505812672973}
@@ -2332,16 +2338,19 @@ MonoBehaviour:
   - {fileID: 6820575116049929357}
   - {fileID: 4287325955413166166}
   suspensionLenght: 0.31
+  minSpringStrength: 0
+  minDampSensitivity: 0
+  maxSpringStrength: 0
+  maxDampSensitivity: 0
   springStrength: 38000
   dampSensitivity: 2700
   suspensionRotation: 7
   balanceDuration: 0.9
   regainDuration: 0.7
   turretRotationInput: 0
-  mouseInput: 0
   cameraPivotRotation: 0
+  hud: {fileID: 0}
   cameraPivot: {fileID: 0}
-  cameraController: {fileID: 0}
 --- !u!95 &8656017519488957770
 Animator:
   serializedVersion: 7
@@ -2392,11 +2401,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd33cc23c0d82294399185936efbc18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 2327042614831684458}
-  projectilePrefab: {fileID: 4015770812461808721, guid: 5731f8e0aa81c7d47a17cfa75a7ffc2e, type: 3}
-  projectilesContainer: {fileID: 0}
-  cooldown: 1
-  cooldownWithPowerUp: 0.5
+  weaponsSettings: {fileID: 0}
+  mainGunFirePoint: {fileID: 0}
+  railgunFirePoint: {fileID: 0}
+  machineGunFirePoint: {fileID: 0}
+  fakeRockets: []
+  machineGunVfx: {fileID: 0}
+  backToMainTurretVfx: {fileID: 0}
+  machineGunCannon: {fileID: 0}
+  turrets: []
+  mainTurretAnimator: {fileID: 0}
+  railgunAnimator: {fileID: 0}
+  rocketAnimator: {fileID: 0}
+  rocketShotVfxRight: {fileID: 0}
+  rocketShotVfxLeft: {fileID: 0}
+  mainTurretSound: {fileID: 8300000, guid: c9f0afb37ec6673498d9abc8877536c7, type: 3}
+  railgunSound: {fileID: 0}
+  machinegunSound: {fileID: 0}
+  rocketsSound: {fileID: 0}
+  currentWeapon: 0
+  targetTag: 
+  turretCooldowns: []
+  turretChangeDelay: 0
+  projectileTag: 
+  currentCooldown: 0
+  currentRange: 0
+  cooldownTimer: 0
+  currentAmountOfShotsInOneRound: 0
+  machineGunRotation: 0
+  mainTurretDamage: 0
+  railgunDamage: 0
+  machineGunDamage: 0
+  rocketDamage: 0
+  rechargingPowerUpActive: 0
+  shotsFired: 0
+  firing: 0
+  cooldownImage: {fileID: 0}
+  hud: {fileID: 0}
 --- !u!114 &6708663462684491620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2410,6 +2451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  deathVfx: {fileID: 0}
+  spawner: {fileID: 0}
   healthBar: {fileID: 0}
 --- !u!1 &6625264032985507163
 GameObject:

@@ -4,7 +4,8 @@ using UnityEngine.Animations;
 public class RocketController : ProjectileBase
 {
     [SerializeField] private GameObject smokeVFX;
-    [SerializeField] private float explosionRadius;    
+    [SerializeField] private float explosionRadius;
+    [SerializeField] private AudioClip explosionSound;
     private SmokeTrail smokeTrail;
 
     public override void Initialize(Vector3 startPos, Vector3 dir, float bulletSpeed, float range, int damage, string tag)
@@ -72,7 +73,8 @@ public class RocketController : ProjectileBase
 
     protected override void InstantiateImpactVfx(RaycastHit hit)
     {
-        ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.7f, Quaternion.LookRotation(hit.normal));
+        AudioSource audioSource = ObjectPoolManager.Instance.GetPooledObject(impactVfx, hit.point + hit.normal * 0.7f, Quaternion.LookRotation(hit.normal)).GetComponent<AudioSource>();
+        audioSource.PlayOneShot(explosionSound);
         smokeTrail.OnRocketCollision();
         ObjectPoolManager.Instance.ReturnPooledObject(gameObject);
     }

@@ -74,6 +74,9 @@ public class EnemyAI : TankBase
         changingArea = true;
         StartCoroutine(InitialDelay());
         firstTimeChangingArea = true;
+        engineSource = GetComponent<AudioSource>();
+        engineSource.Play();
+        engineSource.pitch = pitchIdleLow;
     }
 
     IEnumerator InitialDelay()
@@ -137,7 +140,8 @@ public class EnemyAI : TankBase
         }
         SetIsOnSlope();      
         ManipulateMovementInCollision();
-        SetState();      
+        SetState();
+        SetPitch();
         wheelAnimations.SetParameters(movement, rotation, desiredMovement, desiredRotation);
         DrawPath(path);
         DrawRays();

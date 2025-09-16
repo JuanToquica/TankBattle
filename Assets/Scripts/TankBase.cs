@@ -15,6 +15,7 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected ParticleSystem smokeVfx;
     public Transform turret;
     public BoxCollider tankCollider;
+    protected AudioSource engineSource;
 
 
     [Header("Movement")]
@@ -68,6 +69,14 @@ public abstract class TankBase : MonoBehaviour
     protected Sequence suspensionRotationSequence;
     protected Coroutine OnTankOverturnedCoroutine;
 
+    [Header("Engine Sound")]
+    [SerializeField] protected float pitchIdleLow;
+    [SerializeField] protected float pitchIdle;
+    [SerializeField] protected float pitchMoving;
+    [SerializeField] protected float pitchBoost;
+    [SerializeField] protected float pitchAcceleration;
+    protected float targetPitch;
+
     public State currentState
     {
         get => _currentState;
@@ -98,6 +107,15 @@ public abstract class TankBase : MonoBehaviour
             currentState = State.constantSpeed;
         else
             currentState = State.quiet;
+    }
+
+    protected void SetPitch()
+    {
+        if (speed == speedMinMax.y && (currentState == State.accelerating || currentState == State.constantSpeed)) targetPitch = pitchBoost; //Si tiene powerup de velocidad
+        else if (currentState == State.quiet || currentState == State.braking) targetPitch = pitchIdle;
+        else if (currentState == State.accelerating || currentState == State.constantSpeed) targetPitch = pitchMoving;
+
+        engineSource.pitch = Mathf.Lerp(engineSource.pitch, targetPitch, pitchAcceleration);
     }
 
     protected virtual void RotateTank()
@@ -341,6 +359,7 @@ public abstract class TankBase : MonoBehaviour
 
     public void OnTankDead()
     {
+        engineSource.Stop();
         tankCollider.enabled = false;        
         smokeVfx.Stop();
         if (OnTankOverturnedCoroutine != null)

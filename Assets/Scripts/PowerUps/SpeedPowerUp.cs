@@ -9,7 +9,7 @@ public class SpeedPowerUp : PowerUpBase
     {
         if (!isDissolving)
         {
-            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+            if (other.transform.CompareTag("Player") || other.transform.CompareTag("Enemy"))
             {
                 TankBase tank = other.GetComponent<TankBase>();
                 if (tank != null)
@@ -20,6 +20,7 @@ public class SpeedPowerUp : PowerUpBase
                 _startTime = Time.time;
                 isFalling = false;
                 isDissolving = true;
+                if (other.gameObject.CompareTag("Player")) GlobalAudio.Instance.PlayPowerUpSound();
             }
         }           
     }

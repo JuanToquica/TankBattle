@@ -15,6 +15,7 @@ public class RechargingPowerUp : PowerUpBase
                 PlayerAttack player = other.GetComponent<PlayerAttack>();
                 if (player != null)
                     player.RecharchingPowerUp(powerUpDuration);
+                GlobalAudio.Instance.PlayPowerUpSound();
                 GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(rechargingVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.recharging, index);
