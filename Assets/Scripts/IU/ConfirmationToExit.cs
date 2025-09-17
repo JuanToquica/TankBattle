@@ -19,13 +19,15 @@ public class ConfirmationToExit : MonoBehaviour
 
     public void OnCancelButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         pauseIU.SetActive(true);
         InputManager.Instance.playerInput.actions["Pause"].Enable();
         gameObject.SetActive(false);
     }
 
     public void OnConfirmButtonClicked()
-    {       
+    {
+        GlobalAudio.Instance.PlayButtonSound();
         Time.timeScale = 1;
         loadPanel.SetActive(true);
         StartCoroutine(LoadAsync("MainMenu"));

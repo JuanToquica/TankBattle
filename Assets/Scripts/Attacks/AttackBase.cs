@@ -28,13 +28,8 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected Animator rocketAnimator;
     [SerializeField] protected ParticleSystem rocketShotVfxRight;
     [SerializeField] protected ParticleSystem rocketShotVfxLeft;
-    [SerializeField] protected AudioClip mainTurretSound;
-    [SerializeField] protected AudioClip railgunSound;
-    [SerializeField] protected AudioClip preRailgunSound;
-    [SerializeField] protected AudioClip machinegunSound;
-    [SerializeField] protected AudioClip rocketsSound;
     public Weapons currentWeapon;
-    [SerializeField] protected AudioSource audioSource;
+    protected TankAudioController tankAudioController;
 
     [Header("Fire Specifications")]
     [SerializeField] protected string targetTag;
@@ -208,7 +203,7 @@ public abstract class AttackBase : MonoBehaviour
     protected void FireWithMainTurret()
     {
         mainTurretAnimator.SetBool("Fire", true);
-        audioSource.PlayOneShot(mainTurretSound);
+        tankAudioController.PlayMainTurretSound();
         ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.shotVfx, mainGunFirePoint.position + mainGunFirePoint.forward * 0.5f, mainGunFirePoint.rotation);
         Vector3 startPos = mainGunFirePoint.position;
 
@@ -226,9 +221,9 @@ public abstract class AttackBase : MonoBehaviour
         cooldownTimer = 0;
         GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.railgunVfx, railgunFirePoint.position + railgunFirePoint.forward * 1.6f, railgunFirePoint.rotation);
         vfx.transform.SetParent(railgunFirePoint);
-        audioSource.PlayOneShot(preRailgunSound);
+        tankAudioController.PlayRailgunChargeSound();
         yield return new WaitForSeconds(weaponsSettings.railgunDelay);
-        audioSource.PlayOneShot(railgunSound);
+        tankAudioController.PlayRailgunSound();
         Aim();
         yield return null;
         Aim();
@@ -250,7 +245,7 @@ public abstract class AttackBase : MonoBehaviour
     protected void FireWithMachineGun()
     {
         if (shotsFired >= weaponsSettings.machineGunAmmo) return;
-        audioSource.PlayOneShot(machinegunSound);
+        tankAudioController.PlayMachineGunSound();
         Vector3 startPos = machineGunFirePoint.position;
 
         GameObject bulletInstance = ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.bulletPrefab, startPos, Quaternion.LookRotation(fireDirection));
@@ -288,7 +283,7 @@ public abstract class AttackBase : MonoBehaviour
             rocketShotVfxLeft.Play();
         }
 
-        audioSource.PlayOneShot(rocketsSound);
+        tankAudioController.PlayRocketsSound();
         Vector3 startPos = fakeRockets[shotsFired - 1].transform.position;
         Vector3 direction;
         if (fireDirection == mainGunFirePoint.forward)
@@ -320,6 +315,7 @@ public abstract class AttackBase : MonoBehaviour
 
     public void OnWeaponPowerUp()
     {
+        tankAudioController.PlayPowerUpSound();
         weaponPowerUpCoroutine = StartCoroutine(OnWeaponPowerUpCoroutine());
     }
 
@@ -432,6 +428,7 @@ public abstract class AttackBase : MonoBehaviour
 
     public virtual void RecharchingPowerUp(float duration)
     {
+        tankAudioController.PlayPowerUpSound();
         currentCooldown = turretCooldowns[(int)currentWeapon].y;
         currentAmountOfShotsInOneRound = weaponsSettings.amountOfShotsInOneRound.y;
         rechargingPowerUpActive = true;

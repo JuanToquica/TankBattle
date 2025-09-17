@@ -9,9 +9,15 @@ public class PlayerHealth : HealthBase
     private PlayerController playerController;
     private PlayerAttack playerAttack;
 
+    private void OnEnable()
+    {
+        health = maxHealth;
+    }
+
     private void Start()
     {
         health = maxHealth;
+        tankAudioController = GetComponent<TankAudioController>();
         playerMaterialHandler = GetComponent<PlayerMaterialHandler>();
         playerController = GetComponent<PlayerController>();
         playerAttack = GetComponent<PlayerAttack>();

@@ -14,6 +14,7 @@ public class EnemyAttack : AttackBase
     private void Start()
     {
         enemy = GetComponent<EnemyAI>();
+        tankAudioController = GetComponent<TankAudioController>();
         fireDirection = mainGunFirePoint.forward;
     }
 

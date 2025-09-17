@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
     public void OnFlagPickedUp()
     {
         playerHasTheFlag = true;
+        GlobalAudio.Instance.PlayFlagTakenSound();
         flagImage.SetActive(true);
         flag1.SetActive(false);
         flag2.SetActive(false);
@@ -128,6 +129,7 @@ public class GameManager : MonoBehaviour
 
     public void OnFlagDelivered()
     {
+        GlobalAudio.Instance.PlayPointSound();
         playerHasTheFlag = false;
         playerScore ++;
         flagImage.SetActive(false);
@@ -164,6 +166,7 @@ public class GameManager : MonoBehaviour
     }
     public void PauseAndUnpauseGame()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (isTheGamePaused)
         {
             Time.timeScale = 1;

@@ -32,6 +32,7 @@ public class SettingsIU : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         mainMenuUI.SetActive(true);
         InputManager.Instance.playerInput.actions["Pause"].Enable();
         gameObject.SetActive(false);
@@ -60,6 +61,7 @@ public class SettingsIU : MonoBehaviour
 
     public void OnResetVolumeClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         PlayerPrefs.SetFloat("MasterVolume", settingsData.defaultMasterVolume);
         PlayerPrefs.SetFloat("MusicVolume", settingsData.defaultMusicVolume);
         PlayerPrefs.SetFloat("SFXVolume", settingsData.defaultSFXVolume);
@@ -69,6 +71,7 @@ public class SettingsIU : MonoBehaviour
 
     public void OnResetControlsClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         PlayerPrefs.SetFloat("Sensitivity", settingsData.defaultSensitivity);
         LoadSliderSettins();
         InputManager.Instance.ResetActionMaps();

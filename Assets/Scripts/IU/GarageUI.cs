@@ -170,6 +170,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -181,6 +182,7 @@ public class GarageUI : MonoBehaviour
 
     private void OnPaintButton(int index)
     {
+        GlobalAudio.Instance.PlayButtonSound();
         tank.LoadTankMaterial(index);
         currentColorSelected = index;
         UpdateUIButtons();
@@ -189,6 +191,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnBuyButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (DataManager.Instance.TryPurchaseColor(currentColorSelected, materialsData.cost))
             DataManager.Instance.SetSelectedTankColor(currentColorSelected);
         else
@@ -201,6 +204,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnEquipButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         DataManager.Instance.SetSelectedTankColor(currentColorSelected);
         UpdateUIButtons();
         UpdateColorBackgrounds();
@@ -208,6 +212,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeArmorButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (!DataManager.Instance.UpgradeArmorStrength())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
@@ -217,6 +222,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeMainGunDamageButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (!DataManager.Instance.UpgradeMainTurret())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
@@ -226,6 +232,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeRailgunDamageButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (!DataManager.Instance.UpgradeRailgun())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
@@ -235,6 +242,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeMachineGunDamageButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (!DataManager.Instance.UpgradeMachineGun())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
@@ -244,6 +252,7 @@ public class GarageUI : MonoBehaviour
 
     public void OnUpgradeRocketDamageButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         if (!DataManager.Instance.UpgradeRocketLauncher())
             notEnoughCoinsImage.SetActive(true);
         UpdateUITexts();
@@ -253,27 +262,32 @@ public class GarageUI : MonoBehaviour
 
     public void OnOkButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         notEnoughCoinsImage.SetActive(false);
         HideColorButtons();
     }
 
     public void OnMainTurretButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(0);
     }
 
     public void OnRailgunButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(1);
     }
 
     public void OnMachineGunButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(2);
     }
 
     public void OnRocketsButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(3);
     }
 

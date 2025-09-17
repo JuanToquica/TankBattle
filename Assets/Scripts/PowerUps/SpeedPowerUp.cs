@@ -20,7 +20,7 @@ public class SpeedPowerUp : PowerUpBase
                 _startTime = Time.time;
                 isFalling = false;
                 isDissolving = true;
-                if (other.gameObject.CompareTag("Player")) GlobalAudio.Instance.PlayPowerUpSound();
+                
             }
         }           
     }

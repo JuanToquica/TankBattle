@@ -6,6 +6,7 @@ public class HealthBase : MonoBehaviour
     [SerializeField] protected float maxHealth;
     [SerializeField] protected GameObject deathVfx;
     protected float health;
+    protected TankAudioController tankAudioController;
 
     public virtual void TakeDamage(int damage)
     {
@@ -22,6 +23,7 @@ public class HealthBase : MonoBehaviour
 
     public void RegainHealth()
     {
+        tankAudioController.PlayPowerUpSound();
         health = maxHealth;
     }
 

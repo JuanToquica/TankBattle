@@ -9,13 +9,11 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private float timeToRespawn;
     [SerializeField] private float timeOfDeath;
     private Transform playerTransform;
-    private PlayerHealth playerHealth;
     private PlayerAttack playerAttack;
 
     private void Start()
     {
         playerTransform = player.GetComponent<Transform>();
-        playerHealth = player.GetComponent<PlayerHealth>();
         playerAttack = player.GetComponent<PlayerAttack>();
         SpawnPlayer(1);
     }
@@ -51,7 +49,6 @@ public class PlayerSpawner : MonoBehaviour
         player.SetActive(true);
         playerAttack.enabled = true;
         InputManager.Instance.playerInput.actions.FindActionMap("Player").Enable();
-        playerHealth.RegainHealth();
         cameraController.playerAlive = true;
         cameraController.OnPlayerRevived();
     }

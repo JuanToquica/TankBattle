@@ -22,6 +22,7 @@ public class PlayerAttack : AttackBase
 
     private void Start()
     {
+        tankAudioController = GetComponent<TankAudioController>();
         InputManager.Instance.RegisterPlayerAttack(this);
         fireDirection = mainGunFirePoint.forward;
     }

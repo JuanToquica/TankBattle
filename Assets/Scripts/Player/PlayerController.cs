@@ -42,7 +42,6 @@ public class PlayerController : TankBase
         }
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerController(this);
-        engineSource = GetComponent<AudioSource>();
         engineSource.Play();
         engineSource.pitch = pitchIdleLow;
     }
@@ -50,7 +49,8 @@ public class PlayerController : TankBase
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        wheelAnimations = GetComponent<WheelAnimations>();   
+        wheelAnimations = GetComponent<WheelAnimations>();
+        tankAudioController = GetComponent<TankAudioController>();
         InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
         InputManager.Instance.playerInput.actions["Shoot1"].Disable();
         InputManager.Instance.RegisterPlayerController(this);

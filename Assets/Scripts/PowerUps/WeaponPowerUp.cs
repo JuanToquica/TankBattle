@@ -11,7 +11,6 @@ public class WeaponPowerUp : PowerUpBase
             {
                 PlayerAttack player = other.GetComponent<PlayerAttack>();
                 player.OnWeaponPowerUp();
-                GlobalAudio.Instance.PlayPowerUpSound();
                 GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(weaponVFX, other.transform.position, other.transform.rotation);
                 vfx.transform.SetParent(other.transform);
                 powerUpSpawner.PowerUpCollected(PowerUps.weapon, index);

@@ -24,6 +24,7 @@ public class VictoryAndDefeatUI : MonoBehaviour
 
     private void OnExitButton()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         Time.timeScale = 1;
         loadPanel.SetActive(true);
         StartCoroutine(LoadAsync("MainMenu"));

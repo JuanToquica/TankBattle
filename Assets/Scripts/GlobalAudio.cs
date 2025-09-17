@@ -5,7 +5,7 @@ public class GlobalAudio : MonoBehaviour
     public static GlobalAudio Instance;
 
     [SerializeField] private AudioClip buttonSound;
-    [SerializeField] private AudioClip powerUpSound;
+    [SerializeField] private AudioClip flagTakenSound;
     [SerializeField] private AudioClip pointSound;
 
     private AudioSource audioSource;
@@ -25,13 +25,13 @@ public class GlobalAudio : MonoBehaviour
         audioSource.PlayOneShot(buttonSound);
     }
 
-    public void PlayPowerUpSound()
+    public void PlayFlagTakenSound()
     {
-        audioSource.PlayOneShot(powerUpSound);
+        audioSource.PlayOneShot(flagTakenSound);
     }
 
     public void PlayPointSound()
     {
-        audioSource.PlayOneShot(powerUpSound);
+        audioSource.PlayOneShot(pointSound);
     }
 }

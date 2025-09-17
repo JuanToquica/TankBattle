@@ -44,18 +44,21 @@ public class MainMenuiu : MonoBehaviour
 
     public void OnPlayButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         loadPanel.SetActive(true);
         StartCoroutine(LoadAsync("Battlefield"));
     }
 
     public void OnGarageButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         loadPanel.SetActive(true);
         StartCoroutine(LoadAsync("Garage"));
     }
 
     public void OnSettingsButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         settingsIU.SetActive(true);
         gameObject.SetActive(false);
     }

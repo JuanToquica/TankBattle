@@ -17,6 +17,7 @@ public class EnemyHealth : HealthBase
     {
         health = maxHealth;
         enemyAI = GetComponent<EnemyAI>();
+        tankAudioController = GetComponent<TankAudioController>();
         changeTankPaint = GetComponent<TankMaterialHandlerBase>();
         enemyAttack = GetComponent<EnemyAttack>();
         outline = GetComponent<Outline>();

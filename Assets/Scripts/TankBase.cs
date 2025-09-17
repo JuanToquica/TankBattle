@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum State { accelerating, braking, quiet, constantSpeed }
 
@@ -15,7 +16,9 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected ParticleSystem smokeVfx;
     public Transform turret;
     public BoxCollider tankCollider;
-    protected AudioSource engineSource;
+    [SerializeField] protected AudioSource engineSource;
+    protected TankAudioController tankAudioController;
+
 
 
     [Header("Movement")]
@@ -337,6 +340,7 @@ public abstract class TankBase : MonoBehaviour
 
     public virtual void SpeedPowerUp(float duration)
     {
+        tankAudioController.PlayPowerUpSound();
         smokeVfx.Play();
         speed = speedMinMax.y;
         tankRotationSpeed = tankRotationSpeedMinMax.y;

@@ -20,17 +20,20 @@ public class PauseIU : MonoBehaviour
 
     public void OnResumeButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         GameManager.instance.PauseAndUnpauseGame();
     }
 
     public void OnSettingsButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         InputManager.Instance.playerInput.actions["Pause"].Disable();
         SettingsIU.SetActive(true);
     }
 
     public void OnExitButtonClicked()
     {
+        GlobalAudio.Instance.PlayButtonSound();
         InputManager.Instance.playerInput.actions["Pause"].Disable();
         ConfirmationIU.SetActive(true);
         gameObject.SetActive(false);

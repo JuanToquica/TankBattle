@@ -57,6 +57,7 @@ public class EnemyAI : TankBase
     private void Start()
     {
         EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
+        tankAudioController = GetComponent<TankAudioController>();
         wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();       
         rb = GetComponent<Rigidbody>();
@@ -74,7 +75,6 @@ public class EnemyAI : TankBase
         changingArea = true;
         StartCoroutine(InitialDelay());
         firstTimeChangingArea = true;
-        engineSource = GetComponent<AudioSource>();
         engineSource.Play();
         engineSource.pitch = pitchIdleLow;
     }
