@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1511406996145681190}
   - component: {fileID: 3125247245823053328}
   - component: {fileID: 750280650844331694}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RechargingPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

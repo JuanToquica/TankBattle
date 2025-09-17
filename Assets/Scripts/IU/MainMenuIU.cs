@@ -16,6 +16,7 @@ public class MainMenuiu : MonoBehaviour
 
     private void Start()
     {
+        GlobalAudio.Instance.PlayMusic();
         playButton.onClick.AddListener(OnPlayButtonClicked);
         garageButton.onClick.AddListener(OnGarageButtonClicked);
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);

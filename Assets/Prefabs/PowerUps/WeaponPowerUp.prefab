@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2199184184761098392}
   - component: {fileID: 8304064080115221627}
   - component: {fileID: 662102423747893349}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WeaponPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

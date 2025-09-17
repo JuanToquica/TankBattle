@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1873253276802209452}
   - component: {fileID: 7973949846779922156}
   - component: {fileID: 5695314154777065699}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RecoveryPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

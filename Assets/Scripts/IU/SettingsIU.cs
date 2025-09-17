@@ -41,16 +41,19 @@ public class SettingsIU : MonoBehaviour
     public void OnMasterVolumeChanged()
     {
         PlayerPrefs.SetFloat("MasterVolume", masterVolume.value);
+        GlobalAudio.Instance.SetMasterVolume(masterVolume.value);
     }
 
     public void OnMusicVolumeChanged()
     {
         PlayerPrefs.SetFloat("MusicVolume", musicVolume.value);
+        GlobalAudio.Instance.SetMusicVolume(musicVolume.value);
     }
 
     public void OnSFXVolumeChanged()
     {
         PlayerPrefs.SetFloat("SFXVolume", SFXVolume.value);
+        GlobalAudio.Instance.SetSFXVolume(SFXVolume.value);
     }
 
     public void OnSensitivityChanged()

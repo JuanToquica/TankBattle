@@ -271,24 +271,28 @@ public class GarageUI : MonoBehaviour
     {
         GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(0);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnRailgunButton()
     {
         GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(1);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnMachineGunButton()
     {
         GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(2);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void OnRocketsButton()
     {
         GlobalAudio.Instance.PlayButtonSound();
         tank.ChangeTurret(3);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void OnEnable()

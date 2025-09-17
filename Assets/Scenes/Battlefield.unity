@@ -9405,7 +9405,7 @@ GameObject:
   - component: {fileID: 678474656}
   - component: {fileID: 678474655}
   - component: {fileID: 678474654}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Flag2
   m_TagString: Flag
   m_Icon: {fileID: 0}
@@ -10907,7 +10907,7 @@ GameObject:
   - component: {fileID: 855864197}
   - component: {fileID: 855864196}
   - component: {fileID: 855864195}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Flag1
   m_TagString: Flag
   m_Icon: {fileID: 0}
@@ -45982,6 +45982,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2811989962689515364, guid: 40a2b886d150f164ea841629f4e2c9d7, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7733823330235169173, guid: 40a2b886d150f164ea841629f4e2c9d7, type: 3}
       propertyPath: m_Name
       value: GlobalAudio
@@ -49097,7 +49101,7 @@ AudioSource:
   m_GameObject: {fileID: 6464802836636611342}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2247739259690162620, guid: de2329413e542a4428ddac278f054c95, type: 2}
   m_audioClip: {fileID: 8300000, guid: 9a756208bca77d14193be25294a07d08, type: 3}
   m_Resource: {fileID: 8300000, guid: 9a756208bca77d14193be25294a07d08, type: 3}
   m_PlayOnAwake: 1
@@ -49742,7 +49746,7 @@ AudioSource:
   m_GameObject: {fileID: 3226376839974422223}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2247739259690162620, guid: de2329413e542a4428ddac278f054c95, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

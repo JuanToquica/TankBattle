@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        GlobalAudio.Instance.StopMusic();
         playerScore = 0;
         enemyScore = 0;
         coinsEarned = 5;
