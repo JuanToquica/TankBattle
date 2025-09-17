@@ -20,7 +20,7 @@ public class TaskAvoidPlayer : Node
         {
             float distancePointToPlayer = (enemy.waypoints[i].position - enemy.player.position).magnitude;
             Vector3 directionToPoint = (enemy.waypoints[i].position - enemy.transform.position).normalized;
-            if (distancePointToPlayer < safeNearestDistance && distancePointToPlayer > enemy.nearDistance && Vector3.Dot(directionToPoint, enemy.directionToPlayer) < 0)
+            if (distancePointToPlayer < safeNearestDistance && distancePointToPlayer > enemy.enemyAIParameters.nearDistance && Vector3.Dot(directionToPoint, enemy.directionToPlayer) < 0)
             {
                 safeNearestDistance = distancePointToPlayer;
                 safeNearestPoint = i;

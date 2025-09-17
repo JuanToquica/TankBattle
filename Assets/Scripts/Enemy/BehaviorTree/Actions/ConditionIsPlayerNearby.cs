@@ -11,7 +11,7 @@ public class ConditionIsPlayerNearby : Node
 
     public override NodeState Evaluate()
     {
-        if (enemy.distanceToPlayer < enemy.nearDistance)
+        if (enemy.distanceToPlayer < enemy.enemyAIParameters.nearDistance)
             return NodeState.SUCCESS;
         return NodeState.FAILURE;
     }

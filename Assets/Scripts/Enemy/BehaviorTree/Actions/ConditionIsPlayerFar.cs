@@ -15,7 +15,7 @@ public class ConditionIsPlayerFar : Node
 
     public override NodeState Evaluate()
     {
-        if (enemy.distanceToPlayer > enemy.farDistance)
+        if (enemy.distanceToPlayer > enemy.enemyAIParameters.farDistance)
         {
             if (enemy.enemyArea == 7 || (!enemyManager.chasingInArea14 && (enemy.enemyArea == 5 || enemy.enemyArea == 10)))
                 enemy.EvaluateAreaChange();

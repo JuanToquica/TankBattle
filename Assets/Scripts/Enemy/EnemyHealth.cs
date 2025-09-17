@@ -39,8 +39,6 @@ public class EnemyHealth : HealthBase
         GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(deathVfx, transform.position + new Vector3(0,1.3f,0) + enemyAI.directionToPlayer, transform.rotation);
         vfx.transform.parent = transform;
 
-        enemyAI.desiredMovement = 0;
-        enemyAI.desiredRotation = 0;
         enemyAI.OnTankDead();
 
         outline.enabled = false;

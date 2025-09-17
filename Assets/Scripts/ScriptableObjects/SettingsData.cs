@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewSettingsData", menuName = "Settings Data")]
+[CreateAssetMenu(fileName = "NewSettingsData", menuName = "ScriptableObject/Settings Data")]
 public class SettingsData : ScriptableObject
 {
     public float defaultMasterVolume;

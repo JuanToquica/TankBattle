@@ -13,7 +13,7 @@ public class TaskAim : Node
        
     public override NodeState Evaluate()
     {
-        if (Mathf.Abs(enemy.angleToPlayer) < enemy.maxAimingTolerance)
+        if (Mathf.Abs(enemy.angleToPlayer) < enemy.enemyAIParameters.maxAimingTolerance)
         {   
             if (Mathf.Abs(enemy.angleToPlayer) > 2)
             {

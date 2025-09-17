@@ -11,7 +11,7 @@ public class TaskDetectPlayer : Node
     }
     public override NodeState Evaluate()
     {
-        float detectDistance = enemy.enemyArea == 12 ? enemy.distanceToDetectPlayer * 1.5f : enemy.distanceToDetectPlayer;
+        float detectDistance = enemy.enemyArea == 12 ? enemy.enemyAIParameters.distanceToDetectPlayer * 1.5f : enemy.enemyAIParameters.distanceToDetectPlayer;
         if ((Mathf.Abs(enemy.angleToPlayer) <= 90 && enemy.distanceToPlayer < 30) || enemy.distanceToPlayer < detectDistance || enemy.knowsPlayerPosition)
         {
             RaycastHit hit;

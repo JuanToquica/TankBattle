@@ -8,7 +8,7 @@ public class UpgradeLevel
     public int cost;
 }
 
-[CreateAssetMenu(fileName = "NewTurretUpgradeData", menuName = "Turret Upgrade Data")]
+[CreateAssetMenu(fileName = "NewTurretUpgradeData", menuName = "ScriptableObject/Turret Upgrade Data")]
 public class TurretUpgradeData : ScriptableObject
 {
     public UpgradeLevel[] upgradeLevels;

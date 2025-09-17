@@ -44,7 +44,7 @@ public class TaskWatch : Node
                 flatForward.y = 0;
                 Vector3 directionToPoint = (randomPoint - enemy.turret.position).normalized;
                 float angleToRandomPoint = Vector3.SignedAngle(flatForward, directionToPoint, Vector3.up);
-                if (Mathf.Abs(angleToRandomPoint) < enemy.maxAimingTolerance)
+                if (Mathf.Abs(angleToRandomPoint) < enemy.enemyAIParameters.maxAimingTolerance)
                 {
                     int random = Random.Range(1, 3);
                     if (random == 1)

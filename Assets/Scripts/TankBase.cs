@@ -9,44 +9,36 @@ public enum State { accelerating, braking, quiet, constantSpeed }
 public abstract class TankBase : MonoBehaviour
 {
     protected Rigidbody rb;
-    public State _currentState;    
+    public State _currentState;
 
     [Header("References")]
+    [SerializeField] protected TankConfig tankConfig;
     [SerializeField] protected Transform superStructure;
+    [HideInInspector] public BoxCollider tankCollider;
     [SerializeField] protected ParticleSystem smokeVfx;
-    public Transform turret;
-    public BoxCollider tankCollider;
+    public Transform turret;    
     [SerializeField] protected AudioSource engineSource;
     protected TankAudioController tankAudioController;
 
 
-
     [Header("Movement")]
-    [SerializeField] protected Vector2 speedMinMax;
-    [SerializeField] protected Vector2 tankRotationSpeedMinMax;
-    [SerializeField] protected Vector2 turretRotationSpeedMinMax;    
-    [SerializeField] protected float accelerationTime;
-    [SerializeField] protected float angularAccelerationTime;
-    [SerializeField] protected float angularDampingInGround;
-    [SerializeField] protected float angularDampingOutGround;
-    [SerializeField] protected float raycastDistance;
     public Vector3 minInertiaTensor;
     public Vector3 maxInertiaTensor;
-    public float movement;
-    public float rotation;  
+    [HideInInspector] public float movement;
+    [HideInInspector] public float rotation;  
     protected float turretRotationRef;
-    public float currentRotationSpeed;
+    protected float currentRotationSpeed;
     protected bool centeringTurret;
-    public bool hasMomentum;
-    public bool isGrounded;
-    public bool frontalCollision;
-    public bool backCollision;
-    public bool frontalCollisionWithCorner;
-    public bool backCollisionWithCorner;
-    public bool isOnSlope;
+    protected bool hasMomentum;
+    protected bool isGrounded;
+    protected bool frontalCollision;
+    protected bool backCollision;
+    protected bool frontalCollisionWithCorner;
+    protected bool backCollisionWithCorner;
+    protected bool isOnSlope;
     protected float speed;
     protected float tankRotationSpeed;
-    public float turretRotationSpeed;
+    [HideInInspector] public float turretRotationSpeed;
     protected float directionOrInput;
     protected float brakingTime;
     protected float movementRef;
@@ -62,22 +54,12 @@ public abstract class TankBase : MonoBehaviour
     [SerializeField] protected float maxSpringStrength;
     [SerializeField] protected float maxDampSensitivity;
     protected float[] lastDistances;
-    public float springStrength;
-    public float dampSensitivity;
+    protected float springStrength;
+    protected float dampSensitivity;
 
-    [Header("Suspension Animation")]
-    [SerializeField] protected float suspensionRotation;
-    [SerializeField] protected float balanceDuration;
-    [SerializeField] protected float regainDuration;
     protected Sequence suspensionRotationSequence;
     protected Coroutine OnTankOverturnedCoroutine;
 
-    [Header("Engine Sound")]
-    [SerializeField] protected float pitchIdleLow;
-    [SerializeField] protected float pitchIdle;
-    [SerializeField] protected float pitchMoving;
-    [SerializeField] protected float pitchBoost;
-    [SerializeField] protected float pitchAcceleration;
     protected float targetPitch;
 
     public State currentState
@@ -114,11 +96,12 @@ public abstract class TankBase : MonoBehaviour
 
     protected void SetPitch()
     {
-        if (speed == speedMinMax.y && (currentState == State.accelerating || currentState == State.constantSpeed)) targetPitch = pitchBoost; //Si tiene powerup de velocidad
-        else if (currentState == State.quiet || currentState == State.braking) targetPitch = pitchIdle;
-        else if (currentState == State.accelerating || currentState == State.constantSpeed) targetPitch = pitchMoving;
+        if (speed == tankConfig.speedMinMax.y && (currentState == State.accelerating || currentState == State.constantSpeed)) 
+            targetPitch = tankConfig.pitchBoost; //Si tiene powerup de velocidad
+        else if (currentState == State.quiet || currentState == State.braking) targetPitch = tankConfig.pitchIdle;
+        else if (currentState == State.accelerating || currentState == State.constantSpeed) targetPitch = tankConfig.pitchMoving;
 
-        engineSource.pitch = Mathf.Lerp(engineSource.pitch, targetPitch, pitchAcceleration);
+        engineSource.pitch = Mathf.Lerp(engineSource.pitch, targetPitch, tankConfig.pitchAcceleration);
     }
 
     protected virtual void RotateTank()
@@ -207,9 +190,9 @@ public abstract class TankBase : MonoBehaviour
             isGrounded = false;
         //Setear AngularDamping
         if (contactPointsWithGround > 4)
-            rb.angularDamping = angularDampingInGround;
+            rb.angularDamping = tankConfig.angularDampingInGround;
         else
-            rb.angularDamping = angularDampingOutGround;
+            rb.angularDamping = tankConfig.angularDampingOutGround;
     }
     protected void CenterTurret()
     {
@@ -239,8 +222,8 @@ public abstract class TankBase : MonoBehaviour
         {
             if (movement > 0 && frontalCollision || movement < 0 && backCollision)
                 return;
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * -1, 0, 0),
-            accelerationTime).SetEase(Ease.InOutQuad)).SetLink(superStructure.gameObject);
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(tankConfig.suspensionRotation * Mathf.Sign(movement) * -1, 0, 0),
+            tankConfig.accelerationTime).SetEase(Ease.InOutQuad)).SetLink(superStructure.gameObject);
 
             suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, 2).SetEase(Ease.InSine)).SetLink(superStructure.gameObject);
         }
@@ -249,13 +232,13 @@ public abstract class TankBase : MonoBehaviour
         {
             float percentage = MathF.Abs(movement) > 0.9 ? 1 : Mathf.Abs(movement) - 0.3f;
 
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(suspensionRotation * Mathf.Sign(movement) * percentage, 0, 0),
-                accelerationTime).SetEase(Ease.OutQuad)).
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(tankConfig.suspensionRotation * Mathf.Sign(movement) * percentage, 0, 0),
+                tankConfig.accelerationTime).SetEase(Ease.OutQuad)).
                 SetLink(superStructure.gameObject);
 
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), balanceDuration).
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(new Vector3(-1.5f * Mathf.Sign(movement), 0, 0), tankConfig.balanceDuration).
                 SetEase(Ease.InOutSine)).SetLink(superStructure.gameObject);
-            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, regainDuration).
+            suspensionRotationSequence.Append(superStructure.DOLocalRotate(Vector3.zero, tankConfig.regainDuration).
                 SetEase(Ease.InSine)).SetLink(superStructure.gameObject);
         }
     }
@@ -269,10 +252,10 @@ public abstract class TankBase : MonoBehaviour
         Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
         Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
-        bool rightFrontalCollision = Physics.Raycast(origin1, flatForward, raycastDistance, ~0);
-        bool leftFrontalCollision = Physics.Raycast(origin2, flatForward, raycastDistance, ~0);
-        bool rightBackCollision = Physics.Raycast(origin3, -flatForward, raycastDistance, ~0);
-        bool leftBackCollision = Physics.Raycast(origin4, -flatForward, raycastDistance, ~0);
+        bool rightFrontalCollision = Physics.Raycast(origin1, flatForward, tankConfig.raycastDistance, ~0);
+        bool leftFrontalCollision = Physics.Raycast(origin2, flatForward, tankConfig.raycastDistance, ~0);
+        bool rightBackCollision = Physics.Raycast(origin3, -flatForward, tankConfig.raycastDistance, ~0);
+        bool leftBackCollision = Physics.Raycast(origin4, -flatForward, tankConfig.raycastDistance, ~0);
 
         frontalCollision = rightFrontalCollision || leftFrontalCollision;
         backCollision = rightBackCollision || leftBackCollision;
@@ -342,9 +325,9 @@ public abstract class TankBase : MonoBehaviour
     {
         tankAudioController.PlayPowerUpSound();
         smokeVfx.Play();
-        speed = speedMinMax.y;
-        tankRotationSpeed = tankRotationSpeedMinMax.y;
-        turretRotationSpeed = turretRotationSpeedMinMax.y;
+        speed = tankConfig.speedMinMax.y;
+        tankRotationSpeed = tankConfig.tankRotationSpeedMinMax.y;
+        turretRotationSpeed = tankConfig.turretRotationSpeedMinMax.y;
         rb.inertiaTensor = maxInertiaTensor;
         springStrength = maxSpringStrength;
         dampSensitivity = maxDampSensitivity;
@@ -353,16 +336,18 @@ public abstract class TankBase : MonoBehaviour
 
     protected virtual void RestoreSpeed()
     {
-        speed = speedMinMax.x;
-        tankRotationSpeed = tankRotationSpeedMinMax.x;
-        turretRotationSpeed = turretRotationSpeedMinMax.x;
+        speed = tankConfig.speedMinMax.x;
+        tankRotationSpeed = tankConfig.tankRotationSpeedMinMax.x;
+        turretRotationSpeed = tankConfig.turretRotationSpeedMinMax.x;
         rb.inertiaTensor = minInertiaTensor;
         springStrength = minSpringStrength;
         dampSensitivity = minDampSensitivity;
     }
 
-    public void OnTankDead()
+    public virtual void OnTankDead()
     {
+        movement = 0;
+        rotation = 0;
         engineSource.Stop();
         tankCollider.enabled = false;        
         smokeVfx.Stop();

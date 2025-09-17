@@ -8,56 +8,52 @@ using System.Collections;
 using Unity.Burst.Intrinsics;
 
 public class EnemyAI : TankBase
-{    
-    private WheelAnimations wheelAnimations;  
+{
+    [Header("Enemy")]   
     public EnemyManager enemyManager;
-    public LineRenderer lineRenderer;
+    private WheelAnimations wheelAnimations;
+    private LineRenderer lineRenderer;
     public NavMeshPath path;
-    public EnemyAttack enemyAttack;
+    private EnemyAttack enemyAttack;
     private Node _rootOfMovement = null;
     private Node _rootOfTurret = null;
 
-    [Header("Enemy")]       
-    public Transform player;   
-    public float desiredMovement;
-    public float desiredRotation;
+      
+    public Transform player;
+    private float desiredMovement;
+    private float desiredRotation;
     private float adjustedAngleToTarget;
     private Vector3 directionToTarget;
 
 
     [Header("AI Parameters")]
-
-    [SerializeField] private float timeToLeaveSpawn;
-    [SerializeField] private float timeToForgetPlayer;
-    public float distanceToDetectPlayer;
-    public float farDistance;
-    public float nearDistance;
-    public float maxAimingTolerance;
+    public EnemyAIParameters enemyAIParameters;
+    public int centeringPathOffset;
     public bool detectingPlayer;
     public bool knowsPlayerPosition;
     public int enemyArea;
     public List<Transform> waypoints;
-    public int currentWaypoint;
-    public int currentCornerInThePath;
-    public bool followingPath;  
+    [HideInInspector] public int currentWaypoint;
+    [HideInInspector] public int currentCornerInThePath;
+    [HideInInspector] public bool followingPath;  
     private float timerPlayerNotDetected;
-    public Vector3 directionToPlayer;
-    public float distanceToPlayer;
-    public float angleToPlayer;
-    public bool changingArea;
-    public bool isAwakening;
-    public bool patrolWait;
-    public int centeringOffset;
+    [HideInInspector] public Vector3 directionToPlayer;
+    [HideInInspector] public float distanceToPlayer;
+    [HideInInspector] public float angleToPlayer;
+    [HideInInspector] public bool changingArea;
+    [HideInInspector] public bool isAwakening;
+    [HideInInspector] public bool patrolWait;
     private Vector3 flatForward;
-    public float angleToCorner;
-    public bool dodgingAttacks;
-    public int oldArea = 0;
-    public bool firstTimeChangingArea;
+    [HideInInspector] public float angleToCorner;
+    [HideInInspector] public bool dodgingAttacks;
+    [HideInInspector] public int oldArea = 0;
+    [HideInInspector] public bool firstTimeChangingArea;
 
     private void Start()
     {
-        EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
+        enemyAttack = GetComponent<EnemyAttack>();
         tankAudioController = GetComponent<TankAudioController>();
+        lineRenderer = GetComponent<LineRenderer>();
         wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();       
         rb = GetComponent<Rigidbody>();
@@ -76,13 +72,13 @@ public class EnemyAI : TankBase
         StartCoroutine(InitialDelay());
         firstTimeChangingArea = true;
         engineSource.Play();
-        engineSource.pitch = pitchIdleLow;
+        engineSource.pitch = tankConfig.pitchIdleLow;
     }
 
     IEnumerator InitialDelay()
     {
         isAwakening = true;
-        yield return new WaitForSeconds(timeToLeaveSpawn);
+        yield return new WaitForSeconds(enemyAIParameters.timeToLeaveSpawn);
         isAwakening = false;
     }
 
@@ -170,13 +166,13 @@ public class EnemyAI : TankBase
     }
     private void InterpolateMovementAndRotation()
     {
-        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, desiredRotation, ref rotationRef, angularAccelerationTime), -1, 1);
+        rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, desiredRotation, ref rotationRef, tankConfig.angularAccelerationTime), -1, 1);
         if (Mathf.Abs(rotation) < 0.01) rotation = 0;
 
         SetMomentum();
         if (isGrounded)
         {
-            float smoothTime = desiredMovement != 0 ? accelerationTime : brakingTime;
+            float smoothTime = desiredMovement != 0 ? tankConfig.accelerationTime : brakingTime;
             if (desiredMovement != 0 && Mathf.Sign(desiredMovement) != Mathf.Sign(movement) && hasMomentum)
                 smoothTime = 1;
 
@@ -201,8 +197,8 @@ public class EnemyAI : TankBase
             }
             else
             {
-                timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, timeToForgetPlayer);
-                if (timerPlayerNotDetected == timeToForgetPlayer) knowsPlayerPosition = false;
+                timerPlayerNotDetected = Mathf.Clamp(timerPlayerNotDetected + Time.deltaTime, 0, enemyAIParameters.timeToForgetPlayer);
+                if (timerPlayerNotDetected == enemyAIParameters.timeToForgetPlayer) knowsPlayerPosition = false;
             }
         }
         else
@@ -215,7 +211,7 @@ public class EnemyAI : TankBase
     public void CalculatePath(Vector3 newPosition)
     {
         currentCornerInThePath = 1;
-        CalculateCenteredPath(transform.position, newPosition, 1 << enemyArea, centeringOffset);
+        CalculateCenteredPath(transform.position, newPosition, 1 << enemyArea, centeringPathOffset);
         ChangeDesiredMovement();
     }
 
@@ -427,6 +423,12 @@ public class EnemyAI : TankBase
         return false;
     }
 
+    public override void OnTankDead()
+    {
+        base.OnTankDead();
+        desiredMovement = 0;
+        desiredRotation = 0;
+    }
 
     private void DrawRays()
     {
@@ -437,9 +439,9 @@ public class EnemyAI : TankBase
         Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.3f - (flatForward * 1.5f)) + transform.forward * 0.1f;
         Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.3f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
-        Debug.DrawRay(origin1, flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin3, -flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin4, -flatForward * raycastDistance, Color.red);
+        Debug.DrawRay(origin1, flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin2, flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin3, -flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin4, -flatForward * tankConfig.raycastDistance, Color.red);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewAudioData", menuName = "AudioData")]
+[CreateAssetMenu(fileName = "NewAudioData", menuName = "ScriptableObject/AudioData")]
 public class AudioData : ScriptableObject
 {
     public AudioClip buttonSound;

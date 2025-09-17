@@ -5702,31 +5702,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
+  tankConfig: {fileID: 11400000, guid: 3183bdb91be459d41bf6a8570d195fea, type: 2}
   superStructure: {fileID: 8645936080746785867}
+  tankCollider: {fileID: 0}
   smokeVfx: {fileID: 749574770116014092}
   turret: {fileID: 8340991149045225990}
-  tankCollider: {fileID: 0}
   engineSource: {fileID: 4766608536441742810}
-  speedMinMax: {x: 9, y: 11}
-  tankRotationSpeedMinMax: {x: 110, y: 130}
-  turretRotationSpeedMinMax: {x: 80, y: 100}
-  accelerationTime: 0.4
-  angularAccelerationTime: 0.11
-  angularDampingInGround: 8
-  angularDampingOutGround: 2.1
-  raycastDistance: 0.32
   minInertiaTensor: {x: 2000, y: 400, z: 900}
   maxInertiaTensor: {x: 2000, y: 400, z: 900}
   movement: 0
   rotation: 0
-  currentRotationSpeed: 0
-  hasMomentum: 0
-  isGrounded: 0
-  frontalCollision: 1
-  backCollision: 0
-  frontalCollisionWithCorner: 0
-  backCollisionWithCorner: 0
-  isOnSlope: 0
   turretRotationSpeed: 0
   dying: 0
   suspensionPoints:
@@ -5744,28 +5729,10 @@ MonoBehaviour:
   minDampSensitivity: 6000
   maxSpringStrength: 100000
   maxDampSensitivity: 6000
-  springStrength: 100000
-  dampSensitivity: 6000
-  suspensionRotation: 7
-  balanceDuration: 0.9
-  regainDuration: 0.7
-  pitchIdleLow: 0
-  pitchIdle: 0.5
-  pitchMoving: 0.8
-  pitchBoost: 1
-  pitchAcceleration: 0.05
   enemyManager: {fileID: 0}
-  lineRenderer: {fileID: 8565006817356517853}
-  enemyAttack: {fileID: -1403795728453670711}
   player: {fileID: 0}
-  desiredMovement: 0
-  desiredRotation: 0
-  timeToLeaveSpawn: 1
-  timeToForgetPlayer: 10
-  distanceToDetectPlayer: 20
-  farDistance: 25
-  nearDistance: 17
-  maxAimingTolerance: 15
+  enemyAIParameters: {fileID: 11400000, guid: 7c07be2af89e916479ecd75a2cdf88d7, type: 2}
+  centeringPathOffset: 0
   detectingPlayer: 0
   knowsPlayerPosition: 0
   enemyArea: 6
@@ -5783,7 +5750,6 @@ MonoBehaviour:
   changingArea: 0
   isAwakening: 0
   patrolWait: 0
-  centeringOffset: 3
   angleToCorner: 0
   dodgingAttacks: 0
   oldArea: 0
@@ -5832,18 +5798,7 @@ MonoBehaviour:
   - {x: 1.5, y: 1}
   turretChangeDelay: 0.35
   projectileTag: EnemyProjectile
-  currentCooldown: 0
-  currentRange: 0
-  cooldownTimer: 0
-  currentAmountOfShotsInOneRound: 0
-  machineGunRotation: 0
-  mainTurretDamage: 0
-  railgunDamage: 0
-  machineGunDamage: 0
-  rocketDamage: 0
-  rechargingPowerUpActive: 0
   shotsFired: 0
-  firing: 0
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0

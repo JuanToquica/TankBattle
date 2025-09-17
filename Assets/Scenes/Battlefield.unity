@@ -47580,31 +47580,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
+  tankConfig: {fileID: 11400000, guid: 3183bdb91be459d41bf6a8570d195fea, type: 2}
   superStructure: {fileID: 8265202957911899025}
+  tankCollider: {fileID: 0}
   smokeVfx: {fileID: 3411225303631133611}
   turret: {fileID: 904505812}
-  tankCollider: {fileID: 0}
   engineSource: {fileID: 8265202957911899026}
-  speedMinMax: {x: 9, y: 11}
-  tankRotationSpeedMinMax: {x: 110, y: 130}
-  turretRotationSpeedMinMax: {x: 80, y: 100}
-  accelerationTime: 0.4
-  angularAccelerationTime: 0.11
-  angularDampingInGround: 8
-  angularDampingOutGround: 2.1
-  raycastDistance: 0.32
   minInertiaTensor: {x: 1200, y: 400, z: 900}
   maxInertiaTensor: {x: 1300, y: 400, z: 900}
   movement: 0
   rotation: 0
-  currentRotationSpeed: 0
-  hasMomentum: 0
-  isGrounded: 0
-  frontalCollision: 0
-  backCollision: 0
-  frontalCollisionWithCorner: 0
-  backCollisionWithCorner: 0
-  isOnSlope: 0
   turretRotationSpeed: 0
   dying: 0
   suspensionPoints:
@@ -47618,20 +47603,10 @@ MonoBehaviour:
   - {fileID: 972205394}
   - {fileID: 988444465}
   suspensionLenght: 0.31
-  minSpringStrength: 40000
-  minDampSensitivity: 2800
+  minSpringStrength: 30000
+  minDampSensitivity: 2200
   maxSpringStrength: 40000
   maxDampSensitivity: 2800
-  springStrength: 30000
-  dampSensitivity: 2200
-  suspensionRotation: 7
-  balanceDuration: 0.9
-  regainDuration: 0.7
-  pitchIdleLow: 0
-  pitchIdle: 0.5
-  pitchMoving: 0.8
-  pitchBoost: 1
-  pitchAcceleration: 0.05
   turretRotationInput: 0
   cameraPivotRotation: 0
   hud: {fileID: 427286738}

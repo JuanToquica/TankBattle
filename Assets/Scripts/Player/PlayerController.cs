@@ -7,13 +7,12 @@ using UnityEngine.InputSystem.HID;
 
 public class PlayerController : TankBase
 {
+    [Header ("Player")]
     private WheelAnimations wheelAnimations;   
     private Vector2 input;
     [HideInInspector] public float turretRotationInput;
     [HideInInspector] public float cameraPivotRotation;
     [SerializeField] private HUD hud;
-
-    [Header ("Camera")]
     [SerializeField] private Transform cameraPivot;
 
     private void Awake()
@@ -43,7 +42,7 @@ public class PlayerController : TankBase
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerController(this);
         engineSource.Play();
-        engineSource.pitch = pitchIdleLow;
+        engineSource.pitch = tankConfig.pitchIdleLow;
     }
 
     private void Start()
@@ -102,10 +101,10 @@ public class PlayerController : TankBase
         SetMomentum();
         if (isGrounded)
         {
-            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, angularAccelerationTime), -1, 1);
+            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, input.x, ref rotationRef, tankConfig.angularAccelerationTime), -1, 1);
             if (Mathf.Abs(rotation) < 0.01f) rotation = 0;
             
-            float smoothTime = input.y != 0 ? accelerationTime : brakingTime;
+            float smoothTime = input.y != 0 ? tankConfig.accelerationTime : brakingTime;
             if (input.y != 0 && movement != 0 && Mathf.Sign(input.y) != Mathf.Sign(movement) && hasMomentum)
                 smoothTime = 1;
 
@@ -115,7 +114,7 @@ public class PlayerController : TankBase
         }
         else
         {
-            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, angularAccelerationTime * 3), -1, 1);        
+            rotation = Mathf.Clamp(Mathf.SmoothDamp(rotation, 0, ref rotationRef, tankConfig.angularAccelerationTime * 3), -1, 1);        
         }
         brakingTime = Mathf.Lerp(0.2f, 0.4f, Mathf.Abs(movement));
         if (Mathf.Abs(movement) < 0.01f)
@@ -184,10 +183,10 @@ public class PlayerController : TankBase
         Vector3 origin3 = tankCollider.ClosestPoint(transform.position + transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
         Vector3 origin4 = tankCollider.ClosestPoint(transform.position - transform.right * 0.25f - (flatForward * 1.5f)) + transform.forward * 0.1f;
 
-        Debug.DrawRay(origin1, flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin2, flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin3, -flatForward * raycastDistance, Color.red);
-        Debug.DrawRay(origin4, -flatForward * raycastDistance, Color.red);
+        Debug.DrawRay(origin1, flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin2, flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin3, -flatForward * tankConfig.raycastDistance, Color.red);
+        Debug.DrawRay(origin4, -flatForward * tankConfig.raycastDistance, Color.red);
     }
 
     public override void SpeedPowerUp(float duration)
