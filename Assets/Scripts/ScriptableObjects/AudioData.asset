@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08a7a4faf870be499fe7f2c822b46e7, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  buttonSound: {fileID: 8300000, guid: 440a46315c4a83649ae952dd27f55fb4, type: 3}
+  flagTakenSound: {fileID: 8300000, guid: 46beb90dd263411408f5ca7b2610da52, type: 3}
+  pointSound: {fileID: 8300000, guid: 69e7d973d83891f4e9662ab3ac7a0513, type: 3}
+  mainTurretSound: {fileID: 8300000, guid: c9f0afb37ec6673498d9abc8877536c7, type: 3}
+  railgunSound: {fileID: 8300000, guid: 95ec9c0a0bf1552469549a05da4dab81, type: 3}
+  railgunChargeSound: {fileID: 8300000, guid: c755b0c5e3436ff4bb6a1346c789ca87, type: 3}
+  machinegunSound: {fileID: 8300000, guid: 2b56912e4eacd9d4f977ae6e37b10386, type: 3}
+  rocketsSound: {fileID: 8300000, guid: 26fe07057df1d3944be98e43c3e2a0a0, type: 3}
+  powerUpSound: {fileID: 8300000, guid: d34ba9eb64306f949b5f7899ffeb1882, type: 3}

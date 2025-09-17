@@ -9993,7 +9993,7 @@ GameObject:
   - component: {fileID: 752247394}
   - component: {fileID: 752247393}
   - component: {fileID: 752247397}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EnemyBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32132,7 +32132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1664306152}
   - component: {fileID: 1664306154}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: DetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45982,10 +45982,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2811989962689515364, guid: 40a2b886d150f164ea841629f4e2c9d7, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7733823330235169173, guid: 40a2b886d150f164ea841629f4e2c9d7, type: 3}
       propertyPath: m_Name
       value: GlobalAudio
@@ -49723,18 +49719,7 @@ MonoBehaviour:
   - {x: 1, y: 0.5}
   turretChangeDelay: 0.35
   projectileTag: PlayerProjectile
-  currentCooldown: 0
-  currentRange: 0
-  cooldownTimer: 0
-  currentAmountOfShotsInOneRound: 0
-  machineGunRotation: 0
-  mainTurretDamage: 0
-  railgunDamage: 0
-  machineGunDamage: 0
-  rocketDamage: 0
-  rechargingPowerUpActive: 0
   shotsFired: 0
-  firing: 0
   cooldownImage: {fileID: 1659777210}
   hud: {fileID: 427286738}
 --- !u!82 &9160843750731285215
@@ -49846,14 +49831,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d65e3aa0d75ff543bc08c553f6d0542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioData: {fileID: 11400000, guid: 4e288367c767af542b82baa83234253a, type: 2}
   audioSource: {fileID: 9160843750731285215}
   powerUpSource: {fileID: 9160843750731285215}
-  mainTurretSound: {fileID: 8300000, guid: c9f0afb37ec6673498d9abc8877536c7, type: 3}
-  railgunSound: {fileID: 8300000, guid: 95ec9c0a0bf1552469549a05da4dab81, type: 3}
-  railgunChargeSound: {fileID: 8300000, guid: c755b0c5e3436ff4bb6a1346c789ca87, type: 3}
-  machinegunSound: {fileID: 8300000, guid: 2b56912e4eacd9d4f977ae6e37b10386, type: 3}
-  rocketsSound: {fileID: 8300000, guid: 26fe07057df1d3944be98e43c3e2a0a0, type: 3}
-  powerUpSound: {fileID: 8300000, guid: d34ba9eb64306f949b5f7899ffeb1882, type: 3}
 --- !u!4 &9182347382844192842
 Transform:
   m_ObjectHideFlags: 0
@@ -49908,7 +49888,9 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1507834351}
+  - {fileID: 1200715997}
   - {fileID: 426590842757399879}
+  - {fileID: 1525436879}
   - {fileID: 209217098}
   - {fileID: 508778734223612319}
   - {fileID: 1274756966}
@@ -49919,8 +49901,6 @@ SceneRoots:
   - {fileID: 1283078838}
   - {fileID: 1353540965}
   - {fileID: 1306450486}
-  - {fileID: 1200715997}
   - {fileID: 932181945}
   - {fileID: 1888309977}
-  - {fileID: 1525436879}
   - {fileID: 2920663221574972884}

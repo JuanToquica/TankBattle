@@ -4,34 +4,29 @@ using UnityEngine.UI;
 
 public class PlayerAttack : AttackBase
 {
-    [Header("Player")]
+    [Header("HUD")]
     [SerializeField] private Image cooldownImage;
     [SerializeField] private HUD hud;
     private Outline currentOutlinedEnemy;    
     private bool _isAimingAtEnemy;    
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        currentCooldown = turretCooldowns[0].x;
+        base.OnEnable();
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
-        LoadTurretDamage();
-        BackToMainTurret(0);
-        aimPhase = 1;
     }
 
-    private void Start()
+    protected override void Start()
     {
-        tankAudioController = GetComponent<TankAudioController>();
+        base.Start();
         InputManager.Instance.RegisterPlayerAttack(this);
-        fireDirection = mainGunFirePoint.forward;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        SetCooldown();
+        base.Update();
         Aim();
-        SetMachineGunRotation();
     }
 
     protected override void LoadTurretDamage()

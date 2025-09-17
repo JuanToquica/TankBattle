@@ -4,24 +4,15 @@ public class EnemyAttack : AttackBase
 {
     private EnemyAI enemy;
 
-    private void OnEnable()
+    protected override void Start()
     {
-        LoadTurretDamage();
-        BackToMainTurret(0);
-        aimPhase = 1;
+        base.Start();
+        enemy = GetComponent<EnemyAI>();      
     }
 
-    private void Start()
+    protected override void Update()
     {
-        enemy = GetComponent<EnemyAI>();
-        tankAudioController = GetComponent<TankAudioController>();
-        fireDirection = mainGunFirePoint.forward;
-    }
-
-    private void Update()
-    {
-        SetCooldown();
-        SetMachineGunRotation();
+        base.Update();
         if (enemy != null && !enemy.detectingPlayer && currentWeapon == Weapons.machineGun && firing)
             StopFiring();
         if (firing)
@@ -44,8 +35,5 @@ public class EnemyAttack : AttackBase
         Fire();     
     }
 
-    public bool CanShoot()
-    {
-        return cooldownTimer == currentCooldown;
-    }
+    public bool CanShoot() { return cooldownTimer == currentCooldown; }
 }

@@ -36,22 +36,22 @@ public abstract class AttackBase : MonoBehaviour
     [SerializeField] protected Vector2[] turretCooldowns;
     [SerializeField] private float turretChangeDelay;
     [SerializeField] private string projectileTag;
-    public float currentCooldown;
-    public float currentRange;
-    public float cooldownTimer;
-    public float currentAmountOfShotsInOneRound;
-    public float machineGunRotation;
-    public int mainTurretDamage;
-    public int railgunDamage;
-    public int machineGunDamage;
-    public int rocketDamage;
+    protected float currentCooldown;
+    protected float currentRange;
+    protected float cooldownTimer;
+    protected float currentAmountOfShotsInOneRound;
+    protected float machineGunRotation;
+    protected int mainTurretDamage;
+    protected int railgunDamage;
+    protected int machineGunDamage;
+    protected int rocketDamage;
     protected RaycastHit mainHit;
-    public bool rechargingPowerUpActive;
-    public int shotsFired;
+    protected bool rechargingPowerUpActive;
+    [HideInInspector] public int shotsFired;
     protected int aimPhase;
     protected RaycastHit bestHitInThisScan;
     protected int currentAmountOfRaycast;
-    public bool firing;
+    protected bool firing;
     protected float lastShoot;
     protected bool foundTankInThisScan;
     protected Vector3 fireDirection;
@@ -59,6 +59,25 @@ public abstract class AttackBase : MonoBehaviour
     protected Coroutine weaponPowerUpCoroutine;
     protected Coroutine backToMainTurretCoroutine;
 
+    protected virtual void OnEnable()
+    {
+        LoadTurretDamage();
+        BackToMainTurret(0);
+        aimPhase = 1;
+        currentCooldown = turretCooldowns[0].x;
+    }
+
+    protected virtual void Start()
+    {
+        tankAudioController = GetComponent<TankAudioController>();
+        fireDirection = mainGunFirePoint.forward;
+    }
+
+    protected virtual void Update()
+    {
+        SetCooldown();
+        SetMachineGunRotation();
+    }
 
     protected abstract void LoadTurretDamage();
 

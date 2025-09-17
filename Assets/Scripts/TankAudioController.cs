@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class TankAudioController : MonoBehaviour
 {
+    [SerializeField] private AudioData audioData;
     [SerializeField] protected AudioSource audioSource;
     [SerializeField] protected AudioSource powerUpSource;
-    [SerializeField] protected AudioClip mainTurretSound;
-    [SerializeField] protected AudioClip railgunSound;
-    [SerializeField] protected AudioClip railgunChargeSound;
-    [SerializeField] protected AudioClip machinegunSound;
-    [SerializeField] protected AudioClip rocketsSound;
-    [SerializeField] protected AudioClip powerUpSound;
-    
+    private AudioClip mainTurretSound;
+    private AudioClip railgunSound;
+    private AudioClip railgunChargeSound;
+    private AudioClip machinegunSound;
+    private AudioClip rocketsSound;
+    private AudioClip powerUpSound;
+
+    private void Awake()
+    {
+        mainTurretSound = audioData.mainTurretSound;
+        railgunSound = audioData.railgunSound;
+        railgunChargeSound = audioData.railgunChargeSound;
+        machinegunSound = audioData.machinegunSound;
+        rocketsSound = audioData.rocketsSound;
+        powerUpSound = audioData.powerUpSound;
+    }
+
     public void PlayMainTurretSound()
     {
         audioSource.PlayOneShot(mainTurretSound);

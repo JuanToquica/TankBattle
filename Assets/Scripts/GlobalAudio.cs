@@ -6,12 +6,13 @@ public class GlobalAudio : MonoBehaviour
 {
     public static GlobalAudio Instance;
 
+    [SerializeField] private AudioData audioData;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private AudioClip buttonSound;
-    [SerializeField] private AudioClip flagTakenSound;
-    [SerializeField] private AudioClip pointSound;
+    private AudioClip buttonSound;
+    private AudioClip flagTakenSound;
+    private AudioClip pointSound;
 
     void Awake()
     {
@@ -21,7 +22,10 @@ public class GlobalAudio : MonoBehaviour
             return;            
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);       
+        DontDestroyOnLoad(gameObject);
+        buttonSound = audioData.buttonSound;
+        flagTakenSound = audioData.flagTakenSound;
+        pointSound = audioData.pointSound;
     }
 
     private void Start()
@@ -87,6 +91,6 @@ public class GlobalAudio : MonoBehaviour
         }
 
         musicSource.Stop();
-        audioSource.volume = startVolume; 
+        musicSource.volume = startVolume; 
     }
 }
