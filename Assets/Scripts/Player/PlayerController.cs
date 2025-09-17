@@ -72,7 +72,7 @@ public class PlayerController : TankBase
         SetPitch();
         DrawRays();       
         wheelAnimations.SetParameters(movement, rotation, input.y, input.x);
-        if (Vector3.Dot(transform.up, Vector3.up) < 0.4f && OnTankOverturnedCoroutine == null)
+        if (Vector3.Dot(transform.up, Vector3.up) < 0.35f && OnTankOverturnedCoroutine == null)
         {
             OnTankOverturnedCoroutine = StartCoroutine(OnTankOverturned());
         }

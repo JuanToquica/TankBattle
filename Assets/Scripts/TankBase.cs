@@ -287,7 +287,7 @@ public abstract class TankBase : MonoBehaviour
         rotation = 0;
         yield return new WaitForSeconds(1);
 
-        if (Vector3.Dot(transform.up, Vector3.up) > 0.4f)
+        if (Vector3.Dot(transform.up, Vector3.up) > 0.35f)
         {
             OnTankOverturnedCoroutine = null;
             yield break;
@@ -298,7 +298,7 @@ public abstract class TankBase : MonoBehaviour
         {          
             rb.centerOfMass = new Vector3(0, -0.8f, 0);
             yield return new WaitForSeconds(1.5f);
-            if (Vector3.Dot(transform.up, Vector3.up) > 0.4f)
+            if (Vector3.Dot(transform.up, Vector3.up) > 0.35f)
             {
                 movement = 0;
                 rotation = 0;
@@ -311,12 +311,12 @@ public abstract class TankBase : MonoBehaviour
         if (transform.CompareTag("Player"))
         {
             PlayerHealth health = GetComponent<PlayerHealth>();
-            health.TakeDamage(500);
+            health.TakeDamage(500000);
         }
         else if (transform.CompareTag("Enemy"))
         {
             EnemyHealth health = GetComponent<EnemyHealth>();
-            health.TakeDamage(500);
+            health.TakeDamage(500000);
         }
         rb.useGravity = false;
     }
