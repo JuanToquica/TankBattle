@@ -5,49 +5,38 @@ public class TankAudioController : MonoBehaviour
     [SerializeField] private AudioData audioData;
     [SerializeField] protected AudioSource audioSource;
     [SerializeField] protected AudioSource powerUpSource;
-    private AudioClip mainTurretSound;
-    private AudioClip railgunSound;
-    private AudioClip railgunChargeSound;
-    private AudioClip machinegunSound;
-    private AudioClip rocketsSound;
-    private AudioClip powerUpSound;
-
-    private void Awake()
-    {
-        mainTurretSound = audioData.mainTurretSound;
-        railgunSound = audioData.railgunSound;
-        railgunChargeSound = audioData.railgunChargeSound;
-        machinegunSound = audioData.machinegunSound;
-        rocketsSound = audioData.rocketsSound;
-        powerUpSound = audioData.powerUpSound;
-    }
 
     public void PlayMainTurretSound()
     {
-        audioSource.PlayOneShot(mainTurretSound);
+        audioSource.PlayOneShot(audioData.mainTurretSound);
     }
 
     public void PlayRailgunSound()
     {
-        audioSource.PlayOneShot(railgunSound);
+        audioSource.PlayOneShot(audioData.railgunSound);
     }
 
     public void PlayRailgunChargeSound()
     {
-        audioSource.PlayOneShot(railgunChargeSound);
+        audioSource.PlayOneShot(audioData.railgunChargeSound);
     }
 
     public void PlayMachineGunSound()
     {
-        audioSource.PlayOneShot(machinegunSound);
+        audioSource.PlayOneShot(audioData.machinegunSound);
     }
     public void PlayRocketsSound()
     {
-        audioSource.PlayOneShot(rocketsSound);
+        audioSource.PlayOneShot(audioData.rocketsSound);
     }
 
     public void PlayPowerUpSound()
     {
-        powerUpSource.PlayOneShot(powerUpSound);
+        powerUpSource.PlayOneShot(audioData.powerUpSound);
+    }
+
+    public void PlayDeathSound()
+    {
+        powerUpSource.PlayOneShot(audioData.deathSound);
     }
 }

@@ -41319,16 +41319,16 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 9a756208bca77d14193be25294a07d08, type: 3}
   m_Resource: {fileID: 8300000, guid: 9a756208bca77d14193be25294a07d08, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.7
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 0.5
-  MaxDistance: 20
+  MaxDistance: 30
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0

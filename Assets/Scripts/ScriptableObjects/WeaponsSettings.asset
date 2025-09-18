@@ -23,7 +23,7 @@ MonoBehaviour:
   - 145
   - 80
   - 145
-  amountOfShotsInOneRound: {x: 25, y: 35}
+  amountOfShotsInOneRound: {x: 50, y: 70}
   aimAngle: 25
   defaultAmountOfRaycast: 16
   railGunAmountOfRaycast: 26
@@ -34,7 +34,7 @@ MonoBehaviour:
   bulletRange: 250
   railgunDelay: 1
   railgunAmmo: 4
-  machineGunAmmo: 50
+  machineGunAmmo: 100
   rocketAmmo: 4
   timeBetweenShoots: 0.1
   machineGunAngularSpeed: 2

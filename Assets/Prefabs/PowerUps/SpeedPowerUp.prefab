@@ -123,11 +123,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 422624547198024172}
   puffVFX: {fileID: 4809171458859421548, guid: 4e91ed1a8efe7044785b9bd97a47d87f, type: 3}
-  duration: 1
+  Dissolveduration: 0
   vfxOffset: 1.2
   powerUpSpawner: {fileID: 0}
   targetPoint: {fileID: 0}
   gravity: 0
   index: 0
-  powerUpDuration: 20
+  powerUpDuration: 30
   speedVFX: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}

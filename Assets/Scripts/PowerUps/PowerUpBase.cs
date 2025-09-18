@@ -4,7 +4,7 @@ public class PowerUpBase : MonoBehaviour
 {
     [SerializeField] protected MeshRenderer meshRenderer;
     [SerializeField] protected GameObject puffVFX;
-    [SerializeField] protected float duration;
+    [SerializeField] protected float Dissolveduration;
     [SerializeField] protected float vfxOffset;
     public PowerUpSpawner powerUpSpawner;
     public Transform targetPoint;
@@ -32,7 +32,7 @@ public class PowerUpBase : MonoBehaviour
         if (isDissolving)
         {
             float elapsedTime = Time.time - _startTime;
-            float t = Mathf.Clamp01(elapsedTime / duration);
+            float t = Mathf.Clamp01(elapsedTime / Dissolveduration);
             currentValue = Mathf.Lerp(-1f, 1f, t);
 
             meshRenderer.material.SetFloat("_DissolveFactor", currentValue);

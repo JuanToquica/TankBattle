@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 public class GlobalAudio : MonoBehaviour
 {
     public static GlobalAudio Instance;
-
+    [SerializeField] private SettingsData settingsData;
     [SerializeField] private AudioData audioData;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource musicSource;
@@ -30,9 +30,14 @@ public class GlobalAudio : MonoBehaviour
 
     private void Start()
     {
-        SetMasterVolume(PlayerPrefs.GetFloat("MasterVolume"));
-        SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume"));
-        SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume"));
+        LoadVolume();
+    }
+
+    private void LoadVolume()
+    {
+        SetMasterVolume(PlayerPrefs.GetFloat("MasterVolume", settingsData.defaultMasterVolume));
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVolume", settingsData.defaultMusicVolume));
+        SetSFXVolume(PlayerPrefs.GetFloat("SFXVolume", settingsData.defaultSFXVolume));
     }
 
     public void PlayButtonSound()

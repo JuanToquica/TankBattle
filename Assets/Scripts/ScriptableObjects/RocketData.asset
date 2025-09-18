@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeLevels:
   - level: 0
-    damageValue: 70
+    damageValue: 75
     cost: 0
   - level: 1
-    damageValue: 17
-    cost: 0
+    damageValue: 85
+    cost: 450
   - level: 2
-    damageValue: 80
-    cost: 0
+    damageValue: 95
+    cost: 500
   - level: 3
-    damageValue: 100
-    cost: 0
+    damageValue: 105
+    cost: 550
   - level: 4
-    damageValue: 120
-    cost: 0
+    damageValue: 115
+    cost: 600

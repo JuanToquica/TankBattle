@@ -24,10 +24,10 @@ public class SettingsIU : MonoBehaviour
 
     private void LoadSliderSettins()
     {
-        masterVolume.value = PlayerPrefs.GetFloat("MasterVolume");
-        musicVolume.value = PlayerPrefs.GetFloat("MusicVolume");
-        SFXVolume.value = PlayerPrefs.GetFloat("SFXVolume");
-        sensitivity.value = PlayerPrefs.GetFloat("Sensitivity");
+        masterVolume.value = PlayerPrefs.GetFloat("MasterVolume", settingsData.defaultMasterVolume);
+        musicVolume.value = PlayerPrefs.GetFloat("MusicVolume", settingsData.defaultMusicVolume);
+        SFXVolume.value = PlayerPrefs.GetFloat("SFXVolume", settingsData.defaultSFXVolume);
+        sensitivity.value = PlayerPrefs.GetFloat("Sensitivity", settingsData.defaultSensitivity);
     }
 
     public void OnBackButtonClicked()

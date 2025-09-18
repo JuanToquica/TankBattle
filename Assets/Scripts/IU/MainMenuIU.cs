@@ -20,6 +20,7 @@ public class MainMenuiu : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButtonClicked);
         garageButton.onClick.AddListener(OnGarageButtonClicked);
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        settingsIU.SetActive(false);
 
         if (!PlayerPrefs.HasKey("MasterVolume") || !PlayerPrefs.HasKey("MusicVolume") || !PlayerPrefs.HasKey("SFXVolume"))
         {

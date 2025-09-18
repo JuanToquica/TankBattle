@@ -11,7 +11,6 @@ public class EnemyAI : TankBase
 {
     [Header("Enemy")]   
     public EnemyManager enemyManager;
-    private WheelAnimations wheelAnimations;
     private LineRenderer lineRenderer;
     public NavMeshPath path;
     private EnemyAttack enemyAttack;
@@ -49,23 +48,13 @@ public class EnemyAI : TankBase
     [HideInInspector] public int oldArea = 0;
     [HideInInspector] public bool firstTimeChangingArea;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         enemyAttack = GetComponent<EnemyAttack>();
-        tankAudioController = GetComponent<TankAudioController>();
         lineRenderer = GetComponent<LineRenderer>();
-        wheelAnimations = GetComponent<WheelAnimations>();
         tankCollider = GetComponent<BoxCollider>();       
-        rb = GetComponent<Rigidbody>();
         path = new NavMeshPath();
-
-        springStrength = minSpringStrength;
-        dampSensitivity = minDampSensitivity;
-        rb.inertiaTensor = minInertiaTensor;
-
-        RestoreSpeed();
-        currentRotationSpeed = tankRotationSpeed;
-        lastDistances = new float[suspensionPoints.Length];
 
         SetUpTrees();
         changingArea = true;

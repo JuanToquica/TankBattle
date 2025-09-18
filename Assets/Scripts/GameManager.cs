@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         flag1.SetActive(false);
         flag2.SetActive(false);
         flagImage.SetActive(false);
-        cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
+        cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.3f);
         InputManager.Instance.playerInput.actions["Pause"].Enable();
 
         ObjectPoolManager.Instance.CreatePool(projectilePrefab, 10);
@@ -175,8 +175,8 @@ public class GameManager : MonoBehaviour
             isTheGamePaused = false;
             InputManager.Instance.playerInput.actions.FindActionMap("Player").Enable();
             InputManager.Instance.playerInput.actions["SelectButton"].Disable();
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
             cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity");
         }
         else

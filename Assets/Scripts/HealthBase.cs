@@ -30,6 +30,7 @@ public class HealthBase : MonoBehaviour
     protected virtual void Die()
     {
         health = 0;
+        tankAudioController.PlayDeathSound();
         foreach (Transform child in transform) //Destruir vfx de powerups que no hayan terminado
         {
             if (child.CompareTag("VFX"))

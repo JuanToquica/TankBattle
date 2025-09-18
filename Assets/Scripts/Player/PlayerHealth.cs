@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : HealthBase
 {
+    public static event System.Action OnPlayerDead;
     [SerializeField] private PlayerSpawner spawner;
     [SerializeField] private Image healthBar;
     private PlayerMaterialHandler playerMaterialHandler;
@@ -11,6 +12,7 @@ public class PlayerHealth : HealthBase
 
     private void OnEnable()
     {
+        maxHealth = DataManager.Instance.GetArmorStrengthDamage();
         health = maxHealth;
     }
 
@@ -30,7 +32,8 @@ public class PlayerHealth : HealthBase
 
     protected override void Die()
     {
-        base.Die();      
+        base.Die();
+        OnPlayerDead?.Invoke();
         playerMaterialHandler.OnTankDead();       
 
         Vector3 directionToCamera = (Camera.main.transform.position - playerController.transform.position).normalized;

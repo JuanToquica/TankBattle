@@ -67,7 +67,7 @@ public class RocketController : ProjectileBase
     {
         float distanceFromCenter = Vector3.Distance(transform.position, hitCollider.bounds.center);
         float t = Mathf.Clamp01(distanceFromCenter / explosionRadius);
-        float finalDamage = Mathf.Lerp(damageAmount * 2, 0, t);
+        float finalDamage = Mathf.Clamp(Mathf.Lerp(damageAmount * 2, 0, t), 1, damageAmount * 2);
         return finalDamage;
     }
 

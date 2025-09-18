@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToLeaveSpawn: 1
   timeToForgetPlayer: 10
-  distanceToDetectPlayer: 20
+  distanceToDetectPlayer: 30
   farDistance: 25
   nearDistance: 17
   maxAimingTolerance: 15

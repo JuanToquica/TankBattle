@@ -12,5 +12,6 @@ public class AudioData : ScriptableObject
     public AudioClip machinegunSound;
     public AudioClip rocketsSound;
     public AudioClip powerUpSound;
+    public AudioClip deathSound;
 
 }

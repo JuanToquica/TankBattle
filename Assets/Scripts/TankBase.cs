@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Audio;
 
 public enum State { accelerating, braking, quiet, constantSpeed }
@@ -19,6 +20,7 @@ public abstract class TankBase : MonoBehaviour
     public Transform turret;    
     [SerializeField] protected AudioSource engineSource;
     protected TankAudioController tankAudioController;
+    protected WheelAnimations wheelAnimations;
 
 
     [Header("Movement")]
@@ -76,6 +78,20 @@ public abstract class TankBase : MonoBehaviour
                     ApplySuspensionAnimation();
             }
         }
+    }
+
+    protected virtual void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        wheelAnimations = GetComponent<WheelAnimations>();
+        tankAudioController = GetComponent<TankAudioController>();
+    
+        RestoreSpeed();
+        currentRotationSpeed = tankRotationSpeed;
+        lastDistances = new float[suspensionPoints.Length];
+        springStrength = minSpringStrength;
+        dampSensitivity = minDampSensitivity;
+        rb.inertiaTensor = minInertiaTensor;      
     }
 
     protected void SetState()

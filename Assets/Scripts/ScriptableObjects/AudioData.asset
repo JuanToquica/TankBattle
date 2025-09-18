@@ -21,3 +21,4 @@ MonoBehaviour:
   machinegunSound: {fileID: 8300000, guid: 2b56912e4eacd9d4f977ae6e37b10386, type: 3}
   rocketsSound: {fileID: 8300000, guid: 26fe07057df1d3944be98e43c3e2a0a0, type: 3}
   powerUpSound: {fileID: 8300000, guid: d34ba9eb64306f949b5f7899ffeb1882, type: 3}
+  deathSound: {fileID: 8300000, guid: 621fe48b0f11e9b468c1546237c4959b, type: 3}

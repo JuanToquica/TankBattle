@@ -8,7 +8,6 @@ using UnityEngine.InputSystem.HID;
 public class PlayerController : TankBase
 {
     [Header ("Player")]
-    private WheelAnimations wheelAnimations;   
     private Vector2 input;
     [HideInInspector] public float turretRotationInput;
     [HideInInspector] public float cameraPivotRotation;
@@ -45,21 +44,13 @@ public class PlayerController : TankBase
         engineSource.pitch = tankConfig.pitchIdleLow;
     }
 
-    private void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        wheelAnimations = GetComponent<WheelAnimations>();
-        tankAudioController = GetComponent<TankAudioController>();
+        base.Start();
+
         InputManager.Instance.playerInput.actions["MoveTurretWithMouse"].Disable();
         InputManager.Instance.playerInput.actions["Shoot1"].Disable();
-        InputManager.Instance.RegisterPlayerController(this);
-
-        RestoreSpeed();
-        currentRotationSpeed = tankRotationSpeed;
-        lastDistances = new float[suspensionPoints.Length];
-        springStrength = minSpringStrength;
-        dampSensitivity = minDampSensitivity;
-        rb.inertiaTensor = minInertiaTensor;
+        InputManager.Instance.RegisterPlayerController(this);       
     }
 
     private void Update()

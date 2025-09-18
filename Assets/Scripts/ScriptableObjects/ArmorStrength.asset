@@ -18,13 +18,13 @@ MonoBehaviour:
     cost: 0
   - level: 1
     damageValue: 105
-    cost: 0
+    cost: 400
   - level: 2
     damageValue: 110
-    cost: 0
+    cost: 450
   - level: 3
     damageValue: 115
-    cost: 0
+    cost: 500
   - level: 4
     damageValue: 120
-    cost: 0
+    cost: 550

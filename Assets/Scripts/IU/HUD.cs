@@ -31,6 +31,16 @@ public class HUD : MonoBehaviour
     private GameObject speedPowerUpParent;
 
 
+    private void OnEnable()
+    {
+        PlayerHealth.OnPlayerDead += HidePowerUpsIcons;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDead -= HidePowerUpsIcons;
+    }
+
     private void Start()
     {
         playerScoreBar.fillAmount = 0;
@@ -175,5 +185,12 @@ public class HUD : MonoBehaviour
     {
         speedPowerUpActive = false;
         speedPowerUpParent.SetActive(false);
+    }
+
+    private void HidePowerUpsIcons()
+    {
+        OnRechargingPowerUpDeactivated();
+        OnSpeedPowerUpDeactivated();
+        weaponPowerUpParent.SetActive(false);
     }
 }

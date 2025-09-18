@@ -43,4 +43,4 @@ MonoBehaviour:
     railgunTurretMaterial: {fileID: 2100000, guid: ab6d404474e62c7489b2add6c5661749, type: 2}
     machineGunTurretMaterial: {fileID: 2100000, guid: d8325370c5cdfbd409121383d5fb2863, type: 2}
     rocketTurretMaterial: {fileID: 2100000, guid: a085332e8a3f76d4a9f907d482dd5f48, type: 2}
-  cost: 0
+  cost: 500

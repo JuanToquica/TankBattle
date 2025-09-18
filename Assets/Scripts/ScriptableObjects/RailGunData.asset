@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: RailGunData
   m_EditorClassIdentifier: 
   upgradeLevels:
-  - level: 1
-    damageValue: 80
-    cost: 25
-  - level: 1
-    damageValue: 19
+  - level: 0
+    damageValue: 85
     cost: 0
-  - level: 2
+  - level: 1
     damageValue: 90
-    cost: 35
+    cost: 450
+  - level: 2
+    damageValue: 95
+    cost: 500
   - level: 3
     damageValue: 100
-    cost: 40
+    cost: 550
   - level: 4
-    damageValue: 120
-    cost: 0
+    damageValue: 105
+    cost: 600
