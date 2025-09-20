@@ -198,6 +198,11 @@ public class PlayerController : TankBase
         hud.OnSpeedPowerUpDeactivated();
     }
 
+    public bool isMoving()
+    {
+        return rb.linearVelocity.sqrMagnitude > 0.01f;
+    }
+
     void OnDrawGizmos()
     {
         if (rb != null)

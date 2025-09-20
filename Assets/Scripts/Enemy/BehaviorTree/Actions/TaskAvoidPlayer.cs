@@ -13,6 +13,7 @@ public class TaskAvoidPlayer : Node
 
     public override NodeState Evaluate()
     {
+        Debug.LogWarning("evitando");
         int safeNearestPoint = 0;
         float safeNearestDistance = 100;
 

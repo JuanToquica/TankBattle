@@ -10,4 +10,6 @@ public class EnemyAIParameters : ScriptableObject
     public float farDistance;
     public float nearDistance;
     public float maxAimingTolerance;
+    [Tooltip("Time to consider that the player has stopped attacking")]
+    public float playerIdleTimeThreshold;
 }

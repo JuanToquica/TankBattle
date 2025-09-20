@@ -1,19 +1,27 @@
 using BehaviorTree;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TaskPausePatrol : Node
 {   
     private EnemyAI enemy;
+    private PlayerAttack playerAttack;
     private float waitTime;
     private float timer;
 
-    public TaskPausePatrol(EnemyAI enemy)
+    public TaskPausePatrol(EnemyAI enemy, PlayerAttack playerAttack)
     {
         this.enemy = enemy;
+        this.playerAttack = playerAttack;
     }
 
     public override NodeState Evaluate()
     {
+        if (enemy.detectingPlayer &&  Time.time - playerAttack.lastShot > enemy.enemyAIParameters.playerIdleTimeThreshold) //Si el jugador ha dejado de atacar
+        {
+            enemy.DoPausePatrol();
+        }         
+
         if (enemy.patrolWait)
         {
             if (waitTime > 0)
@@ -33,7 +41,8 @@ public class TaskPausePatrol : Node
                     waitTime = Random.Range(1f, 2f);
                 else
                     waitTime = Random.Range(1f, 5f);
-            }           
+            }
+            Debug.LogWarning("Pausa de patrullaje");
             return NodeState.RUNNING;
         }
         else

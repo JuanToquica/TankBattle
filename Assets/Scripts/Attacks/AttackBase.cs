@@ -52,7 +52,7 @@ public abstract class AttackBase : MonoBehaviour
     protected RaycastHit bestHitInThisScan;
     protected int currentAmountOfRaycast;
     protected bool firing;
-    protected float lastShoot;
+    [HideInInspector] public float lastShot;
     protected bool foundTankInThisScan;
     protected Vector3 fireDirection;
     protected Coroutine railgunCoroutine;
@@ -89,7 +89,7 @@ public abstract class AttackBase : MonoBehaviour
             if (firing)
             {
                 machineGunRotation = Mathf.Clamp(Mathf.MoveTowards(machineGunRotation, 1, weaponsSettings.machineGunAngularSpeed * Time.deltaTime), 0, 1);
-                if (Time.time > lastShoot + weaponsSettings.timeBetweenShoots && machineGunRotation == 1)
+                if (Time.time > lastShot + weaponsSettings.timeBetweenShoots && machineGunRotation == 1)
                 {
                     FireWithMachineGun();
                     machineGunVfx.SetActive(true);
@@ -138,7 +138,7 @@ public abstract class AttackBase : MonoBehaviour
                 Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
                 Vector3 rayDirection = rotation * mainGunFirePoint.forward;
                 bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
-                Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
+                //Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
 
                 if (ray)
                 {
@@ -162,7 +162,7 @@ public abstract class AttackBase : MonoBehaviour
                 Quaternion rotation = Quaternion.AngleAxis(currentVerticalAngle, mainGunFirePoint.right);
                 Vector3 rayDirection = rotation * mainGunFirePoint.forward;
                 bool ray = Physics.Raycast(mainGunFirePoint.position, rayDirection, out RaycastHit hit, currentRange);
-                Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
+                //Debug.DrawRay(mainGunFirePoint.position, rayDirection * currentRange, Color.red);
 
                 if (ray)
                 {
@@ -233,6 +233,7 @@ public abstract class AttackBase : MonoBehaviour
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.projectileSpeed, weaponsSettings.bulletRange, mainTurretDamage, projectileTag);
 
         cooldownTimer = 0;
+        lastShot = Time.time;
     }
 
     protected IEnumerator FireWithRailgun()
@@ -257,6 +258,7 @@ public abstract class AttackBase : MonoBehaviour
             bulletController.Initialize(startPos, fireDirection, weaponsSettings.railgunBulletSpeed, weaponsSettings.bulletRange, railgunDamage, projectileTag);
 
         shotsFired++;
+        lastShot = Time.time;
         if (shotsFired == weaponsSettings.railgunAmmo)
             BackToMainTurret(turretChangeDelay);
     }
@@ -280,7 +282,7 @@ public abstract class AttackBase : MonoBehaviour
             BackToMainTurret(turretChangeDelay);
             return;
         }
-        lastShoot = Time.time;
+        lastShot = Time.time;
 
         if (cooldownTimer < currentCooldown / currentAmountOfShotsInOneRound)
             StopFiring();
@@ -318,6 +320,7 @@ public abstract class AttackBase : MonoBehaviour
             rocketController.Initialize(startPos, direction, weaponsSettings.rocketSpeed, weaponsSettings.bulletRange, rocketDamage, projectileTag);
         
         cooldownTimer = 0;
+        lastShot = Time.time;
         if (shotsFired == weaponsSettings.rocketAmmo)
             BackToMainTurret(turretChangeDelay);
     }

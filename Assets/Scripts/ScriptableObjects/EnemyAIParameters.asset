@@ -15,6 +15,7 @@ MonoBehaviour:
   timeToLeaveSpawn: 1
   timeToForgetPlayer: 10
   distanceToDetectPlayer: 20
-  farDistance: 25
+  farDistance: 27
   nearDistance: 17
   maxAimingTolerance: 15
+  playerIdleTimeThreshold: 5

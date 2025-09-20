@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform player;
+    [SerializeField] private PlayerAttack playerAttack;
 
     [Header("Spawns and Waypoints")]
     [SerializeField] private Transform[] spawns;
@@ -81,6 +82,7 @@ public class EnemyManager : MonoBehaviour
         EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
         EnemyAttack enemyAttack = enemy.GetComponent<EnemyAttack>();
         enemyAI.player = player;
+        enemyAI.playerAttack = playerAttack;
         enemyAI.enemyManager = this;
         enemyAI.enemyArea = area;
         enemyAI.waypoints = new List<Transform>(wayPointsByArea[area]);

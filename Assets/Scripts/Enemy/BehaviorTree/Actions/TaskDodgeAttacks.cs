@@ -12,6 +12,7 @@ public class TaskDodgeAttacks : Node
 
     public override NodeState Evaluate()
     {
+        Debug.LogWarning("esquivando");
         if (enemy.path.status == NavMeshPathStatus.PathComplete && enemy.dodgingAttacks)
         {
             if ((enemy.transform.position - enemy.corners[enemy.currentCornerInThePath]).magnitude < 3)

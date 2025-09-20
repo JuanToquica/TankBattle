@@ -8117,6 +8117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 983249391379277366, guid: 6831be9f52b58c34993765381ca15e68, type: 3}
   player: {fileID: 508778734223612319}
+  playerAttack: {fileID: 9160843750731285213}
   spawns:
   - {fileID: 1614491844}
   - {fileID: 2082347943}
@@ -50471,6 +50472,7 @@ MonoBehaviour:
   turretChangeDelay: 0.35
   projectileTag: PlayerProjectile
   shotsFired: 0
+  lastShot: 0
   cooldownImage: {fileID: 1659777210}
   hud: {fileID: 427286738}
 --- !u!82 &9160843750731285215

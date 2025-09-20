@@ -33,9 +33,7 @@ public class TaskPatrol : Node
                     int random = Random.Range(1, 4);
                     if (random > 2)
                     {
-                        enemy.patrolWait = true;
-                        enemy.followingPath = false;
-                        enemy.path = new NavMeshPath();
+                        enemy.DoPausePatrol();
                     }
                     else
                     {    

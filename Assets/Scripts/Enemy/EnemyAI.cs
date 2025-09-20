@@ -19,6 +19,7 @@ public class EnemyAI : TankBase
 
       
     public Transform player;
+    public PlayerAttack playerAttack;
     private float desiredMovement;
     private float desiredRotation;
     private float adjustedAngleToTarget;
@@ -47,6 +48,17 @@ public class EnemyAI : TankBase
     [HideInInspector] public bool dodgingAttacks;
     [HideInInspector] public int oldArea = 0;
     [HideInInspector] public bool firstTimeChangingArea;
+
+    private void OnEnable()
+    {
+        PlayerHealth.OnPlayerDead += OnPlayerDead;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDead -= OnPlayerDead;
+    }
+
 
     protected override void Start()
     {
@@ -78,7 +90,7 @@ public class EnemyAI : TankBase
         TaskAttack attack = new TaskAttack(enemyAttack);
         TaskChasePlayer chasePlayer = new TaskChasePlayer(this);
         TaskPatrol patrol = new TaskPatrol(this);
-        TaskPausePatrol pausePatrol = new TaskPausePatrol(this);
+        TaskPausePatrol pausePatrol = new TaskPausePatrol(this, playerAttack);
         TaskWatch watch = new TaskWatch(this);
         TaskAvoidPlayer avoidPlayer = new TaskAvoidPlayer(this);
         TaskDodgeAttacks dodgeAttacks = new TaskDodgeAttacks(this);
@@ -412,11 +424,24 @@ public class EnemyAI : TankBase
         return false;
     }
 
+    public void DoPausePatrol()
+    {
+        patrolWait = true;
+        followingPath = false;
+        path = new NavMeshPath();
+    }
+
     public override void OnTankDead()
     {
         base.OnTankDead();
         desiredMovement = 0;
         desiredRotation = 0;
+    }
+
+    private void OnPlayerDead()
+    {
+        detectingPlayer = false;
+        knowsPlayerPosition = false;
     }
 
     private void DrawRays()

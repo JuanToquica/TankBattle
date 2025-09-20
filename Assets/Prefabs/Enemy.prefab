@@ -5703,6 +5703,7 @@ MonoBehaviour:
   maxDampSensitivity: 6000
   enemyManager: {fileID: 0}
   player: {fileID: 0}
+  playerAttack: {fileID: 0}
   enemyAIParameters: {fileID: 11400000, guid: 7c07be2af89e916479ecd75a2cdf88d7, type: 2}
   centeringPathOffset: 0
   detectingPlayer: 0
@@ -5771,6 +5772,7 @@ MonoBehaviour:
   turretChangeDelay: 0.35
   projectileTag: EnemyProjectile
   shotsFired: 0
+  lastShot: 0
 --- !u!114 &2225202212155526804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25527,29 +25529,29 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -4.122213
-      outSlope: -4.122213
+      inSlope: -2.2728643
+      outSlope: -2.2728643
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.2672626
+      outWeight: 0.4040228
     - serializedVersion: 3
-      time: 0.18810385
-      value: 0.5038814
-      inSlope: -1.3035856
-      outSlope: -1.3035856
+      time: 0.27594107
+      value: 0.49890703
+      inSlope: -1.2537289
+      outSlope: -1.2537289
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.49918234
+      inWeight: 0.48578915
       outWeight: 0.12496479
     - serializedVersion: 3
       time: 1
-      value: 0.07928467
-      inSlope: 0
-      outSlope: 0
+      value: 0.14897156
+      inSlope: -0.23678064
+      outSlope: -0.23678064
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.20625149
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
