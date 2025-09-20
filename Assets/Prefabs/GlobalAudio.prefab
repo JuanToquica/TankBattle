@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976a0b1387124e84eadc231c2f395817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsData: {fileID: 11400000, guid: b1a428fa287029040976456c975722cc, type: 2}
   audioData: {fileID: 11400000, guid: 4e288367c767af542b82baa83234253a, type: 2}
   audioSource: {fileID: 2869216231681009998}
   musicSource: {fileID: 2811989962689515364}

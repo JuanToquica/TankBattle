@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private HUD hud;
+    [SerializeField] private SettingsData settingsData;
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
         flag1.SetActive(false);
         flag2.SetActive(false);
         flagImage.SetActive(false);
-        cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.3f);
+        cameraController.sensitivity = PlayerPrefs.GetFloat("Sensitivity", settingsData.defaultSensitivity);
         InputManager.Instance.playerInput.actions["Pause"].Enable();
 
         ObjectPoolManager.Instance.CreatePool(projectilePrefab, 10);

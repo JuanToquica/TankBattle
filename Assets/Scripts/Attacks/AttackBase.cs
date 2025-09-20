@@ -221,7 +221,7 @@ public abstract class AttackBase : MonoBehaviour
 
     protected void FireWithMainTurret()
     {
-        mainTurretAnimator.SetBool("Fire", true);
+        mainTurretAnimator.SetTrigger("Fire");
         tankAudioController.PlayMainTurretSound();
         ObjectPoolManager.Instance.GetPooledObject(weaponsSettings.shotVfx, mainGunFirePoint.position + mainGunFirePoint.forward * 0.5f, mainGunFirePoint.rotation);
         Vector3 startPos = mainGunFirePoint.position;
@@ -246,7 +246,7 @@ public abstract class AttackBase : MonoBehaviour
         Aim();
         yield return null;
         Aim();
-        railgunAnimator.SetBool("Fire", true);
+        railgunAnimator.SetTrigger("Fire");
         
         Vector3 startPos = railgunFirePoint.position;
 
@@ -293,12 +293,12 @@ public abstract class AttackBase : MonoBehaviour
 
         if (shotsFired - 1 == 0 || shotsFired - 1 == 2)
         {
-            rocketAnimator.SetBool("FireWithRight", true);
+            rocketAnimator.SetTrigger("FireWithRight");
             rocketShotVfxRight.Play();
         }
         else
         {
-            rocketAnimator.SetBool("FireWithLeft", true);
+            rocketAnimator.SetTrigger("FireWithLeft");
             rocketShotVfxLeft.Play();
         }
 

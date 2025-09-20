@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 75369739862893346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 1.9}
+  m_LocalPosition: {x: 0, y: 0.6, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -222,7 +222,6 @@ GameObject:
   - component: {fileID: 431151748048084022}
   - component: {fileID: 9067195847015249603}
   - component: {fileID: 8174636134493720398}
-  - component: {fileID: 5416851426398549504}
   m_Layer: 9
   m_Name: Rocket
   m_TagString: Player
@@ -322,19 +321,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5416851426398549504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389674124443011953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3660f97c73701424f9745b02be5e8d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 8174636134493720398}
 --- !u!1 &407120360795739067
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +364,6 @@ GameObject:
   - component: {fileID: 2452611854334579971}
   - component: {fileID: 5473055921858432687}
   - component: {fileID: 7184261861901262625}
-  - component: {fileID: 1623095935469030510}
   m_Layer: 9
   m_Name: MainTurret
   m_TagString: Player
@@ -479,19 +464,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1623095935469030510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574987978731175058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3660f97c73701424f9745b02be5e8d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 7184261861901262625}
 --- !u!1 &630050410489573407
 GameObject:
   m_ObjectHideFlags: 0
@@ -19016,7 +18988,7 @@ Transform:
   m_GameObject: {fileID: 3114985186015980449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 1.9}
+  m_LocalPosition: {x: 0, y: 0.6, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19340,7 +19312,6 @@ GameObject:
   - component: {fileID: 8316142080684666601}
   - component: {fileID: 1291629974383024156}
   - component: {fileID: 8754108349960501897}
-  - component: {fileID: 5432097306468947696}
   m_Layer: 9
   m_Name: Railgun
   m_TagString: Player
@@ -19440,19 +19411,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5432097306468947696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3805706054885440358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3660f97c73701424f9745b02be5e8d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 8754108349960501897}
 --- !u!1 &3993117946175218279
 GameObject:
   m_ObjectHideFlags: 0
@@ -36059,7 +36017,7 @@ Transform:
   m_GameObject: {fileID: 7856447879016471635}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.54, z: 1.9}
+  m_LocalPosition: {x: 0, y: 0.54, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

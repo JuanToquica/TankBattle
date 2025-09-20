@@ -901,7 +901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsIU: {fileID: 968774944437099705}
   loadPanel: {fileID: 154290654}
-  settings: {fileID: 0}
+  settings: {fileID: 6035139328481488693}
   playButton: {fileID: 2108385050}
   garageButton: {fileID: 1572771839}
   settingsButton: {fileID: 1871815311}

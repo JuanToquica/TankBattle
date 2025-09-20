@@ -7,7 +7,6 @@ public class EnemyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform player;
-    [SerializeField] private Transform projectileContainer;
 
     [Header("Spawns and Waypoints")]
     [SerializeField] private Transform[] spawns;

@@ -15,4 +15,4 @@ MonoBehaviour:
   defaultMasterVolume: 0.5
   defaultMusicVolume: 0.5
   defaultSFXVolume: 0.5
-  defaultSensitivity: 0.3
+  defaultSensitivity: 0.5
