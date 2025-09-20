@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
+using Unity.VisualScripting;
 
 public class TankMaterialHandlerBase : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class TankMaterialHandlerBase : MonoBehaviour
     [SerializeField] protected SkinnedMeshRenderer TrackLeftMeshRenderer;
     [SerializeField] protected float dissolveRate;
     [SerializeField] protected float refreshRate;
-    List<Material> materials = new List<Material>();
+    List<Material> materials = new List<Material>();    
 
     private void Start()
     {

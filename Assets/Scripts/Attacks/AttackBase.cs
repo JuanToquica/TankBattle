@@ -432,7 +432,7 @@ public abstract class AttackBase : MonoBehaviour
         }
     }
 
-    public void OnTankDead()
+    public virtual void OnTankDead()
     {
         DisableRockets();
         machineGunVfx.SetActive(false);

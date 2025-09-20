@@ -21,6 +21,7 @@ public class PlayerController : TankBase
 
     private void OnEnable()
     {
+        PlayerHealth.OnPlayerDead += OnTankDead;
         dying = false;
         if (rb != null && rb.useGravity == false)
             rb.useGravity = true;
@@ -42,6 +43,11 @@ public class PlayerController : TankBase
             InputManager.Instance.RegisterPlayerController(this);
         engineSource.Play();
         engineSource.pitch = tankConfig.pitchIdleLow;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDead -= OnTankDead;
     }
 
     protected override void Start()

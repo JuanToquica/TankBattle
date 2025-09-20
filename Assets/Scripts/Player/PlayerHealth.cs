@@ -8,7 +8,6 @@ public class PlayerHealth : HealthBase
     [SerializeField] private Image healthBar;
     private PlayerMaterialHandler playerMaterialHandler;
     private PlayerController playerController;
-    private PlayerAttack playerAttack;
 
     private void OnEnable()
     {
@@ -22,7 +21,6 @@ public class PlayerHealth : HealthBase
         tankAudioController = GetComponent<TankAudioController>();
         playerMaterialHandler = GetComponent<PlayerMaterialHandler>();
         playerController = GetComponent<PlayerController>();
-        playerAttack = GetComponent<PlayerAttack>();
     }
 
     private void Update()
@@ -34,16 +32,11 @@ public class PlayerHealth : HealthBase
     {
         base.Die();
         OnPlayerDead?.Invoke();
-        playerMaterialHandler.OnTankDead();       
+        playerMaterialHandler.OnTankDead();
 
         Vector3 directionToCamera = (Camera.main.transform.position - playerController.transform.position).normalized;
         GameObject vfx = ObjectPoolManager.Instance.GetPooledObject(deathVfx, transform.position + new Vector3(0, 1.3f, 0) + directionToCamera, transform.rotation);
-        vfx.transform.parent = transform;
-       
-        playerController.OnTankDead();
-
-        playerAttack.OnTankDead();
-        playerAttack.enabled = false;
+        vfx.transform.parent = transform;     
 
         if (GameManager.instance.playerHasTheFlag)
         {

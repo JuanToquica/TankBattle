@@ -8,13 +8,18 @@ public class PlayerAttack : AttackBase
     [SerializeField] private Image cooldownImage;
     [SerializeField] private HUD hud;
     private Outline currentOutlinedEnemy;    
-    private bool _isAimingAtEnemy;    
 
     protected override void OnEnable()
     {
         base.OnEnable();
+        PlayerHealth.OnPlayerDead += OnTankDead;
         if (InputManager.Instance != null)
             InputManager.Instance.RegisterPlayerAttack(this);
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDead -= OnTankDead;
     }
 
     protected override void Start()
@@ -79,6 +84,17 @@ public class PlayerAttack : AttackBase
                 }               
             }           
         }   
+    }
+
+    public override void OnTankDead()
+    {
+        base.OnTankDead();
+        if (currentOutlinedEnemy != null)
+        {
+            currentOutlinedEnemy.enabled = false;
+            currentOutlinedEnemy = null;
+        }
+        this.enabled = false;
     }
 
     public override void RecharchingPowerUp(float duration)
