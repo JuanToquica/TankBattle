@@ -42,7 +42,6 @@ public class TaskPausePatrol : Node
                 else
                     waitTime = Random.Range(1f, 5f);
             }
-            Debug.LogWarning("Pausa de patrullaje");
             return NodeState.RUNNING;
         }
         else

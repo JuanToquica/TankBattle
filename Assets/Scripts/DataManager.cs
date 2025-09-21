@@ -86,7 +86,12 @@ public class DataManager : MonoBehaviour
 
     private float GetUpgradeCost(TurretUpgradeData upgradeData, int currentLevel)
     {
-        return upgradeData.upgradeLevels[currentLevel].cost;
+        int nextLevel = currentLevel + 1;
+        if (nextLevel >= upgradeData.maxLevel)
+        {
+            return upgradeData.upgradeLevels[currentLevel].cost; ;
+        }
+        return upgradeData.upgradeLevels[nextLevel].cost;
     }
 
     public bool IsColorPurchased(int colorIndex)

@@ -15,7 +15,7 @@ MonoBehaviour:
   upgradeLevels:
   - level: 0
     damageValue: 6
-    cost: 25
+    cost: 0
   - level: 1
     damageValue: 7
     cost: 350

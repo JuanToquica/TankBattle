@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public static event System.Action OnStartGame;
+    public static event System.Action OnEndGame;
 
     [Header("Prefabs")]
     public GameObject projectilePrefab;
@@ -194,8 +195,11 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        OnEndGame?.Invoke();
         InputManager.Instance.playerInput.actions.FindActionMap("Player").Disable();
+        InputManager.Instance.playerInput.actions["Pause"].Disable();
         InputManager.Instance.playerInput.actions["SelectButton"].Enable();
+        GlobalAudio.Instance.PlayMusic();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0;

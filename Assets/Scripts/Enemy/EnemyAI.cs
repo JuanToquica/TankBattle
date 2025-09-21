@@ -52,13 +52,14 @@ public class EnemyAI : TankBase
     private void OnEnable()
     {
         PlayerHealth.OnPlayerDead += OnPlayerDead;
+        GameManager.OnEndGame += OnEndGame;
     }
 
     private void OnDisable()
     {
         PlayerHealth.OnPlayerDead -= OnPlayerDead;
+        GameManager.OnEndGame += OnEndGame;
     }
-
 
     protected override void Start()
     {

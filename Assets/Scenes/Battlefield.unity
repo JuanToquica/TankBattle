@@ -7083,8 +7083,8 @@ MonoBehaviour:
   coinsPerEnemy: 10
   coinsPerPoint: 20
   coinsPerGameWon: 100
-  playerMaxScore: 10
-  enemyMaxScore: 15
+  playerMaxScore: 5
+  enemyMaxScore: 7
   gameTime: 600
   isTheGamePaused: 0
   playerScore: 0
@@ -21248,8 +21248,8 @@ MonoBehaviour:
   - {fileID: 178246653}
   - {fileID: 1516246974}
   - {fileID: 248420846}
-  minTimeToSpawn: 5
-  maxTimeToSpawn: 10
+  minTimeToSpawn: 10
+  maxTimeToSpawn: 15
   gravity: 7
   spawnHeight: 40
 --- !u!4 &1353540965
@@ -46974,7 +46974,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   deathVfx: {fileID: 1007127540951276732, guid: 3ace37360f306cb4aac03640550fa9ef, type: 3}
-  spawner: {fileID: 1283078837}
   healthBar: {fileID: 1449295122119180993}
 --- !u!1 &3226376839974422223
 GameObject:

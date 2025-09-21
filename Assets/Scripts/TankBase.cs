@@ -372,6 +372,11 @@ public abstract class TankBase : MonoBehaviour
         dying = true;
     }
 
+    protected void OnEndGame()
+    {
+        gameObject.SetActive(false);
+    }
+
     void OnDrawGizmos()
     {
         if (rb != null)

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class PlayerHealth : HealthBase
 {
     public static event System.Action OnPlayerDead;
-    [SerializeField] private PlayerSpawner spawner;
     [SerializeField] private Image healthBar;
     private PlayerMaterialHandler playerMaterialHandler;
     private PlayerController playerController;
@@ -43,6 +42,5 @@ public class PlayerHealth : HealthBase
             GameManager.instance.OnPlayerDeathWithFlag();
         }
         InputManager.Instance.playerInput.actions.FindActionMap("Player").Disable();
-        spawner.OnPlayerDead();
     }
 }

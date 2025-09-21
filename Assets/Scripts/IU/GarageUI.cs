@@ -37,6 +37,7 @@ public class GarageUI : MonoBehaviour
 
     [Header ("Image References")]
     [SerializeField] private GameObject[] colorPadlocks;
+    [SerializeField] private TextMeshProUGUI[] colorCost;
     [SerializeField] private Image[] colorBackgrounds;
     [SerializeField] private GameObject equippedImage;
     [SerializeField] private GameObject notEnoughCoinsImage;
@@ -82,11 +83,15 @@ public class GarageUI : MonoBehaviour
     private void UpdateUITexts()
     {
         coinsAmount.text = $"{DataManager.Instance.GetCoinsAmount()}";
-        ArmorDamageValue.text = $"{DataManager.Instance.GetArmorStrengthDamage()}";
-        mainGunDamageValue.text = $"{DataManager.Instance.GetMainTurretDamage()}";
-        railgunDamageValue.text = $"{DataManager.Instance.GetRailgunDamage()}";
-        machinegunDamageValue.text = $"{DataManager.Instance.GetMachineGunDamage()}";
-        rocketDamageValue.text = $"{DataManager.Instance.GetRocketDamage()}";
+        ArmorDamageValue.text = $"{DataManager.Instance.GetArmorStrengthCost()}";
+        mainGunDamageValue.text = $"{DataManager.Instance.GetMainTurretCost()}";
+        railgunDamageValue.text = $"{DataManager.Instance.GetRailgunCost()}";
+        machinegunDamageValue.text = $"{DataManager.Instance.GetMachineGunCost()}";
+        rocketDamageValue.text = $"{DataManager.Instance.GetRocketCost()}";
+        foreach (TextMeshProUGUI cost in colorCost)
+        {
+            cost.text = $"{materialsData.cost}";
+        }
     }
 
     private void UpdateUIButtons()
@@ -162,9 +167,16 @@ public class GarageUI : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             if (DataManager.Instance.IsColorPurchased(i))
+            {
                 colorPadlocks[i].SetActive(false);
+                colorCost[i].gameObject.SetActive(false);
+            }              
             else
-                colorPadlocks[i].SetActive(true);              
+            {
+                colorPadlocks[i].SetActive(true);
+                colorCost[i].gameObject.SetActive(true);
+            }
+                          
         }
     }
 

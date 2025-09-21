@@ -22,6 +22,8 @@ public class PlayerController : TankBase
     private void OnEnable()
     {
         PlayerHealth.OnPlayerDead += OnTankDead;
+        GameManager.OnEndGame += OnEndGame;
+        tankCollider.enabled = true;
         dying = false;
         if (rb != null && rb.useGravity == false)
             rb.useGravity = true;
@@ -32,8 +34,7 @@ public class PlayerController : TankBase
         lastDistances = new float[suspensionPoints.Length];
         springStrength = minSpringStrength;
         dampSensitivity = minDampSensitivity;
-        turret.localRotation = Quaternion.identity;
-        tankCollider.enabled = true;
+        turret.localRotation = Quaternion.identity;      
         if (rb != null)
         {
             RestoreSpeed();
@@ -48,6 +49,7 @@ public class PlayerController : TankBase
     private void OnDisable()
     {
         PlayerHealth.OnPlayerDead -= OnTankDead;
+        GameManager.OnEndGame += OnEndGame;
     }
 
     protected override void Start()

@@ -11,6 +11,16 @@ public class PlayerSpawner : MonoBehaviour
     private Transform playerTransform;
     private PlayerAttack playerAttack;
 
+    private void OnEnable()
+    {
+        PlayerHealth.OnPlayerDead += OnPlayerDead;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDead -= OnPlayerDead;
+    }
+
     private void Start()
     {
         playerTransform = player.GetComponent<Transform>();

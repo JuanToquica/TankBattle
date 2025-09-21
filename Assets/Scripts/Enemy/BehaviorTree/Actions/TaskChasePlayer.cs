@@ -14,7 +14,6 @@ public class TaskChasePlayer : Node
 
     public override NodeState Evaluate()
     {
-        Debug.LogWarning("persiguiendo");
         int nearestPoint = 0;
         float nearestDistance = 100;
 
